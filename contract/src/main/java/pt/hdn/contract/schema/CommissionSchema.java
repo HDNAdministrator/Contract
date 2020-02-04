@@ -1,0 +1,201 @@
+package pt.hdn.contract.schema;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import pt.hdn.contract.annotations.SchemaType;
+import pt.hdn.contract.annotations.SourceType;
+
+import static pt.hdn.contract.annotations.SchemaType.COMMISSION;
+
+public class CommissionSchema extends SchemaImp {
+
+    public static final Creator<CommissionSchema> CREATOR = new Creator<CommissionSchema>() {
+        @Override
+        public CommissionSchema createFromParcel(Parcel in) {
+            return new CommissionSchema(in);
+        }
+
+        @Override
+        public CommissionSchema[] newArray(int size) {
+            return new CommissionSchema[size];
+        }
+    };
+
+    private final double cut;
+    private final @SourceType int source;
+    private final Double lowerBound;
+    private final Double upperBound;
+
+    private CommissionSchema(Builder builder){
+        super(COMMISSION);
+
+        this.source = builder.source;
+        this.cut = builder.cut;
+        this.lowerBound = builder.lowerBound;
+        this.upperBound = builder.upperBound;
+    }
+
+    private CommissionSchema(Parcel in){
+        super(COMMISSION);
+
+        this.cut = in.readDouble();
+        this.source = in.readInt();
+
+        if(in.readByte() == 0){
+            this.upperBound = null;
+        } else {
+            this.upperBound = in.readDouble();
+        }
+
+        if(in.readByte() == 0){
+            this.lowerBound = null;
+        } else {
+            this.lowerBound = in.readDouble();
+        }
+    }
+
+    @Override
+    public final void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(cut);
+        dest.writeInt(source);
+
+        if(upperBound == null){
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(upperBound);
+        }
+
+        if(lowerBound == null){
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(lowerBound);
+        }
+    }
+
+    @Override
+    public final int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public Schema.Builder rebuild() {
+        Builder builder = new Builder();
+
+        builder.cut = this.cut;
+        builder.source = this.source;
+        builder.lowerBound = this.lowerBound;
+        builder.upperBound = this.upperBound;
+
+        return builder;
+    }
+
+    @Override
+    public double calculate() {
+        throw new RuntimeException("Schema does depend on any external values.");
+    }
+
+    @Override
+    public double calculate(double value){
+        return (upperBound == null || value <= upperBound) ? ((lowerBound == null || lowerBound <= value) ? value * cut : 0d) : 0d;
+    }
+
+    public final boolean hasLowerBound(){
+        return lowerBound != null;
+    }
+
+    public final Double getLowerBound() {
+        return lowerBound;
+    }
+
+    public final boolean hasUpperBound(){
+        return upperBound != null;
+    }
+
+    public final Double getUpperBound() {
+        return upperBound;
+    }
+
+    public static class  Builder implements Schema.Builder{
+
+        private Double cut;
+        private @SourceType Integer source;
+        private Double lowerBound;
+        private Double upperBound;
+
+        public Builder(){
+            this.cut = null;
+            this.source = null;
+            this.lowerBound = null;
+            this.upperBound = null;
+        }
+
+        @Override
+        public CommissionSchema create() throws SchemaException{
+            if(cut == null) {
+                throw new SchemaException("The cut is missing.");
+            } else if(cut < 0 || cut > 1) {
+                throw new SchemaException("Cut can only be between 0 and 1.");
+            } else if(source == null) {
+                throw new SchemaException("The source is missing.");
+            } else if(source < 0) {
+                throw new SchemaException("Source needs to be positive.");
+            } else if(lowerBound != null && lowerBound < 0) {
+                throw new SchemaException("LowerBound needs to be positive.");
+            } else if(upperBound != null && upperBound < 0) {
+                throw new SchemaException("UpperBound needs to be positive.");
+            } else if(lowerBound != null && upperBound != null && upperBound < lowerBound) {
+                throw new SchemaException("LowerBound is greater than upperBound");
+            } else {
+                return new CommissionSchema(this);
+            }
+        }
+
+        @Override
+        public boolean validate() {
+            return cut != null && source != null;
+        }
+
+        public Double getCut() {
+            return cut;
+        }
+
+        public Builder setCut(Double cut){
+            this.cut = cut;
+
+            return this;
+        }
+
+        public Integer getSource() {
+            return source;
+        }
+
+        public Builder setSource(@SourceType Integer source){
+            this.source = source;
+
+            return this;
+        }
+
+        public Double getLowerBound() {
+            return lowerBound;
+        }
+
+        public Builder setLowerBound(Double lowerBound){
+            this.lowerBound = lowerBound;
+
+            return this;
+        }
+
+        public Double getUpperBound() {
+            return upperBound;
+        }
+
+        public Builder setUpperBound(Double upperBound){
+            this.upperBound = upperBound;
+
+            return this;
+        }
+    }
+}
