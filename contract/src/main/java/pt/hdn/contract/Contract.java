@@ -3,8 +3,6 @@ package pt.hdn.contract;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.NonNull;
-
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.GsonBuilder;
@@ -210,7 +208,7 @@ public final class Contract implements Parcelable {
         this.buyerDeputyTimestamp = Instant.now();
         this.buyerDeputySignature = sign(privateKey, BUYER_DEPUTY_TIMESTAMP);
 
-        return toString();
+        return toJson();
     }
 
     public final boolean validateBuyerDeputySignature(PublicKey publicKey){
@@ -221,7 +219,7 @@ public final class Contract implements Parcelable {
         this.buyerTimestamp = Instant.now();
         this.buyerSignature = sign(privateKey, BUYER_TIMESTAMP);
 
-        return toString();
+        return toJson();
     }
 
     public final boolean validateBuyerSignature(PublicKey publicKey){
@@ -232,7 +230,7 @@ public final class Contract implements Parcelable {
         this.sellerDeputyTimestamp = Instant.now();
         this.sellerDeputySignature = sign(privateKey, SELLER_DEPUTY_TIMESTAMP);
 
-        return toString();
+        return toJson();
     }
 
     public final boolean validateSellerDeputySignature(PublicKey publicKey){
@@ -243,7 +241,7 @@ public final class Contract implements Parcelable {
         this.sellerTimestamp = Instant.now();
         this.sellerSignature = sign(privateKey, SELLER_TIMESTAMP);
 
-        return toString();
+        return toJson();
     }
 
     public final boolean validateSellerSignature(PublicKey publicKey){
@@ -254,9 +252,7 @@ public final class Contract implements Parcelable {
         return validate(publicKey, witnessSignature, WITNESS_TIMESTAMP);
     }
 
-    @NonNull
-    @Override
-    public final String toString(){
+    public String toJson(){
         return gsonBuilder().create().toJson(this);
     }
 
