@@ -71,7 +71,7 @@ public final class Task implements Parcelable {
         return schemas;
     }
 
-    public Builder rebuild() {
+    public final Builder rebuild() {
         Builder builder = new Builder();
 
         builder.serviceTypeBuilder = serviceType.rebuild();
@@ -84,7 +84,7 @@ public final class Task implements Parcelable {
     }
 
     @Override
-    public boolean equals(@Nullable Object object) {
+    public final boolean equals(@Nullable Object object) {
         if(!super.equals(object)){
             if(!(object instanceof Task)){
                 Task task = (Task) object;
@@ -110,7 +110,7 @@ public final class Task implements Parcelable {
         return true;
     }
 
-    public static class Builder{
+    public final static class Builder{
 
         private List<Schema> schemas;
         private List<Schema.Builder> schemaBuilders;
@@ -123,41 +123,41 @@ public final class Task implements Parcelable {
             this.schemas = new ArrayList<>();
         }
 
-        public Builder clearSchemaBuilders() {
+        public final Builder clearSchemaBuilders() {
             this.schemaBuilders.clear();
 
             return this;
         }
 
-        public Schema.Builder removeSchemaBuilder(int index){
+        public final Schema.Builder removeSchemaBuilder(int index){
             return schemaBuilders.remove(index);
         }
 
-        public List<Schema.Builder> getSchemaBuilders(){
+        public final List<Schema.Builder> getSchemaBuilders(){
             return schemaBuilders;
         }
 
-        public Builder addSchemaBuilder(Schema.Builder builder){
+        public final Builder addSchemaBuilder(Schema.Builder builder){
             this.schemaBuilders.add(builder);
 
             return this;
         }
 
-        public Schema.Builder setSchemaBuilder(int index, Schema.Builder builder){
+        public final Schema.Builder setSchemaBuilder(int index, Schema.Builder builder){
             return schemaBuilders.set(index, builder);
         }
 
-        public ServiceType.Builder getServiceTypeBuilder(){
+        public final ServiceType.Builder getServiceTypeBuilder(){
             return serviceTypeBuilder;
         }
 
-        public Builder setServiceTypeBuilder(ServiceType.Builder builder){
+        public final Builder setServiceTypeBuilder(ServiceType.Builder builder){
             this.serviceTypeBuilder = builder;
 
             return this;
         }
 
-        public Task create() throws TaskException {
+        public final Task create() throws TaskException {
             try {
                 if(serviceTypeBuilder == null){
                     throw new TaskException("The ServiceType.Builder is missing.");

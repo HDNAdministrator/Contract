@@ -72,7 +72,7 @@ public class ObjectiveSchema extends SchemaImp {
     }
 
     @Override
-    public Schema.Builder rebuild() {
+    public final Builder rebuild() {
         Builder builder = new Builder();
 
         builder.bonus = this.bonus;
@@ -84,17 +84,17 @@ public class ObjectiveSchema extends SchemaImp {
     }
 
     @Override
-    public double calculate() {
+    public final double calculate() {
         throw new RuntimeException("Schema depends on external values.");
     }
 
     @Override
-    public double calculate(double value){
+    public final double calculate(double value){
         return (upperBound == null || value <= upperBound) ? ((lowerBound == null || lowerBound <= value) ? bonus : 0d) : 0d;
     }
 
     @Override
-    public boolean equals(@Nullable Object object) {
+    public final boolean equals(@Nullable Object object) {
         if(!super.equals(object)){
             if(!(object instanceof ObjectiveSchema)) {
                 return false;
@@ -138,7 +138,7 @@ public class ObjectiveSchema extends SchemaImp {
         return upperBound;
     }
 
-    public static class  Builder implements Schema.Builder{
+    public final static class  Builder implements Schema.Builder{
 
         private Double bonus;
         private Integer source;
@@ -153,7 +153,7 @@ public class ObjectiveSchema extends SchemaImp {
         }
 
         @Override
-        public ObjectiveSchema create() throws SchemaException{
+        public final ObjectiveSchema create() throws SchemaException{
             if(bonus == null) {
                 throw new SchemaException("The cut is missing.");
             } else if(bonus < 0 || bonus > 1) {
@@ -174,45 +174,45 @@ public class ObjectiveSchema extends SchemaImp {
         }
 
         @Override
-        public boolean validate() {
+        public final boolean validate() {
             return bonus != null && source != null;
         }
 
-        public Double getBonus() {
+        public final Double getBonus() {
             return bonus;
         }
 
-        public Builder setBonus(Double bonus){
+        public final Builder setBonus(Double bonus){
             this.bonus = bonus;
 
             return this;
         }
 
-        public Integer getSource() {
+        public final Integer getSource() {
             return source;
         }
 
-        public Builder setSource(@SourceType Integer source){
+        public final Builder setSource(@SourceType Integer source){
             this.source = source;
 
             return this;
         }
 
-        public Double getLowerBound() {
+        public final Double getLowerBound() {
             return lowerBound;
         }
 
-        public Builder setLowerBound(Double lowerBound){
+        public final Builder setLowerBound(Double lowerBound){
             this.lowerBound = lowerBound;
 
             return this;
         }
 
-        public Double getUpperBound() {
+        public final Double getUpperBound() {
             return upperBound;
         }
 
-        public Builder setUpperBound(Double upperBound){
+        public final Builder setUpperBound(Double upperBound){
             this.upperBound = upperBound;
 
             return this;

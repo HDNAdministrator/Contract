@@ -51,7 +51,7 @@ public final class RateSchema extends SchemaImp {
     }
 
     @Override
-    public Schema.Builder rebuild() {
+    public final Builder rebuild() {
         Builder builder = new Builder();
 
         builder.source = this.source;
@@ -61,17 +61,17 @@ public final class RateSchema extends SchemaImp {
     }
 
     @Override
-    public double calculate() {
+    public final double calculate() {
         throw new RuntimeException("Schema depends on external value.");
     }
 
     @Override
-    public double calculate(double value) {
+    public final double calculate(double value) {
         return rate * value;
     }
 
     @Override
-    public boolean equals(@Nullable Object object) {
+    public final boolean equals(@Nullable Object object) {
         if(!super.equals(object)){
             if(!(object instanceof RateSchema)) {
                 return false;
@@ -95,7 +95,7 @@ public final class RateSchema extends SchemaImp {
         return rate;
     }
 
-    public static class Builder implements Schema.Builder{
+    public final static class Builder implements Schema.Builder{
 
         private Double rate;
         private @SourceType Integer source;
@@ -105,7 +105,7 @@ public final class RateSchema extends SchemaImp {
         }
 
         @Override
-        public RateSchema create() throws SchemaException{
+        public final RateSchema create() throws SchemaException{
             if(rate == null) {
                 throw new SchemaException("The rate is missing.");
             } else if(rate < 0) {
@@ -116,25 +116,25 @@ public final class RateSchema extends SchemaImp {
         }
 
         @Override
-        public boolean validate() {
+        public final boolean validate() {
             return rate != null;
         }
 
-        public Integer getSource() {
+        public final Integer getSource() {
             return source;
         }
 
-        public Builder setSource(@SourceType Integer source){
+        public final Builder setSource(@SourceType Integer source){
             this.source = source;
 
             return this;
         }
 
-        public Double getRate() {
+        public final Double getRate() {
             return rate;
         }
 
-        public Builder setRate(Double rate){
+        public final Builder setRate(Double rate){
             this.rate = rate;
 
             return this;

@@ -48,12 +48,12 @@ public final class FixSchema extends SchemaImp {
     }
 
     @Override
-    public double calculate() {
+    public final double calculate() {
         return value;
     }
 
     @Override
-    public double calculate(double value) {
+    public final double calculate(double value) {
         throw new RuntimeException("Schema doesn't depend on any external values.");
     }
 
@@ -67,7 +67,7 @@ public final class FixSchema extends SchemaImp {
     }
 
     @Override
-    public boolean equals(@Nullable Object object) {
+    public final boolean equals(@Nullable Object object) {
         if(!super.equals(object)){
             if(!(object instanceof FixSchema)) {
                 return false;
@@ -87,7 +87,7 @@ public final class FixSchema extends SchemaImp {
         return value;
     }
 
-    public static class Builder implements Schema.Builder {
+    public final static class Builder implements Schema.Builder {
 
         private Double value;
 
@@ -96,7 +96,7 @@ public final class FixSchema extends SchemaImp {
         }
 
         @Override
-        public FixSchema create() throws SchemaException{
+        public final FixSchema create() throws SchemaException{
             if(value == null) {
                 throw new SchemaException("The value is missing.");
             } else if(value < 0) {
@@ -107,15 +107,15 @@ public final class FixSchema extends SchemaImp {
         }
 
         @Override
-        public boolean validate() {
+        public final boolean validate() {
             return value != null;
         }
 
-        public Double getValue() {
+        public final Double getValue() {
             return value;
         }
 
-        public Builder setValue(Double value){
+        public final Builder setValue(Double value){
             this.value = value;
 
             return this;

@@ -51,7 +51,7 @@ public final class ServiceType implements Parcelable {
         return name;
     }
 
-    public Builder rebuild() {
+    public final Builder rebuild() {
         Builder builder = new Builder();
 
         builder.name = this.name;
@@ -61,7 +61,7 @@ public final class ServiceType implements Parcelable {
     }
 
     @Override
-    public boolean equals(@Nullable Object object) {
+    public final boolean equals(@Nullable Object object) {
         if(!super.equals(object)){
             if(!(object instanceof ServiceType)){
                 return false;
@@ -77,7 +77,7 @@ public final class ServiceType implements Parcelable {
         return true;
     }
 
-    public static class Builder{
+    public final static class Builder{
 
         private Integer type;
         private String name;
@@ -87,27 +87,27 @@ public final class ServiceType implements Parcelable {
             this.name = null;
         }
 
-        public int getType(){
+        public final int getType(){
             return type;
         }
 
-        public Builder setType(Integer type){
+        public final Builder setType(Integer type){
             this.type = type;
 
             return  this;
         }
 
-        public String getName(){
+        public final String getName(){
             return name;
         }
 
-        public Builder setName(String name){
+        public final Builder setName(String name){
             this.name = name;
 
             return  this;
         }
 
-        public ServiceType create() throws ServiceTypeException{
+        public final ServiceType create() throws ServiceTypeException{
             if(type == null) {
                 throw new ServiceTypeException("The type is missing.");
             } else if(type < 0) {

@@ -73,7 +73,7 @@ public class CommissionSchema extends SchemaImp {
     }
 
     @Override
-    public Schema.Builder rebuild() {
+    public final Builder rebuild() {
         Builder builder = new Builder();
 
         builder.cut = this.cut;
@@ -85,17 +85,17 @@ public class CommissionSchema extends SchemaImp {
     }
 
     @Override
-    public double calculate() {
+    public final double calculate() {
         throw new RuntimeException("Schema depends on external value.");
     }
 
     @Override
-    public double calculate(double value){
+    public final double calculate(double value){
         return (upperBound == null || value <= upperBound) ? ((lowerBound == null || lowerBound <= value) ? value * cut : 0d) : 0d;
     }
 
     @Override
-    public boolean equals(@Nullable Object object) {
+    public final boolean equals(@Nullable Object object) {
         if(!super.equals(object)){
             if(!(object instanceof CommissionSchema)) {
                 return false;
@@ -139,7 +139,15 @@ public class CommissionSchema extends SchemaImp {
         return upperBound;
     }
 
-    public static class  Builder implements Schema.Builder{
+    public final int getSource() {
+        return source;
+    }
+
+    public final double getCut() {
+        return cut;
+    }
+
+    public final static class  Builder implements Schema.Builder{
 
         private Double cut;
         private @SourceType Integer source;
@@ -154,7 +162,7 @@ public class CommissionSchema extends SchemaImp {
         }
 
         @Override
-        public CommissionSchema create() throws SchemaException{
+        public final CommissionSchema create() throws SchemaException{
             if(cut == null) {
                 throw new SchemaException("The cut is missing.");
             } else if(cut < 0 || cut > 1) {
@@ -175,45 +183,45 @@ public class CommissionSchema extends SchemaImp {
         }
 
         @Override
-        public boolean validate() {
+        public final boolean validate() {
             return cut != null && source != null;
         }
 
-        public Double getCut() {
+        public final Double getCut() {
             return cut;
         }
 
-        public Builder setCut(Double cut){
+        public final Builder setCut(Double cut){
             this.cut = cut;
 
             return this;
         }
 
-        public Integer getSource() {
+        public final Integer getSource() {
             return source;
         }
 
-        public Builder setSource(@SourceType Integer source){
+        public final Builder setSource(@SourceType Integer source){
             this.source = source;
 
             return this;
         }
 
-        public Double getLowerBound() {
+        public final Double getLowerBound() {
             return lowerBound;
         }
 
-        public Builder setLowerBound(Double lowerBound){
+        public final Builder setLowerBound(Double lowerBound){
             this.lowerBound = lowerBound;
 
             return this;
         }
 
-        public Double getUpperBound() {
+        public final Double getUpperBound() {
             return upperBound;
         }
 
-        public Builder setUpperBound(Double upperBound){
+        public final Builder setUpperBound(Double upperBound){
             this.upperBound = upperBound;
 
             return this;

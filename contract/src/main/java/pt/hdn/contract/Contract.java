@@ -242,7 +242,7 @@ public final class Contract implements Parcelable {
     }
 
     @Override
-    public boolean equals(@Nullable Object object) {
+    public final boolean equals(@Nullable Object object) {
         if(!super.equals(object)){
             if(!(object instanceof Contract)){
                 return false;
@@ -331,7 +331,7 @@ public final class Contract implements Parcelable {
         return bytes;
     }
 
-    public static class Builder{
+    public final static class Builder{
 
         private List<Task.Builder> taskBuilders;
         private List<Task> tasks;
@@ -344,27 +344,27 @@ public final class Contract implements Parcelable {
             this.recurrenceBuilder = null;
         }
 
-        public List<Task.Builder> getTaskBuilders() {
+        public final List<Task.Builder> getTaskBuilders() {
             return taskBuilders;
         }
 
-        public Builder addTaskBuilder(Task.Builder builder){
+        public final Builder addTaskBuilder(Task.Builder builder){
             this.taskBuilders.add(builder);
 
             return this;
         }
 
-        public Recurrence.Builder getRecurrenceBuilder() {
+        public final Recurrence.Builder getRecurrenceBuilder() {
             return recurrenceBuilder;
         }
 
-        public Builder setRecurrenceBuilder(Recurrence.Builder builder){
+        public final Builder setRecurrenceBuilder(Recurrence.Builder builder){
             this.recurrenceBuilder = builder;
 
             return this;
         }
 
-        public Contract create() throws ContractException {
+        public final Contract create() throws ContractException {
             try {
                 if(recurrenceBuilder == null){
                     throw new ContractException("The Recurrence.Builder is missing.");
