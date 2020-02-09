@@ -3,6 +3,8 @@ package pt.hdn.contract.schema;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.Nullable;
+
 import pt.hdn.contract.annotations.SchemaType;
 import pt.hdn.contract.annotations.SourceType;
 
@@ -41,18 +43,8 @@ public class CommissionSchema extends SchemaImp {
 
         this.cut = in.readDouble();
         this.source = in.readInt();
-
-        if(in.readByte() == 0){
-            this.upperBound = null;
-        } else {
-            this.upperBound = in.readDouble();
-        }
-
-        if(in.readByte() == 0){
-            this.lowerBound = null;
-        } else {
-            this.lowerBound = in.readDouble();
-        }
+        this.upperBound = in.readByte() != 0 ? in.readDouble() : null;
+        this.lowerBound = in.readByte() != 0 ? in.readDouble() : null;
     }
 
     @Override
@@ -94,12 +86,41 @@ public class CommissionSchema extends SchemaImp {
 
     @Override
     public double calculate() {
-        throw new RuntimeException("Schema does depend on any external values.");
+        throw new RuntimeException("Schema depends on external value.");
     }
 
     @Override
     public double calculate(double value){
         return (upperBound == null || value <= upperBound) ? ((lowerBound == null || lowerBound <= value) ? value * cut : 0d) : 0d;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object object) {
+        if(!super.equals(object)){
+            if(!(object instanceof CommissionSchema)) {
+                return false;
+            }
+
+            CommissionSchema commissionSchema = (CommissionSchema) object;
+
+            if(this.cut != commissionSchema.cut){
+                return false;
+            }
+
+            if(this.source != commissionSchema.source){
+                return false;
+            }
+
+            if((this.lowerBound == null ^ commissionSchema.lowerBound == null) || (this.lowerBound != null && !this.lowerBound.equals(commissionSchema.lowerBound))){
+                return false;
+            }
+
+            if((this.upperBound == null ^ commissionSchema.upperBound == null) || (this.upperBound != null && !this.upperBound.equals(commissionSchema.upperBound))){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public final boolean hasLowerBound(){

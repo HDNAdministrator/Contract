@@ -3,6 +3,7 @@ package pt.hdn.contract;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.Nullable;
 import androidx.arch.core.util.Function;
 
 import java.lang.reflect.InvocationTargetException;
@@ -80,6 +81,33 @@ public final class Task implements Parcelable {
         }
 
         return null;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object object) {
+        if(!super.equals(object)){
+            if(!(object instanceof Task)){
+                Task task = (Task) object;
+
+                if(!this.serviceType.equals(task.serviceType)){
+                    return false;
+                }
+
+                int size = this.getSchemas().size();
+
+                if(size != task.getSchemas().size()){
+                    return false;
+                }
+
+                for (int i = 0; i < size; i++){
+                    if(!this.getSchemas().get(i).equals(task.getSchemas().get(i))){
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
     public static class Builder{

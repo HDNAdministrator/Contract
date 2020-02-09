@@ -2,6 +2,8 @@ package pt.hdn.contract.schema;
 
 import android.os.Parcel;
 
+import androidx.annotation.Nullable;
+
 import pt.hdn.contract.annotations.SourceType;
 
 import static pt.hdn.contract.annotations.SchemaType.RATE;
@@ -60,12 +62,33 @@ public final class RateSchema extends SchemaImp {
 
     @Override
     public double calculate() {
-        throw new RuntimeException("Schema does depend on any external values.");
+        throw new RuntimeException("Schema depends on external value.");
     }
 
     @Override
     public double calculate(double value) {
         return rate * value;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object object) {
+        if(!super.equals(object)){
+            if(!(object instanceof RateSchema)) {
+                return false;
+            }
+
+            RateSchema rateSchema = (RateSchema) object;
+
+            if(this.rate != rateSchema.rate){
+                return false;
+            }
+
+            if(this.source != rateSchema.source){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public final double getRate() {

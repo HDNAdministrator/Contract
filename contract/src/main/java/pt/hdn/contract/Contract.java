@@ -1,7 +1,10 @@
 package pt.hdn.contract;
 
+import android.os.CpuUsageInfo;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.annotation.Nullable;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -73,46 +76,16 @@ public final class Contract implements Parcelable {
     private Contract(Parcel in) {
         this.tasks = in.createTypedArrayList(Task.CREATOR);
         this.recurrence = in.readParcelable(Recurrence.class.getClassLoader());
-
-        if(in.readByte() != 0){
-            this.buyerTimestamp = Instant.parse(in.readString());
-        }
-
-        if(in.readByte() != 0){
-            this.buyerSignature = in.createByteArray();
-        }
-
-        if(in.readByte() != 0){
-            this.buyerDeputyTimestamp = Instant.parse(in.readString());
-        }
-
-        if(in.readByte() != 0){
-            this.buyerDeputySignature = in.createByteArray();
-        }
-
-        if(in.readByte() != 0){
-            this.sellerTimestamp = Instant.parse(in.readString());
-        }
-
-        if(in.readByte() != 0){
-            this.sellerSignature = in.createByteArray();
-        }
-
-        if(in.readByte() != 0){
-            this.sellerDeputyTimestamp = Instant.parse(in.readString());
-        }
-
-        if(in.readByte() != 0){
-            this.sellerDeputySignature = in.createByteArray();
-        }
-
-        if(in.readByte() != 0){
-            this.witnessTimestamp = Instant.parse(in.readString());
-        }
-
-        if(in.readByte() != 0){
-            this.witnessSignature = in.createByteArray();
-        }
+        this.buyerTimestamp = in.readByte() != 0 ? Instant.parse(in.readString()) : null;
+        this.buyerSignature = in.readByte() != 0 ? in.createByteArray() : null;
+        this.buyerDeputyTimestamp = in.readByte() != 0 ? Instant.parse(in.readString()) : null;
+        this.buyerDeputySignature = in.readByte() != 0 ? in.createByteArray() : null;
+        this.sellerTimestamp = in.readByte() != 0 ? Instant.parse(in.readString()) : null;
+        this.sellerSignature = in.readByte() != 0 ? in.createByteArray() : null;
+        this.sellerDeputyTimestamp = in.readByte() != 0 ? Instant.parse(in.readString()) : null;
+        this.sellerDeputySignature = in.readByte() != 0 ? in.createByteArray() : null;
+        this.witnessTimestamp = in.readByte() != 0 ? Instant.parse(in.readString()) : null;
+        this.witnessSignature = in.readByte() != 0 ? in.createByteArray() : null;
     }
 
     @Override
@@ -252,7 +225,7 @@ public final class Contract implements Parcelable {
         return validate(publicKey, witnessSignature, WITNESS_TIMESTAMP);
     }
 
-    public String toJson(){
+    public final String toJson(){
         return gsonBuilder().create().toJson(this);
     }
 
@@ -266,6 +239,35 @@ public final class Contract implements Parcelable {
         }
 
         return builder;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object object) {
+        if(!super.equals(object)){
+            if(!(object instanceof Contract)){
+                return false;
+            }
+
+            Contract contract = (Contract) object;
+
+            if(!this.recurrence.equals(contract.recurrence)){
+                return false;
+            }
+
+            int size = this.tasks.size();
+
+            if(size != contract.tasks.size()){
+                return false;
+            }
+
+            for (int i = 0; i < size; i++){
+                if(!this.tasks.get(i).equals(contract.tasks.get(i))){
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     private static GsonBuilder gsonBuilder(){

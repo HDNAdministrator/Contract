@@ -3,6 +3,8 @@ package pt.hdn.contract.schema;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.Nullable;
+
 import pt.hdn.contract.annotations.SchemaType;
 
 import static pt.hdn.contract.annotations.SchemaType.FIX;
@@ -62,6 +64,23 @@ public final class FixSchema extends SchemaImp {
         builder.value = this.value;
 
         return builder;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object object) {
+        if(!super.equals(object)){
+            if(!(object instanceof FixSchema)) {
+                return false;
+            }
+
+            FixSchema fixSchema = (FixSchema) object;
+
+            if(this.value != fixSchema.value){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public final double getValue() {

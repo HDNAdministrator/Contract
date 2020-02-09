@@ -6,7 +6,7 @@ import pt.hdn.contract.annotations.SchemaType;
 
 public abstract class SchemaImp implements Schema, Parcelable {
 
-    public final int type;
+    final int type;
 
     SchemaImp(@SchemaType int type){
         this.type = type;

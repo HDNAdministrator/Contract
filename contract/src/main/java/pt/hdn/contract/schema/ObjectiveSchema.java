@@ -2,6 +2,8 @@ package pt.hdn.contract.schema;
 
 import android.os.Parcel;
 
+import androidx.annotation.Nullable;
+
 import pt.hdn.contract.annotations.SourceType;
 
 import static pt.hdn.contract.annotations.SchemaType.COMMISSION;
@@ -40,18 +42,8 @@ public class ObjectiveSchema extends SchemaImp {
 
         this.bonus = in.readDouble();
         this.source = in.readInt();
-
-        if(in.readByte() == 0){
-            this.upperBound = null;
-        } else {
-            this.upperBound = in.readDouble();
-        }
-
-        if(in.readByte() == 0){
-            this.lowerBound = null;
-        } else {
-            this.lowerBound = in.readDouble();
-        }
+        this.upperBound = in.readByte() != 0 ? in.readDouble() : null;
+        this.lowerBound = in.readByte() != 0 ? in.readDouble() : null;
     }
 
     @Override
@@ -93,12 +85,41 @@ public class ObjectiveSchema extends SchemaImp {
 
     @Override
     public double calculate() {
-        throw new RuntimeException("Schema does depend on any external values.");
+        throw new RuntimeException("Schema depends on external values.");
     }
 
     @Override
     public double calculate(double value){
         return (upperBound == null || value <= upperBound) ? ((lowerBound == null || lowerBound <= value) ? bonus : 0d) : 0d;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object object) {
+        if(!super.equals(object)){
+            if(!(object instanceof ObjectiveSchema)) {
+                return false;
+            }
+
+            ObjectiveSchema objectiveSchema = (ObjectiveSchema) object;
+
+            if(this.bonus != objectiveSchema.bonus){
+                return false;
+            }
+
+            if(this.source != objectiveSchema.source){
+                return false;
+            }
+
+            if((this.lowerBound == null ^ objectiveSchema.lowerBound == null) || (this.lowerBound != null && !this.lowerBound.equals(objectiveSchema.lowerBound))){
+                return false;
+            }
+
+            if((this.upperBound == null ^ objectiveSchema.upperBound == null) || (this.upperBound != null && !this.upperBound.equals(objectiveSchema.upperBound))){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public final boolean hasLowerBound(){

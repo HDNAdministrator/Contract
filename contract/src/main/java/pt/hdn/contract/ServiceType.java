@@ -3,6 +3,8 @@ package pt.hdn.contract;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.Nullable;
+
 public final class ServiceType implements Parcelable {
 
     public static final Creator<ServiceType> CREATOR = new Creator<ServiceType>() {
@@ -17,7 +19,7 @@ public final class ServiceType implements Parcelable {
         }
     };
 
-    private Integer type;
+    private int type;
     private String name;
 
     private ServiceType(Builder builder){
@@ -41,7 +43,7 @@ public final class ServiceType implements Parcelable {
         return 0;
     }
 
-    public final Integer getType() {
+    public final int getType() {
         return type;
     }
 
@@ -56,6 +58,23 @@ public final class ServiceType implements Parcelable {
         builder.type = this.type;
 
         return builder;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object object) {
+        if(!super.equals(object)){
+            if(!(object instanceof ServiceType)){
+                return false;
+            }
+
+            ServiceType serviceType = (ServiceType) object;
+
+            if(this.type != serviceType.type){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public static class Builder{
