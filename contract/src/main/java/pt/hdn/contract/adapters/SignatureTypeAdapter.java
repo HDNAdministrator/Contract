@@ -15,14 +15,14 @@ import java.time.LocalDateTime;
 
 import static android.util.Base64.DEFAULT;
 
-public class SignatureTypeAdapter implements JsonSerializer<byte[]>, JsonDeserializer<byte[]> {
+public final class SignatureTypeAdapter implements JsonSerializer<byte[]>, JsonDeserializer<byte[]> {
     @Override
-    public byte[] deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public final byte[] deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         return Base64.decode(json.getAsString(), DEFAULT);
     }
 
     @Override
-    public JsonElement serialize(byte[] src, Type typeOfSrc, JsonSerializationContext context) {
+    public final JsonElement serialize(byte[] src, Type typeOfSrc, JsonSerializationContext context) {
         return new JsonPrimitive(Base64.encodeToString(src, DEFAULT));
     }
 }

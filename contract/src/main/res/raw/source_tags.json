@@ -1,0 +1,39 @@
+{
+    "pt_PT": [
+        {
+            "type": 0,
+            "name": "Lucro Nível Individual"
+        },
+        {
+            "type": 1,
+            "name": "Lucro Nível de Equipa"
+        },
+        {
+            "type": 2,
+            "name": "Lucro Nível de Departamento"
+        },
+        {
+            "type": 3,
+            "name": "Lucro Nível da Empresa"
+        }
+    ],
+    
+    "en_GB": [
+        {
+            "type": 0,
+            "name": "Individual Profit"
+        },
+        {
+            "type": 1,
+            "name": "Team Profit"
+        },
+        {
+            "type": 2,
+            "name": "Department Profit"
+        },
+        {
+            "type": 3,
+            "name": "Company Profit"
+        }
+    ]
+}

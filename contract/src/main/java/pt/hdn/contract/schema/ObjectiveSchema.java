@@ -9,7 +9,7 @@ import pt.hdn.contract.annotations.SourceType;
 import static pt.hdn.contract.annotations.SchemaType.COMMISSION;
 import static pt.hdn.contract.annotations.SchemaType.OBJECTIVE;
 
-public class ObjectiveSchema extends SchemaImp {
+public final class ObjectiveSchema extends SchemaImp {
 
     public static final Creator<ObjectiveSchema> CREATOR = new Creator<ObjectiveSchema>() {
         @Override
@@ -120,6 +120,14 @@ public class ObjectiveSchema extends SchemaImp {
         }
 
         return true;
+    }
+
+    public final double getBonus() {
+        return bonus;
+    }
+
+    public final int getSource() {
+        return source;
     }
 
     public final boolean hasLowerBound(){

@@ -11,14 +11,14 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.time.Instant;
 
-public class TimestampTypeAdapter implements JsonSerializer<Instant>, JsonDeserializer<Instant> {
+public final class TimestampTypeAdapter implements JsonSerializer<Instant>, JsonDeserializer<Instant> {
     @Override
-    public Instant deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public final Instant deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         return Instant.parse(json.getAsString());
     }
 
     @Override
-    public JsonElement serialize(Instant src, Type typeOfSrc, JsonSerializationContext context) {
+    public final JsonElement serialize(Instant src, Type typeOfSrc, JsonSerializationContext context) {
         return new JsonPrimitive(src.toString());
     }
 }

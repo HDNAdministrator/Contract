@@ -1,0 +1,38 @@
+{
+    "pt_PT": [
+        {
+            "type": 0,
+            "name": "Fixo"
+        },
+        {
+            "type": 1,
+            "name": "Variável"
+        },
+        {
+            "type": 2,
+            "name": "Comissão"
+        },
+        {
+            "type": 3,
+            "name": "Objectivo"
+        }
+    ],
+    "en_GB": [
+        {
+            "type": 0,
+            "name": "Fix"
+        },
+        {
+            "type": 1,
+            "name": "Rate"
+        },
+        {
+            "type": 2,
+            "name": "Commission"
+        },
+        {
+            "type": 3,
+            "name": "Objective"
+        }
+    ]
+}

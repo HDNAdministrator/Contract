@@ -10,7 +10,7 @@ import pt.hdn.contract.annotations.SourceType;
 
 import static pt.hdn.contract.annotations.SchemaType.COMMISSION;
 
-public class CommissionSchema extends SchemaImp {
+public final class CommissionSchema extends SchemaImp {
 
     public static final Creator<CommissionSchema> CREATOR = new Creator<CommissionSchema>() {
         @Override
