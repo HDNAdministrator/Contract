@@ -12,6 +12,8 @@ public interface Schema  {
     Schema.Builder rebuild();
 
     interface Builder {
+        @SchemaType int getType();
+
         Schema create() throws SchemaException;
 
         boolean validate();

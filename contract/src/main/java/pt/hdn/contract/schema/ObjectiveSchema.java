@@ -48,21 +48,21 @@ public final class ObjectiveSchema extends SchemaImp {
 
     @Override
     public final void writeToParcel(Parcel dest, int flags) {
-        dest.writeDouble(bonus);
-        dest.writeInt(source);
+        dest.writeDouble(this.bonus);
+        dest.writeInt(this.source);
 
-        if(upperBound == null){
+        if(this.upperBound == null){
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
-            dest.writeDouble(upperBound);
+            dest.writeDouble(this.upperBound);
         }
 
-        if(lowerBound == null){
+        if(this.lowerBound == null){
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
-            dest.writeDouble(lowerBound);
+            dest.writeDouble(this.lowerBound);
         }
     }
 
@@ -90,7 +90,7 @@ public final class ObjectiveSchema extends SchemaImp {
 
     @Override
     public final double calculate(double value){
-        return (upperBound == null || value <= upperBound) ? ((lowerBound == null || lowerBound <= value) ? bonus : 0d) : 0d;
+        return (this.upperBound == null || value <= this.upperBound) ? ((this.lowerBound == null || this.lowerBound <= value) ? this.bonus : 0d) : 0d;
     }
 
     @Override
@@ -102,11 +102,7 @@ public final class ObjectiveSchema extends SchemaImp {
 
             ObjectiveSchema objectiveSchema = (ObjectiveSchema) object;
 
-            if(this.bonus != objectiveSchema.bonus){
-                return false;
-            }
-
-            if(this.source != objectiveSchema.source){
+            if((this.bonus != objectiveSchema.bonus) || (this.source != objectiveSchema.source)){
                 return false;
             }
 
@@ -123,30 +119,30 @@ public final class ObjectiveSchema extends SchemaImp {
     }
 
     public final double getBonus() {
-        return bonus;
+        return this.bonus;
     }
 
     public final int getSource() {
-        return source;
+        return this.source;
     }
 
     public final boolean hasLowerBound(){
-        return lowerBound != null;
+        return this.lowerBound != null;
     }
 
     public final Double getLowerBound() {
-        return lowerBound;
+        return this.lowerBound;
     }
 
     public final boolean hasUpperBound(){
-        return upperBound != null;
+        return this.upperBound != null;
     }
 
     public final Double getUpperBound() {
-        return upperBound;
+        return this.upperBound;
     }
 
-    public final static class  Builder implements Schema.Builder{
+    public final static class  Builder extends BuilderImp{
 
         private Double bonus;
         private Integer source;
@@ -154,6 +150,8 @@ public final class ObjectiveSchema extends SchemaImp {
         private Double upperBound;
 
         public Builder(){
+            super(OBJECTIVE);
+
             this.bonus = null;
             this.source = null;
             this.lowerBound = null;
@@ -162,19 +160,19 @@ public final class ObjectiveSchema extends SchemaImp {
 
         @Override
         public final ObjectiveSchema create() throws SchemaException{
-            if(bonus == null) {
-                throw new SchemaException("The cut is missing.");
-            } else if(bonus < 0 || bonus > 1) {
-                throw new SchemaException("Cut can only be between 0 and 1.");
-            } else if(source == null) {
+            if(this.bonus == null) {
+                throw new SchemaException("The bonus is missing.");
+            } else if(this.bonus < 0) {
+                throw new SchemaException("Bonus needs to be positive.");
+            } else if(this.source == null) {
                 throw new SchemaException("The source is missing.");
-            } else if(source < 0) {
+            } else if(this.source < 0) {
                 throw new SchemaException("Source needs to be positive.");
-            } else if(lowerBound != null && lowerBound < 0) {
+            } else if(this.lowerBound != null && this.lowerBound < 0) {
                 throw new SchemaException("LowerBound needs to be positive.");
-            } else if(upperBound != null && upperBound < 0) {
+            } else if(this.upperBound != null && this.upperBound < 0) {
                 throw new SchemaException("UpperBound needs to be positive.");
-            } else if(lowerBound != null && upperBound != null && upperBound < lowerBound) {
+            } else if(this.lowerBound != null && this.upperBound != null && this.upperBound < this.lowerBound) {
                 throw new SchemaException("LowerBound is greater than upperBound");
             } else {
                 return new ObjectiveSchema(this);
@@ -183,11 +181,11 @@ public final class ObjectiveSchema extends SchemaImp {
 
         @Override
         public final boolean validate() {
-            return bonus != null && source != null;
+            return this.bonus != null && this.source != null;
         }
 
         public final Double getBonus() {
-            return bonus;
+            return this.bonus;
         }
 
         public final Builder setBonus(Double bonus){
@@ -197,7 +195,7 @@ public final class ObjectiveSchema extends SchemaImp {
         }
 
         public final Integer getSource() {
-            return source;
+            return this.source;
         }
 
         public final Builder setSource(@SourceType Integer source){
@@ -207,7 +205,7 @@ public final class ObjectiveSchema extends SchemaImp {
         }
 
         public final Double getLowerBound() {
-            return lowerBound;
+            return this.lowerBound;
         }
 
         public final Builder setLowerBound(Double lowerBound){
@@ -217,7 +215,7 @@ public final class ObjectiveSchema extends SchemaImp {
         }
 
         public final Double getUpperBound() {
-            return upperBound;
+            return this.upperBound;
         }
 
         public final Builder setUpperBound(Double upperBound){

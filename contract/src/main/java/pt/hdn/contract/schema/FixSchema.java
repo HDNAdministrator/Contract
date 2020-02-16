@@ -39,7 +39,7 @@ public final class FixSchema extends SchemaImp {
 
     @Override
     public final void writeToParcel(Parcel dest, int flags) {
-        dest.writeDouble(value);
+        dest.writeDouble(this.value);
     }
 
     @Override
@@ -49,7 +49,7 @@ public final class FixSchema extends SchemaImp {
 
     @Override
     public final double calculate() {
-        return value;
+        return this.value;
     }
 
     @Override
@@ -84,22 +84,24 @@ public final class FixSchema extends SchemaImp {
     }
 
     public final double getValue() {
-        return value;
+        return this.value;
     }
 
-    public final static class Builder implements Schema.Builder {
+    public final static class Builder extends BuilderImp {
 
         private Double value;
 
         public Builder(){
+            super(FIX);
+
             this.value = null;
         }
 
         @Override
         public final FixSchema create() throws SchemaException{
-            if(value == null) {
+            if(this.value == null) {
                 throw new SchemaException("The value is missing.");
-            } else if(value < 0) {
+            } else if(this.value < 0) {
                 throw new SchemaException("Value needs to be positive.");
             } else {
                 return new FixSchema(this);
@@ -108,11 +110,11 @@ public final class FixSchema extends SchemaImp {
 
         @Override
         public final boolean validate() {
-            return value != null;
+            return this.value != null;
         }
 
         public final Double getValue() {
-            return value;
+            return this.value;
         }
 
         public final Builder setValue(Double value){

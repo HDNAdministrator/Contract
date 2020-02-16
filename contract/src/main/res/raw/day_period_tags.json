@@ -1,0 +1,30 @@
+{
+    "pt_PT": [
+        {
+            "type": 0,
+            "name": "Dias Úteis"
+        },
+        {
+            "type": 1,
+            "name": "Fins-de-Semana"
+        },
+        {
+            "type": 2,
+            "name": "os Dias"
+        }
+    ],
+    "en_GB": [
+        {
+            "type": 0,
+            "name": "Work Days"
+        },
+        {
+            "type": 1,
+            "name": "Weekends"
+        },
+        {
+            "type": 2,
+            "name": "Day"
+        }
+    ]
+}

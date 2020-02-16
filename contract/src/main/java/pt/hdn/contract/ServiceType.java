@@ -34,8 +34,8 @@ public final class ServiceType implements Parcelable {
 
     @Override
     public final void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(type);
-        dest.writeString(name);
+        dest.writeInt(this.type);
+        dest.writeString(this.name);
     }
 
     @Override
@@ -44,11 +44,11 @@ public final class ServiceType implements Parcelable {
     }
 
     public final int getType() {
-        return type;
+        return this.type;
     }
 
     public final String getName() {
-        return name;
+        return this.name;
     }
 
     public final Builder rebuild() {
@@ -88,7 +88,7 @@ public final class ServiceType implements Parcelable {
         }
 
         public final int getType(){
-            return type;
+            return this.type;
         }
 
         public final Builder setType(Integer type){
@@ -98,7 +98,7 @@ public final class ServiceType implements Parcelable {
         }
 
         public final String getName(){
-            return name;
+            return this.name;
         }
 
         public final Builder setName(String name){
@@ -108,13 +108,13 @@ public final class ServiceType implements Parcelable {
         }
 
         public final ServiceType create() throws ServiceTypeException{
-            if(type == null) {
+            if(this.type == null) {
                 throw new ServiceTypeException("The type is missing.");
-            } else if(type < 0) {
+            } else if(this.type < 0) {
                 throw new ServiceTypeException("Type needs to be positive.");
-            } else if(name == null) {
+            } else if(this.name == null) {
                 throw new ServiceTypeException("The name is missing.");
-            } else if(name.isEmpty()) {
+            } else if(this.name.isEmpty()) {
                 throw new ServiceTypeException("Name can not be empty.");
             } else {
                 return new ServiceType(this);

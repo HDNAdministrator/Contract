@@ -1,0 +1,46 @@
+{
+    "pt_PT": [
+        {
+            "type": 0,
+            "name": "Todos os meses"
+        },
+        {
+            "type": 1,
+            "name": "Todos os 2 meses"
+        },
+        {
+            "type": 2,
+            "name": "Todos os 3 meses"
+        },
+        {
+            "type": 3,
+            "name": "Todos os 4 meses"
+        },
+        {
+            "type": 4,
+            "name": "Todos os 6 meses"
+        }
+    ],
+    "en_GB": [
+        {
+            "type": 0,
+            "name": "Every month"
+        },
+        {
+            "type": 1,
+            "name": "Every 2 months"
+        },
+        {
+            "type": 2,
+            "name": "Every 3 months"
+        },
+        {
+            "type": 3,
+            "name": "Every 4 months"
+        },
+        {
+            "type": 4,
+            "name": "Every 6 months"
+        }
+    ]
+}

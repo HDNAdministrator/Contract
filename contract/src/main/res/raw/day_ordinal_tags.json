@@ -1,0 +1,230 @@
+{
+    "pt_PT": [
+        {
+            "type": 1,
+            "name": "1º"
+        },
+        {
+            "type": 2,
+            "name": "2º"
+        },
+        {
+            "type": 3,
+            "name": "3º"
+        },
+        {
+            "type": 4,
+            "name": "4º"
+        },
+        {
+            "type": 5,
+            "name": "5º"
+        },
+        {
+            "type": 6,
+            "name": "6º"
+        },
+        {
+            "type": 7,
+            "name": "7º"
+        },
+        {
+            "type": 8,
+            "name": "8º"
+        },
+        {
+            "type": 9,
+            "name": "9º"
+        },
+        {
+            "type": 10,
+            "name": "10º"
+        },
+        {
+            "type": 11,
+            "name": "11º"
+        },
+        {
+            "type": 12,
+            "name": "12º"
+        },
+        {
+            "type": 13,
+            "name": "13º"
+        },
+        {
+            "type": 14,
+            "name": "14º"
+        },
+        {
+            "type": 15,
+            "name": "15º"
+        },
+        {
+            "type": 16,
+            "name": "16º"
+        },
+        {
+            "type": 17,
+            "name": "17º"
+        },
+        {
+            "type": 18,
+            "name": "18º"
+        },
+        {
+            "type": 19,
+            "name": "19º"
+        },
+        {
+            "type": 20,
+            "name": "20º"
+        },
+        {
+            "type": 21,
+            "name": "21º"
+        },
+        {
+            "type": 22,
+            "name": "22º"
+        },
+        {
+            "type": 23,
+            "name": "23º"
+        },
+        {
+            "type": 24,
+            "name": "24º"
+        },
+        {
+            "type": 25,
+            "name": "25º"
+        },
+        {
+            "type": 26,
+            "name": "26º"
+        },
+        {
+            "type": 27,
+            "name": "27º"
+        },
+        {
+            "type": 28,
+            "name": "28º"
+        }
+    ],
+    "en_GB": [
+        {
+            "type": 1,
+            "name": "1st"
+        },
+        {
+            "type": 2,
+            "name": "2nd"
+        },
+        {
+            "type": 3,
+            "name": "3rd"
+        },
+        {
+            "type": 4,
+            "name": "4th"
+        },
+        {
+            "type": 5,
+            "name": "5th"
+        },
+        {
+            "type": 6,
+            "name": "6th"
+        },
+        {
+            "type": 7,
+            "name": "7th"
+        },
+        {
+            "type": 8,
+            "name": "8th"
+        },
+        {
+            "type": 9,
+            "name": "9th"
+        },
+        {
+            "type": 10,
+            "name": "10th"
+        },
+        {
+            "type": 11,
+            "name": "11th"
+        },
+        {
+            "type": 12,
+            "name": "12th"
+        },
+        {
+            "type": 13,
+            "name": "13th"
+        },
+        {
+            "type": 14,
+            "name": "14th"
+        },
+        {
+            "type": 15,
+            "name": "15th"
+        },
+        {
+            "type": 16,
+            "name": "16th"
+        },
+        {
+            "type": 17,
+            "name": "17th"
+        },
+        {
+            "type": 18,
+            "name": "18th"
+        },
+        {
+            "type": 19,
+            "name": "19th"
+        },
+        {
+            "type": 20,
+            "name": "20th"
+        },
+        {
+            "type": 21,
+            "name": "21st"
+        },
+        {
+            "type": 22,
+            "name": "22nd"
+        },
+        {
+            "type": 23,
+            "name": "23rd"
+        },
+        {
+            "type": 24,
+            "name": "24th"
+        },
+        {
+            "type": 25,
+            "name": "25th"
+        },
+        {
+            "type": 26,
+            "name": "26th"
+        },
+        {
+            "type": 27,
+            "name": "27th"
+        },
+        {
+            "type": 28,
+            "name": "28th"
+        }
+    ]
+}

@@ -41,8 +41,8 @@ public final class RateSchema extends SchemaImp {
 
     @Override
     public final void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(source);
-        dest.writeDouble(rate);
+        dest.writeInt(this.source);
+        dest.writeDouble(this.rate);
     }
 
     @Override
@@ -67,7 +67,7 @@ public final class RateSchema extends SchemaImp {
 
     @Override
     public final double calculate(double value) {
-        return rate * value;
+        return this.rate * value;
     }
 
     @Override
@@ -92,23 +92,25 @@ public final class RateSchema extends SchemaImp {
     }
 
     public final double getRate() {
-        return rate;
+        return this.rate;
     }
 
-    public final static class Builder implements Schema.Builder{
+    public final static class Builder extends BuilderImp{
 
         private Double rate;
         private @SourceType Integer source;
 
         public Builder(){
+            super(RATE);
+
             this.rate = null;
         }
 
         @Override
         public final RateSchema create() throws SchemaException{
-            if(rate == null) {
+            if(this.rate == null) {
                 throw new SchemaException("The rate is missing.");
-            } else if(rate < 0) {
+            } else if(this.rate < 0) {
                 throw new SchemaException("Value needs to be positive.");
             } else {
                 return new RateSchema(this);
@@ -117,11 +119,11 @@ public final class RateSchema extends SchemaImp {
 
         @Override
         public final boolean validate() {
-            return rate != null;
+            return this.rate != null;
         }
 
         public final Integer getSource() {
-            return source;
+            return this.source;
         }
 
         public final Builder setSource(@SourceType Integer source){
@@ -131,7 +133,7 @@ public final class RateSchema extends SchemaImp {
         }
 
         public final Double getRate() {
-            return rate;
+            return this.rate;
         }
 
         public final Builder setRate(Double rate){
