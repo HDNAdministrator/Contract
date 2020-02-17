@@ -25,32 +25,30 @@ public final class CommissionSchema extends SchemaImp {
     };
 
     private final double cut;
-    private final @SourceType int source;
     private final Double lowerBound;
     private final Double upperBound;
 
     private CommissionSchema(Builder builder){
-        super(COMMISSION);
+        super(COMMISSION, builder.source);
 
-        this.source = builder.source;
         this.cut = builder.cut;
         this.lowerBound = builder.lowerBound;
         this.upperBound = builder.upperBound;
     }
 
     private CommissionSchema(Parcel in){
-        super(COMMISSION);
+        super(in);
 
         this.cut = in.readDouble();
-        this.source = in.readInt();
         this.upperBound = in.readByte() != 0 ? in.readDouble() : null;
         this.lowerBound = in.readByte() != 0 ? in.readDouble() : null;
     }
 
     @Override
     public final void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+
         dest.writeDouble(this.cut);
-        dest.writeInt(this.source);
 
         if(this.upperBound == null){
             dest.writeByte((byte) 0);
@@ -76,8 +74,8 @@ public final class CommissionSchema extends SchemaImp {
     public final Builder rebuild() {
         Builder builder = new Builder();
 
+        builder.source = super.source;
         builder.cut = this.cut;
-        builder.source = this.source;
         builder.lowerBound = this.lowerBound;
         builder.upperBound = this.upperBound;
 
@@ -103,11 +101,7 @@ public final class CommissionSchema extends SchemaImp {
 
             CommissionSchema commissionSchema = (CommissionSchema) object;
 
-            if(this.cut != commissionSchema.cut){
-                return false;
-            }
-
-            if(this.source != commissionSchema.source){
+            if((this.cut != commissionSchema.cut) && (!this.source.equals(commissionSchema.source))){
                 return false;
             }
 
@@ -121,6 +115,10 @@ public final class CommissionSchema extends SchemaImp {
         }
 
         return true;
+    }
+
+    public final double getCut() {
+        return this.cut;
     }
 
     public final boolean hasLowerBound(){
@@ -137,14 +135,6 @@ public final class CommissionSchema extends SchemaImp {
 
     public final Double getUpperBound() {
         return this.upperBound;
-    }
-
-    public final int getSource() {
-        return this.source;
-    }
-
-    public final double getCut() {
-        return this.cut;
     }
 
     public final static class  Builder extends BuilderImp{
@@ -199,7 +189,7 @@ public final class CommissionSchema extends SchemaImp {
             return this;
         }
 
-        public final Integer getSource() {
+        public final @SourceType Integer getSource() {
             return this.source;
         }
 

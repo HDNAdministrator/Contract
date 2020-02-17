@@ -26,19 +26,21 @@ public final class FixSchema extends SchemaImp {
     private final double value;
 
     private FixSchema(Builder builder) {
-        super(FIX);
+        super(FIX, null);
 
         this.value = builder.value;
     }
 
     private FixSchema(Parcel in){
-        super(FIX);
+        super(in);
 
         this.value = in.readDouble();
     }
 
     @Override
     public final void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+
         dest.writeDouble(this.value);
     }
 

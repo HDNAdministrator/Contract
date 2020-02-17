@@ -23,25 +23,23 @@ public final class RateSchema extends SchemaImp {
     };
 
     private final double rate;
-    private final @SourceType int source;
 
     private RateSchema(Builder builder) {
-        super(RATE);
+        super(RATE, builder.source);
 
-        this.source = builder.source;
         this.rate = builder.rate;
     }
 
     private RateSchema(Parcel in){
-        super(RATE);
+        super(in);
 
-        this.source = in.readInt();
         this.rate = in.readDouble();
     }
 
     @Override
     public final void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.source);
+        super.writeToParcel(dest, flags);
+
         dest.writeDouble(this.rate);
     }
 
@@ -54,7 +52,7 @@ public final class RateSchema extends SchemaImp {
     public final Builder rebuild() {
         Builder builder = new Builder();
 
-        builder.source = this.source;
+        builder.source = super.source;
         builder.rate = this.rate;
 
         return builder;
@@ -79,11 +77,7 @@ public final class RateSchema extends SchemaImp {
 
             RateSchema rateSchema = (RateSchema) object;
 
-            if(this.rate != rateSchema.rate){
-                return false;
-            }
-
-            if(this.source != rateSchema.source){
+            if((this.rate != rateSchema.rate) || (!this.source.equals(rateSchema.source))){
                 return false;
             }
         }
@@ -122,7 +116,7 @@ public final class RateSchema extends SchemaImp {
             return this.rate != null;
         }
 
-        public final Integer getSource() {
+        public final @SourceType Integer getSource() {
             return this.source;
         }
 

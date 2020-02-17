@@ -23,15 +23,13 @@ public final class ThresholdSchema extends SchemaImp {
     };
 
     private final double bonus;
-    private final @SourceType int source;
     private final Double positiveThreshold;
     private final Double negativeThreshold;
-    private boolean accomplish;
+    private transient boolean accomplish;
 
     private ThresholdSchema(Builder builder){
-        super(THRESHOLD);
+        super(THRESHOLD, builder.source);
 
-        this.source = builder.source;
         this.bonus = builder.bonus;
         this.positiveThreshold = builder.positiveThreshold;
         this.negativeThreshold = builder.negativeThreshold;
@@ -39,10 +37,9 @@ public final class ThresholdSchema extends SchemaImp {
     }
 
     private ThresholdSchema(Parcel in){
-        super(THRESHOLD);
+        super(in);
 
         this.bonus = in.readDouble();
-        this.source = in.readInt();
         this.negativeThreshold = in.readByte() != 0 ? in.readDouble() : null;
         this.positiveThreshold = in.readByte() != 0 ? in.readDouble() : null;
         this.accomplish = in.readByte() != 0;
@@ -50,8 +47,9 @@ public final class ThresholdSchema extends SchemaImp {
 
     @Override
     public final void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+
         dest.writeDouble(this.bonus);
-        dest.writeInt(this.source);
 
         if(this.negativeThreshold == null){
             dest.writeByte((byte) 0);
@@ -79,8 +77,8 @@ public final class ThresholdSchema extends SchemaImp {
     public final Builder rebuild() {
         Builder builder = new Builder();
 
+        builder.source = super.source;
         builder.bonus = this.bonus;
-        builder.source = this.source;
         builder.positiveThreshold = this.positiveThreshold;
         builder.negativeThreshold = this.negativeThreshold;
 
@@ -126,12 +124,12 @@ public final class ThresholdSchema extends SchemaImp {
         return true;
     }
 
-    public final double getBonus() {
-        return this.bonus;
+    public final boolean hasAccomplish(){
+        return this.accomplish;
     }
 
-    public final int getSource() {
-        return this.source;
+    public final double getBonus() {
+        return this.bonus;
     }
 
     public final boolean hasPositiveThreshold(){
@@ -153,7 +151,7 @@ public final class ThresholdSchema extends SchemaImp {
     public final static class  Builder extends BuilderImp{
 
         private Double bonus;
-        private Integer source;
+        private @SourceType Integer source;
         private Double positiveThreshold;
         private Double negativeThreshold;
 
@@ -178,12 +176,12 @@ public final class ThresholdSchema extends SchemaImp {
                 throw new SchemaException("Source needs to be positive.");
             } else if(this.positiveThreshold == null && this.negativeThreshold == null) {
                 throw new SchemaException("One bound needs to be set.");
+            } else if(this.positiveThreshold != null && this.negativeThreshold != null) {
+                throw new SchemaException("Only one bound can be set.");
             } else if(this.positiveThreshold != null && this.positiveThreshold < 0) {
                 throw new SchemaException("LowerBound needs to be positive.");
             } else if(this.negativeThreshold != null && this.negativeThreshold < 0) {
                 throw new SchemaException("UpperBound needs to be positive.");
-            } else if(this.positiveThreshold != null && this.negativeThreshold != null) {
-                throw new SchemaException("Only one bound can be set.");
             } else {
                 return new ThresholdSchema(this);
             }
@@ -204,7 +202,7 @@ public final class ThresholdSchema extends SchemaImp {
             return this;
         }
 
-        public final Integer getSource() {
+        public final @SourceType Integer getSource() {
             return this.source;
         }
 
