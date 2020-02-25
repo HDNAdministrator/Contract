@@ -1,10 +1,7 @@
 package pt.hdn.contract;
 
-import android.os.CpuUsageInfo;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.Nullable;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -18,12 +15,14 @@ import java.security.PublicKey;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import pt.hdn.contract.adapters.RecurrenceDateTypeAdapter;
 import pt.hdn.contract.adapters.SignatureTypeAdapter;
 import pt.hdn.contract.adapters.TimestampTypeAdapter;
 
@@ -291,7 +290,8 @@ public final class Contract implements Parcelable {
             Contract.gsonBuilder = new GsonBuilder()
                     .excludeFieldsWithModifiers(STATIC)
                     .registerTypeHierarchyAdapter(Instant.class, new TimestampTypeAdapter())
-                    .registerTypeHierarchyAdapter(byte[].class, new SignatureTypeAdapter());
+                    .registerTypeHierarchyAdapter(byte[].class, new SignatureTypeAdapter())
+                    .registerTypeHierarchyAdapter(ZonedDateTime.class, new RecurrenceDateTypeAdapter());
         }
 
         return gsonBuilder;
