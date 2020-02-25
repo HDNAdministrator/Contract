@@ -11,6 +11,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import pt.hdn.contract.annotations.Day;
 import pt.hdn.contract.annotations.DayOfWeek;
@@ -61,11 +62,11 @@ public final class Recurrence implements Parcelable {
     private Recurrence(Parcel in) {
         this.monthType = in.readInt();
         this.monthPeriod = in.readByte() != 0 ? in.readInt() : null;
-        this.months = Collections.unmodifiableList(in.readArrayList(Integer.class.getClassLoader()));
+        this.months = Collections.<Integer>unmodifiableList(in.readArrayList(Integer.class.getClassLoader()));
         this.daysType = in.readInt();
         this.daysPeriod = in.readByte() != 0 ? in.readInt() : null;
-        this.days = Collections.unmodifiableList(in.readArrayList(Integer.class.getClassLoader()));
-        this.dow = Collections.unmodifiableList(in.readArrayList(Integer.class.getClassLoader()));
+        this.days = Collections.<Integer>unmodifiableList(in.readArrayList(Integer.class.getClassLoader()));
+        this.dow = Collections.<Integer>unmodifiableList(in.readArrayList(Integer.class.getClassLoader()));
         this.start = in.readByte() != 0 ? ZonedDateTime.parse(in.readString()) : null;
         this.finish = in.readByte() != 0 ? ZonedDateTime.parse(in.readString()) : null;
     }
@@ -116,6 +117,32 @@ public final class Recurrence implements Parcelable {
         return 0;
     }
 
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object == null || getClass() != object.getClass()) {
+            return false;
+        } else {
+            Recurrence recurrence = (Recurrence) object;
+
+            return daysType == recurrence.daysType &&
+                    monthType == recurrence.monthType &&
+                    months.equals(recurrence.months) &&
+                    days.equals(recurrence.days) &&
+                    dow.equals(recurrence.dow) &&
+                    start.equals(recurrence.start) &&
+                    Objects.equals(finish, recurrence.finish) &&
+                    Objects.equals(monthPeriod, recurrence.monthPeriod) &&
+                    Objects.equals(daysPeriod, recurrence.daysPeriod);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(months, days, dow, start, finish, monthPeriod, daysPeriod, daysType, monthType);
+    }
     public final @DaysType int getDaysType(){
         return daysType;
     }
@@ -150,90 +177,6 @@ public final class Recurrence implements Parcelable {
 
     public final List<Integer> getDays(){
         return days;
-    }
-
-    @Override
-    public final boolean equals(@Nullable Object object) {
-        if(!super.equals(object)){
-            if(!(object instanceof Recurrence)){
-                return false;
-            }
-
-            Recurrence recurrence = (Recurrence) object;
-
-            if(!this.start.equals(recurrence.start)){
-                return false;
-            }
-
-            if(this.finish != null ^ recurrence.finish != null || (this.finish != null && !this.finish.equals(recurrence.finish))){
-                return false;
-            }
-
-            if(this.monthType != recurrence.monthType){
-                return false;
-            }
-
-            if(this.daysType != recurrence.daysType){
-                return false;
-            }
-
-            if(this.monthType == MonthType.PERIOD){
-                if(!this.monthPeriod.equals(recurrence.monthPeriod)){
-                    return false;
-                }
-            } else {
-                int sizeMonth = this.months.size();
-
-                if(sizeMonth != recurrence.months.size()){
-                    return false;
-                }
-
-                for (int i = 0; i < sizeMonth; i++){
-                    if(!this.months.get(i).equals(recurrence.months.get(i))){
-                        return false;
-                    }
-                }
-            }
-
-            switch (daysType){
-                case DaysType.DAYS:
-                    int sizeDay = this.days.size();
-
-                    if(sizeDay != recurrence.days.size()){
-                        return false;
-                    }
-
-                    for (int i = 0; i < sizeDay; i++){
-                        if(!this.days.get(i).equals(recurrence.days.get(i))){
-                            return false;
-                        }
-                    }
-
-                    break;
-                case DaysType.DOW:
-                    int sizeDow = this.dow.size();
-
-                    if(sizeDow != recurrence.dow.size()){
-                        return false;
-                    }
-
-                    for (int i = 0; i < sizeDow; i++){
-                        if(!this.dow.get(i).equals(recurrence.dow.get(i))){
-                            return false;
-                        }
-                    }
-
-                    break;
-                case DaysType.PERIOD:
-                    if(!this.daysPeriod.equals(recurrence.daysPeriod)){
-                        return false;
-                    }
-
-                    break;
-            }
-        }
-
-        return true;
     }
 
     public final Builder rebuild(){
@@ -278,24 +221,31 @@ public final class Recurrence implements Parcelable {
             this.daysType = getDefaultDayType();
 
             switch (daysType){
-                case DaysType.DAYS:
-                    this.days = new ArrayList<>(getDefaultDay());
+                case DaysType.DAYS: {
+                    this.days = new ArrayList<>();
                     this.dow = new ArrayList<>();
                     this.daysPeriod = null;
 
-                    break;
-                case DaysType.DOW:
-                    this.days = new ArrayList<>();
-                    this.dow = new ArrayList<>(getDefaultDow());
-                    this.daysPeriod = null;
+                    this.days.add(getDefaultDay());
 
                     break;
-                case DaysType.PERIOD:
+                }
+                case DaysType.DOW: {
+                    this.days = new ArrayList<>();
+                    this.dow = new ArrayList<>();
+                    this.daysPeriod = null;
+
+                    this.dow.add(getDefaultDow());
+
+                    break;
+                }
+                case DaysType.PERIOD: {
                     this.days = new ArrayList<>();
                     this.dow = new ArrayList<>();
                     this.daysPeriod = getDefaultDay();
 
                     break;
+                }
             }
 
             this.start = null;

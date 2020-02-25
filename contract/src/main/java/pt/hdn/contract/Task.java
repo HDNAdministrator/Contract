@@ -11,6 +11,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.DoubleFunction;
 
 import pt.hdn.contract.annotations.SchemaType;
@@ -63,6 +64,24 @@ public final class Task implements Parcelable {
         return 0;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        } else {
+            Task task = (Task) obj;
+
+            return this.serviceType.equals(task.serviceType) && this.schemas.equals(task.schemas);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(serviceType, schemas);
+    }
+
     public final ServiceType getServiceType() {
         return serviceType;
     }
@@ -81,33 +100,6 @@ public final class Task implements Parcelable {
         }
 
         return null;
-    }
-
-    @Override
-    public final boolean equals(@Nullable Object object) {
-        if(!super.equals(object)){
-            if(!(object instanceof Task)){
-                Task task = (Task) object;
-
-                if(!this.serviceType.equals(task.serviceType)){
-                    return false;
-                }
-
-                int size = this.getSchemas().size();
-
-                if(size != task.getSchemas().size()){
-                    return false;
-                }
-
-                for (int i = 0; i < size; i++){
-                    if(!this.getSchemas().get(i).equals(task.getSchemas().get(i))){
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
     }
 
     public final static class Builder{

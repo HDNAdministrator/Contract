@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -18,8 +19,10 @@ import java.security.Signature;
 import java.security.SignatureException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import pt.hdn.contract.adapters.SignatureTypeAdapter;
 import pt.hdn.contract.adapters.TimestampTypeAdapter;
@@ -37,6 +40,7 @@ import static pt.hdn.contract.annotations.Contract.WITNESS_TIMESTAMP;
 
 public final class Contract implements Parcelable {
 
+    //region vars
     public static final Creator<Contract> CREATOR = new Creator<Contract>() {
         @Override
         public Contract createFromParcel(Parcel in) {
@@ -63,6 +67,7 @@ public final class Contract implements Parcelable {
     private byte[] sellerDeputySignature;
     private byte[] sellerSignature;
     private byte[] witnessSignature;
+    //endregion vars
 
     public static Contract from(String json){
         return Contract.gsonBuilder().create().fromJson(json, Contract.class);
@@ -169,6 +174,42 @@ public final class Contract implements Parcelable {
         return 0;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        } else {
+            Contract contract = (Contract) obj;
+
+            return this.tasks.equals(contract.tasks) &&
+                    this.recurrence.equals(contract.recurrence) &&
+                    Objects.equals(this.buyerDeputyTimestamp, contract.buyerDeputyTimestamp) &&
+                    Objects.equals(this.buyerTimestamp, contract.buyerTimestamp) &&
+                    Objects.equals(this.sellerDeputyTimestamp, contract.sellerDeputyTimestamp) &&
+                    Objects.equals(this.sellerTimestamp, contract.sellerTimestamp) &&
+                    Objects.equals(this.witnessTimestamp, contract.witnessTimestamp) &&
+                    Arrays.equals(this.buyerDeputySignature, contract.buyerDeputySignature) &&
+                    Arrays.equals(this.buyerSignature, contract.buyerSignature) &&
+                    Arrays.equals(this.sellerDeputySignature, contract.sellerDeputySignature) &&
+                    Arrays.equals(this.sellerSignature, contract.sellerSignature) &&
+                    Arrays.equals(this.witnessSignature, contract.witnessSignature);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(tasks, recurrence, buyerDeputyTimestamp, buyerTimestamp, sellerDeputyTimestamp, sellerTimestamp, witnessTimestamp);
+        result = 31 * result + Arrays.hashCode(buyerDeputySignature);
+        result = 31 * result + Arrays.hashCode(buyerSignature);
+        result = 31 * result + Arrays.hashCode(sellerDeputySignature);
+        result = 31 * result + Arrays.hashCode(sellerSignature);
+        result = 31 * result + Arrays.hashCode(witnessSignature);
+
+        return result;
+    }
+
     public final List<Task> getTasks(){
         return tasks;
     }
@@ -229,6 +270,10 @@ public final class Contract implements Parcelable {
         return gsonBuilder().create().toJson(this);
     }
 
+    public final JsonElement toJsonTree(){
+        return gsonBuilder().create().toJsonTree(this);
+    }
+
     public final Builder rebuild(){
         Builder builder = new Builder();
 
@@ -239,35 +284,6 @@ public final class Contract implements Parcelable {
         }
 
         return builder;
-    }
-
-    @Override
-    public final boolean equals(@Nullable Object object) {
-        if(!super.equals(object)){
-            if(!(object instanceof Contract)){
-                return false;
-            }
-
-            Contract contract = (Contract) object;
-
-            if(!this.recurrence.equals(contract.recurrence)){
-                return false;
-            }
-
-            int size = this.tasks.size();
-
-            if(size != contract.tasks.size()){
-                return false;
-            }
-
-            for (int i = 0; i < size; i++){
-                if(!this.tasks.get(i).equals(contract.tasks.get(i))){
-                    return false;
-                }
-            }
-        }
-
-        return true;
     }
 
     private static GsonBuilder gsonBuilder(){

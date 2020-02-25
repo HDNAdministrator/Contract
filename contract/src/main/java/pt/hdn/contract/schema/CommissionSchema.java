@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
 
+import java.util.Objects;
+
 import pt.hdn.contract.annotations.SchemaType;
 import pt.hdn.contract.annotations.SourceType;
 
@@ -71,15 +73,23 @@ public final class CommissionSchema extends SchemaImp {
     }
 
     @Override
-    public final Builder rebuild() {
-        Builder builder = new Builder();
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        } else {
+            CommissionSchema commissionSchema = (CommissionSchema) obj;
 
-        builder.source = super.source;
-        builder.cut = this.cut;
-        builder.lowerBound = this.lowerBound;
-        builder.upperBound = this.upperBound;
+            return Double.compare(commissionSchema.cut, this.cut) == 0 &&
+                    Objects.equals(this.lowerBound, commissionSchema.lowerBound) &&
+                    Objects.equals(this.upperBound, commissionSchema.upperBound);
+        }
+    }
 
-        return builder;
+    @Override
+    public int hashCode() {
+        return Objects.hash(cut, lowerBound, upperBound);
     }
 
     @Override
@@ -93,28 +103,15 @@ public final class CommissionSchema extends SchemaImp {
     }
 
     @Override
-    public final boolean equals(@Nullable Object object) {
-        if(!super.equals(object)){
-            if(!(object instanceof CommissionSchema)) {
-                return false;
-            }
+    public final Builder rebuild() {
+        Builder builder = new Builder();
 
-            CommissionSchema commissionSchema = (CommissionSchema) object;
+        builder.source = super.source;
+        builder.cut = this.cut;
+        builder.lowerBound = this.lowerBound;
+        builder.upperBound = this.upperBound;
 
-            if((this.cut != commissionSchema.cut) && (!this.source.equals(commissionSchema.source))){
-                return false;
-            }
-
-            if((this.lowerBound == null ^ commissionSchema.lowerBound == null) || (this.lowerBound != null && !this.lowerBound.equals(commissionSchema.lowerBound))){
-                return false;
-            }
-
-            if((this.upperBound == null ^ commissionSchema.upperBound == null) || (this.upperBound != null && !this.upperBound.equals(commissionSchema.upperBound))){
-                return false;
-            }
-        }
-
-        return true;
+        return builder;
     }
 
     public final double getCut() {

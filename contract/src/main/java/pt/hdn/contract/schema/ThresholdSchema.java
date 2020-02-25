@@ -4,6 +4,8 @@ import android.os.Parcel;
 
 import androidx.annotation.Nullable;
 
+import java.util.Objects;
+
 import pt.hdn.contract.annotations.SourceType;
 
 import static pt.hdn.contract.annotations.SchemaType.THRESHOLD;
@@ -74,15 +76,24 @@ public final class ThresholdSchema extends SchemaImp {
     }
 
     @Override
-    public final Builder rebuild() {
-        Builder builder = new Builder();
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        } else {
+            ThresholdSchema thresholdSchema = (ThresholdSchema) obj;
 
-        builder.source = super.source;
-        builder.bonus = this.bonus;
-        builder.positiveThreshold = this.positiveThreshold;
-        builder.negativeThreshold = this.negativeThreshold;
+            return Double.compare(thresholdSchema.bonus, this.bonus) == 0 &&
+                    this.accomplish == thresholdSchema.accomplish &&
+                    Objects.equals(this.positiveThreshold, thresholdSchema.positiveThreshold) &&
+                    Objects.equals(this.negativeThreshold, thresholdSchema.negativeThreshold);
+        }
+    }
 
-        return builder;
+    @Override
+    public int hashCode() {
+        return Objects.hash(bonus, positiveThreshold, negativeThreshold, accomplish);
     }
 
     @Override
@@ -100,28 +111,15 @@ public final class ThresholdSchema extends SchemaImp {
     }
 
     @Override
-    public final boolean equals(@Nullable Object object) {
-        if(!super.equals(object)){
-            if(!(object instanceof ThresholdSchema)) {
-                return false;
-            }
+    public final Builder rebuild() {
+        Builder builder = new Builder();
 
-            ThresholdSchema thresholdSchema = (ThresholdSchema) object;
+        builder.source = super.source;
+        builder.bonus = this.bonus;
+        builder.positiveThreshold = this.positiveThreshold;
+        builder.negativeThreshold = this.negativeThreshold;
 
-            if((this.bonus != thresholdSchema.bonus) || (this.source != thresholdSchema.source)){
-                return false;
-            }
-
-            if((this.positiveThreshold == null ^ thresholdSchema.positiveThreshold == null) || (this.positiveThreshold != null && !this.positiveThreshold.equals(thresholdSchema.positiveThreshold))){
-                return false;
-            }
-
-            if((this.negativeThreshold == null ^ thresholdSchema.negativeThreshold == null) || (this.negativeThreshold != null && !this.negativeThreshold.equals(thresholdSchema.negativeThreshold))){
-                return false;
-            }
-        }
-
-        return true;
+        return builder;
     }
 
     public final boolean hasAccomplish(){

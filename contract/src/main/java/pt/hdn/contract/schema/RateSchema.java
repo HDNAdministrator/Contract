@@ -4,6 +4,8 @@ import android.os.Parcel;
 
 import androidx.annotation.Nullable;
 
+import java.util.Objects;
+
 import pt.hdn.contract.annotations.SourceType;
 
 import static pt.hdn.contract.annotations.SchemaType.RATE;
@@ -49,13 +51,21 @@ public final class RateSchema extends SchemaImp {
     }
 
     @Override
-    public final Builder rebuild() {
-        Builder builder = new Builder();
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        } else {
+            RateSchema rateSchema = (RateSchema) obj;
 
-        builder.source = super.source;
-        builder.rate = this.rate;
+            return Double.compare(rateSchema.rate, this.rate) == 0;
+        }
+    }
 
-        return builder;
+    @Override
+    public int hashCode() {
+        return Objects.hash(rate);
     }
 
     @Override
@@ -69,20 +79,13 @@ public final class RateSchema extends SchemaImp {
     }
 
     @Override
-    public final boolean equals(@Nullable Object object) {
-        if(!super.equals(object)){
-            if(!(object instanceof RateSchema)) {
-                return false;
-            }
+    public final Builder rebuild() {
+        Builder builder = new Builder();
 
-            RateSchema rateSchema = (RateSchema) object;
+        builder.source = super.source;
+        builder.rate = this.rate;
 
-            if((this.rate != rateSchema.rate) || (!this.source.equals(rateSchema.source))){
-                return false;
-            }
-        }
-
-        return true;
+        return builder;
     }
 
     public final double getRate() {

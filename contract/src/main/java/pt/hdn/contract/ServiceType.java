@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
 
+import java.util.Objects;
+
 public final class ServiceType implements Parcelable {
 
     public static final Creator<ServiceType> CREATOR = new Creator<ServiceType>() {
@@ -43,6 +45,24 @@ public final class ServiceType implements Parcelable {
         return 0;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object == null || getClass() != object.getClass()) {
+            return false;
+        } else {
+            ServiceType serviceType = (ServiceType) object;
+
+            return this.type == serviceType.type && name.equals(serviceType.name);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, name);
+    }
+
     public final int getType() {
         return this.type;
     }
@@ -58,23 +78,6 @@ public final class ServiceType implements Parcelable {
         builder.type = this.type;
 
         return builder;
-    }
-
-    @Override
-    public final boolean equals(@Nullable Object object) {
-        if(!super.equals(object)){
-            if(!(object instanceof ServiceType)){
-                return false;
-            }
-
-            ServiceType serviceType = (ServiceType) object;
-
-            if(this.type != serviceType.type){
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public final static class Builder{

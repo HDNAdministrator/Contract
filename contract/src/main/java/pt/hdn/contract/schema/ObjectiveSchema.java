@@ -4,6 +4,8 @@ import android.os.Parcel;
 
 import androidx.annotation.Nullable;
 
+import java.util.Objects;
+
 import pt.hdn.contract.annotations.SourceType;
 
 import static pt.hdn.contract.annotations.SchemaType.COMMISSION;
@@ -70,15 +72,23 @@ public final class ObjectiveSchema extends SchemaImp {
     }
 
     @Override
-    public final Builder rebuild() {
-        Builder builder = new Builder();
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        } else {
+            ObjectiveSchema objectiveSchema = (ObjectiveSchema) obj;
 
-        builder.source = super.source;
-        builder.bonus = this.bonus;
-        builder.lowerBound = this.lowerBound;
-        builder.upperBound = this.upperBound;
+            return Double.compare(objectiveSchema.bonus, this.bonus) == 0 &&
+                    Objects.equals(this.lowerBound, objectiveSchema.lowerBound) &&
+                    Objects.equals(this.upperBound, objectiveSchema.upperBound);
+        }
+    }
 
-        return builder;
+    @Override
+    public int hashCode() {
+        return Objects.hash(bonus, lowerBound, upperBound);
     }
 
     @Override
@@ -92,28 +102,15 @@ public final class ObjectiveSchema extends SchemaImp {
     }
 
     @Override
-    public final boolean equals(@Nullable Object object) {
-        if(!super.equals(object)){
-            if(!(object instanceof ObjectiveSchema)) {
-                return false;
-            }
+    public final Builder rebuild() {
+        Builder builder = new Builder();
 
-            ObjectiveSchema objectiveSchema = (ObjectiveSchema) object;
+        builder.source = super.source;
+        builder.bonus = this.bonus;
+        builder.lowerBound = this.lowerBound;
+        builder.upperBound = this.upperBound;
 
-            if((this.bonus != objectiveSchema.bonus) || (!this.source.equals(objectiveSchema.source))){
-                return false;
-            }
-
-            if((this.lowerBound == null ^ objectiveSchema.lowerBound == null) || (this.lowerBound != null && !this.lowerBound.equals(objectiveSchema.lowerBound))){
-                return false;
-            }
-
-            if((this.upperBound == null ^ objectiveSchema.upperBound == null) || (this.upperBound != null && !this.upperBound.equals(objectiveSchema.upperBound))){
-                return false;
-            }
-        }
-
-        return true;
+        return builder;
     }
 
     public final double getBonus() {

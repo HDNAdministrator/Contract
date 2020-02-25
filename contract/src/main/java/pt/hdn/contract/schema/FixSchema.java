@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
 
+import java.util.Objects;
+
 import pt.hdn.contract.annotations.SchemaType;
 
 import static pt.hdn.contract.annotations.SchemaType.FIX;
@@ -50,6 +52,24 @@ public final class FixSchema extends SchemaImp {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        } else {
+            FixSchema fixSchema = (FixSchema) obj;
+
+            return Double.compare(fixSchema.value, this.value) == 0;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+
+    @Override
     public final double calculate() {
         return this.value;
     }
@@ -66,23 +86,6 @@ public final class FixSchema extends SchemaImp {
         builder.value = this.value;
 
         return builder;
-    }
-
-    @Override
-    public final boolean equals(@Nullable Object object) {
-        if(!super.equals(object)){
-            if(!(object instanceof FixSchema)) {
-                return false;
-            }
-
-            FixSchema fixSchema = (FixSchema) object;
-
-            if(this.value != fixSchema.value){
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public final double getValue() {
