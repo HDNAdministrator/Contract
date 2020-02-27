@@ -1,16 +1,13 @@
 package pt.hdn.contract.schema;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
-import androidx.annotation.Nullable;
+import com.google.gson.JsonObject;
 
 import java.util.Objects;
 
 import pt.hdn.contract.annotations.SchemaType;
 import pt.hdn.contract.annotations.SourceType;
-
-import static pt.hdn.contract.annotations.SchemaType.COMMISSION;
 
 public final class CommissionSchema extends SchemaImp {
 
@@ -25,13 +22,27 @@ public final class CommissionSchema extends SchemaImp {
             return new CommissionSchema[size];
         }
     };
+    private static final String RATE = "rate";
+    private static final String SOURCE = "source";
+    private static final String LOWER_BOUND = "lowerBound";
+    private static final String UPPER_BOUND = "upperBound";
 
     private final double cut;
     private final Double lowerBound;
     private final Double upperBound;
 
+    public static final CommissionSchema deserialize(JsonObject json){
+        Builder builder = new Builder();
+        builder.cut = json.get(RATE).getAsDouble();
+        builder.source = json.get(SOURCE).getAsInt();
+        builder.lowerBound = json.has(LOWER_BOUND) ? json.get(LOWER_BOUND).getAsDouble() : null;
+        builder.upperBound = json.has(UPPER_BOUND) ? json.get(UPPER_BOUND).getAsDouble() : null;
+
+        return new CommissionSchema(builder);
+    }
+
     private CommissionSchema(Builder builder){
-        super(COMMISSION, builder.source);
+        super(SchemaType.COMMISSION, builder.source);
 
         this.cut = builder.cut;
         this.lowerBound = builder.lowerBound;
@@ -142,7 +153,7 @@ public final class CommissionSchema extends SchemaImp {
         private Double upperBound;
 
         public Builder(){
-            super(COMMISSION);
+            super(SchemaType.COMMISSION);
 
             this.cut = null;
             this.source = null;

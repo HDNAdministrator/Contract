@@ -23,8 +23,10 @@ import java.util.List;
 import java.util.Objects;
 
 import pt.hdn.contract.adapters.RecurrenceDateTypeAdapter;
+import pt.hdn.contract.adapters.SchemaTypeAdapter;
 import pt.hdn.contract.adapters.SignatureTypeAdapter;
 import pt.hdn.contract.adapters.TimestampTypeAdapter;
+import pt.hdn.contract.schema.Schema;
 
 import static java.lang.reflect.Modifier.STATIC;
 import static pt.hdn.contract.annotations.Contract.ALGORITHM;
@@ -70,6 +72,19 @@ public final class Contract implements Parcelable {
 
     public static Contract from(String json){
         return Contract.gsonBuilder().create().fromJson(json, Contract.class);
+    }
+
+    public static GsonBuilder gsonBuilder(){
+        if(gsonBuilder == null){
+            Contract.gsonBuilder = new GsonBuilder()
+                    .excludeFieldsWithModifiers(STATIC)
+                    .registerTypeHierarchyAdapter(Schema.class, new SchemaTypeAdapter())
+                    .registerTypeHierarchyAdapter(Instant.class, new TimestampTypeAdapter())
+                    .registerTypeHierarchyAdapter(byte[].class, new SignatureTypeAdapter())
+                    .registerTypeHierarchyAdapter(ZonedDateTime.class, new RecurrenceDateTypeAdapter());
+        }
+
+        return gsonBuilder;
     }
 
     private Contract(Builder builder) {
@@ -283,18 +298,6 @@ public final class Contract implements Parcelable {
         }
 
         return builder;
-    }
-
-    private static GsonBuilder gsonBuilder(){
-        if(gsonBuilder == null){
-            Contract.gsonBuilder = new GsonBuilder()
-                    .excludeFieldsWithModifiers(STATIC)
-                    .registerTypeHierarchyAdapter(Instant.class, new TimestampTypeAdapter())
-                    .registerTypeHierarchyAdapter(byte[].class, new SignatureTypeAdapter())
-                    .registerTypeHierarchyAdapter(ZonedDateTime.class, new RecurrenceDateTypeAdapter());
-        }
-
-        return gsonBuilder;
     }
 
     private byte[] thisToBytes(final String field){

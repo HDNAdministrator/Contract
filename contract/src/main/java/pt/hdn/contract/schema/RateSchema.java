@@ -2,13 +2,12 @@ package pt.hdn.contract.schema;
 
 import android.os.Parcel;
 
-import androidx.annotation.Nullable;
+import com.google.gson.JsonObject;
 
 import java.util.Objects;
 
+import pt.hdn.contract.annotations.SchemaType;
 import pt.hdn.contract.annotations.SourceType;
-
-import static pt.hdn.contract.annotations.SchemaType.RATE;
 
 public final class RateSchema extends SchemaImp {
 
@@ -23,11 +22,21 @@ public final class RateSchema extends SchemaImp {
             return new RateSchema[size];
         }
     };
+    private static final String RATE = "rate";
+    private static final String SOURCE = "source";
 
     private final double rate;
 
+    public static final RateSchema deserialize(JsonObject json){
+        Builder builder = new Builder();
+        builder.rate = json.get(RATE).getAsDouble();
+        builder.source = json.get(SOURCE).getAsInt();
+
+        return new RateSchema(builder);
+    }
+
     private RateSchema(Builder builder) {
-        super(RATE, builder.source);
+        super(SchemaType.RATE, builder.source);
 
         this.rate = builder.rate;
     }
@@ -98,7 +107,7 @@ public final class RateSchema extends SchemaImp {
         private @SourceType Integer source;
 
         public Builder(){
-            super(RATE);
+            super(SchemaType.RATE);
 
             this.rate = null;
         }

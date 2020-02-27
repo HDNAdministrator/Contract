@@ -2,13 +2,12 @@ package pt.hdn.contract.schema;
 
 import android.os.Parcel;
 
-import androidx.annotation.Nullable;
+import com.google.gson.JsonObject;
 
 import java.util.Objects;
 
+import pt.hdn.contract.annotations.SchemaType;
 import pt.hdn.contract.annotations.SourceType;
-
-import static pt.hdn.contract.annotations.SchemaType.THRESHOLD;
 
 public final class ThresholdSchema extends SchemaImp {
 
@@ -23,14 +22,28 @@ public final class ThresholdSchema extends SchemaImp {
             return new ThresholdSchema[size];
         }
     };
+    private static final String BONUS = "bonus";
+    private static final String SOURCE = "accomplish";
+    private static final String POSITIVE_THRESHOLD = "positiveThreshold";
+    private static final String NEGATIVE_THRESHOLD = "negativeThreshold";
 
     private final double bonus;
     private final Double positiveThreshold;
     private final Double negativeThreshold;
     private transient boolean accomplish;
 
+    public static final ThresholdSchema deserialize(JsonObject json){
+        Builder builder = new Builder();
+        builder.bonus = json.get(BONUS).getAsDouble();
+        builder.source = json.get(SOURCE).getAsInt();
+        builder.positiveThreshold = json.has(POSITIVE_THRESHOLD) ? json.get(POSITIVE_THRESHOLD).getAsDouble() : null;
+        builder.negativeThreshold = json.has(NEGATIVE_THRESHOLD) ? json.get(NEGATIVE_THRESHOLD).getAsDouble() : null;
+
+        return new ThresholdSchema(builder);
+    }
+
     private ThresholdSchema(Builder builder){
-        super(THRESHOLD, builder.source);
+        super(SchemaType.THRESHOLD, builder.source);
 
         this.bonus = builder.bonus;
         this.positiveThreshold = builder.positiveThreshold;
@@ -154,7 +167,7 @@ public final class ThresholdSchema extends SchemaImp {
         private Double negativeThreshold;
 
         public Builder(){
-            super(THRESHOLD);
+            super(SchemaType.THRESHOLD);
 
             this.bonus = null;
             this.source = null;

@@ -1,15 +1,12 @@
 package pt.hdn.contract.schema;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
-import androidx.annotation.Nullable;
+import com.google.gson.JsonObject;
 
 import java.util.Objects;
 
 import pt.hdn.contract.annotations.SchemaType;
-
-import static pt.hdn.contract.annotations.SchemaType.FIX;
 
 public final class FixSchema extends SchemaImp {
 
@@ -24,11 +21,19 @@ public final class FixSchema extends SchemaImp {
             return new FixSchema[size];
         }
     };
+    private static final String VALUE = "value";
 
     private final double value;
 
+    public static final FixSchema deserialize(JsonObject json){
+        Builder builder = new Builder();
+        builder.value = json.get(VALUE).getAsDouble();
+
+        return new FixSchema(builder);
+    }
+
     private FixSchema(Builder builder) {
-        super(FIX, null);
+        super(SchemaType.FIX, null);
 
         this.value = builder.value;
     }
@@ -97,7 +102,7 @@ public final class FixSchema extends SchemaImp {
         private Double value;
 
         public Builder(){
-            super(FIX);
+            super(SchemaType.FIX);
 
             this.value = null;
         }

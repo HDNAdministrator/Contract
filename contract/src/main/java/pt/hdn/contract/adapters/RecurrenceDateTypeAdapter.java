@@ -10,6 +10,7 @@ import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public final class RecurrenceDateTypeAdapter implements JsonSerializer<ZonedDateTime>, JsonDeserializer<ZonedDateTime> {
     @Override
@@ -19,6 +20,6 @@ public final class RecurrenceDateTypeAdapter implements JsonSerializer<ZonedDate
 
     @Override
     public final JsonElement serialize(ZonedDateTime src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive(src.toString());
+        return new JsonPrimitive(src.format(DateTimeFormatter.ISO_ZONED_DATE_TIME));
     }
 }

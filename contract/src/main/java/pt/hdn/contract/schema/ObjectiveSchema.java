@@ -2,14 +2,12 @@ package pt.hdn.contract.schema;
 
 import android.os.Parcel;
 
-import androidx.annotation.Nullable;
+import com.google.gson.JsonObject;
 
 import java.util.Objects;
 
+import pt.hdn.contract.annotations.SchemaType;
 import pt.hdn.contract.annotations.SourceType;
-
-import static pt.hdn.contract.annotations.SchemaType.COMMISSION;
-import static pt.hdn.contract.annotations.SchemaType.OBJECTIVE;
 
 public final class ObjectiveSchema extends SchemaImp {
 
@@ -24,13 +22,27 @@ public final class ObjectiveSchema extends SchemaImp {
             return new ObjectiveSchema[size];
         }
     };
+    private static final String BONUS = "bonus";
+    private static final String SOURCE = "source";
+    private static final String LOWER_BOUND = "lowerBound";
+    private static final String UPPER_BOUND = "upperBound";
 
     private final double bonus;
     private final Double lowerBound;
     private final Double upperBound;
 
+    public static final ObjectiveSchema deserialize(JsonObject json){
+        Builder builder = new Builder();
+        builder.bonus = json.get(BONUS).getAsDouble();
+        builder.source = json.get(SOURCE).getAsInt();
+        builder.lowerBound = json.has(LOWER_BOUND) ? json.get(LOWER_BOUND).getAsDouble() : null;
+        builder.upperBound = json.has(UPPER_BOUND) ? json.get(UPPER_BOUND).getAsDouble() : null;
+
+        return new ObjectiveSchema(builder);
+    }
+
     private ObjectiveSchema(Builder builder){
-        super(OBJECTIVE, builder.source);
+        super(SchemaType.OBJECTIVE, builder.source);
 
         this.bonus = builder.bonus;
         this.lowerBound = builder.lowerBound;
@@ -141,7 +153,7 @@ public final class ObjectiveSchema extends SchemaImp {
         private Double upperBound;
 
         public Builder(){
-            super(OBJECTIVE);
+            super(SchemaType.OBJECTIVE);
 
             this.bonus = null;
             this.source = null;
