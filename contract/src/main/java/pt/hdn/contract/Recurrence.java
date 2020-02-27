@@ -3,10 +3,6 @@ package pt.hdn.contract;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.Nullable;
-import androidx.core.util.Pair;
-
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +17,7 @@ import pt.hdn.contract.annotations.Month;
 import pt.hdn.contract.annotations.MonthType;
 import pt.hdn.contract.annotations.MonthsPeriod;
 
-import static java.time.format.DateTimeFormatter.ISO_DATE;
+import static java.time.format.DateTimeFormatter.ISO_ZONED_DATE_TIME;
 
 public final class Recurrence implements Parcelable {
 
@@ -101,14 +97,14 @@ public final class Recurrence implements Parcelable {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
-            dest.writeString(start.format(ISO_DATE));
+            dest.writeString(start.format(ISO_ZONED_DATE_TIME));
         }
 
         if(this.finish == null){
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
-            dest.writeString(finish.format(ISO_DATE));
+            dest.writeString(finish.format(ISO_ZONED_DATE_TIME));
         }
     }
 
@@ -143,6 +139,11 @@ public final class Recurrence implements Parcelable {
     public int hashCode() {
         return Objects.hash(months, days, dow, start, finish, monthPeriod, daysPeriod, daysType, monthType);
     }
+
+    public final boolean hasFinish(){
+        return this.finish != null;
+    }
+
     public final @DaysType int getDaysType(){
         return daysType;
     }
