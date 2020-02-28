@@ -282,15 +282,15 @@ public final class Recurrence implements Parcelable {
         }
 
         public int getDaysType() {
-            return daysType;
+            return this.daysType;
         }
 
         public int getMonthType() {
-            return monthType;
+            return this.monthType;
         }
 
         public final ZonedDateTime getStart() {
-            return start;
+            return this.start;
         }
 
         public final Builder setStart(ZonedDateTime start) {
@@ -300,7 +300,7 @@ public final class Recurrence implements Parcelable {
         }
 
         public final ZonedDateTime getFinish() {
-            return finish;
+            return this.finish;
         }
 
         public final Builder setFinish(ZonedDateTime finish) {
@@ -310,7 +310,7 @@ public final class Recurrence implements Parcelable {
         }
 
         public Integer getMonthPeriod() {
-            return monthPeriod;
+            return this.monthPeriod;
         }
 
         public final Builder setMonthPeriod(@MonthsPeriod int monthPeriod){
@@ -322,7 +322,7 @@ public final class Recurrence implements Parcelable {
         }
 
         public Integer getDaysPeriod() {
-            return daysPeriod;
+            return this.daysPeriod;
         }
 
         public final Builder setDaysPeriod(@DaysPeriod Integer daysPeriod){
@@ -341,30 +341,30 @@ public final class Recurrence implements Parcelable {
         }
 
         public List<Integer> getMonths() {
-            return months;
+            return this.months;
         }
 
         public final Builder addMonth(@Month int month){
             this.monthPeriod = null;
             this.monthType = MonthType.MONTHS;
 
-            if(!months.contains(month)){
-                months.add(month);
+            if(!this.months.contains(month)){
+                this.months.add(month);
 
-                Collections.sort(months);
+                Collections.sort(this.months);
             }
 
             return this;
         }
 
-        public final Builder removeDay(@Day int day){
-            this.days.remove(Integer.valueOf(day));
+        public final Builder removeDay(@Day Integer day){
+            this.days.remove(day);
 
             return this;
         }
 
         public List<Integer> getDays() {
-            return days;
+            return this.days;
         }
 
         public final Builder addDay(@Day int day){
@@ -372,10 +372,10 @@ public final class Recurrence implements Parcelable {
             this.dow.clear();
             this.daysType = DaysType.DAYS;
 
-            if(!days.contains(day)){
-                days.add(day);
+            if(!this.days.contains(day)){
+                this.days.add(day);
 
-                Collections.sort(days);
+                Collections.sort(this.days);
             }
 
             return this;
@@ -388,7 +388,7 @@ public final class Recurrence implements Parcelable {
         }
 
         public List<Integer> getDow() {
-            return dow;
+            return this.dow;
         }
 
         public final Builder addDow(@DayOfWeek Integer dow){
@@ -405,18 +405,59 @@ public final class Recurrence implements Parcelable {
             return this;
         }
 
+        public boolean validate(){
+            switch (this.daysType){
+                case DaysType.DAYS: {
+                    if (this.days.size() == 0) {
+                        return false;
+                    }
+
+                    break;
+                }
+                case DaysType.DOW: {
+                    if (this.dow.size() == 0) {
+                        return false;
+                    }
+
+                    break;
+                }
+                case DaysType.PERIOD: {
+                    if (this.daysPeriod == null) {
+                        return false;
+                    }
+
+                    break;
+                }
+            }
+
+            switch (this.monthType){
+                case MonthType.MONTHS: {
+                    if (this.months.size() == 0) {
+                        return false;
+                    }
+
+                    break;
+                }
+                case MonthType.PERIOD: {
+                    if (this.monthPeriod == null) {
+                        return false;
+                    }
+
+                    break;
+                }
+            }
+
+            return this.start != null && (this.finish == null || this.start.isAfter(this.finish));
+        }
+
         public final Recurrence create() throws RecurrenceException{
-            if(start == null){
+            if(this.start == null){
                 throw new RecurrenceException("The start date is missing.");
-            } else if(finish != null && start.isAfter(finish)) {
+            } else if(this.finish != null && this.start.isAfter(this.finish)) {
                 throw new RecurrenceException("The finish date is before the starting date.");
             } else {
                 return  new Recurrence(this);
             }
-        }
-
-        public boolean validate(){
-            return start != null;
         }
     }
 }

@@ -382,6 +382,20 @@ public final class Contract implements Parcelable {
             return this;
         }
 
+        public final boolean validate(){
+            if(this.taskBuilders == null){
+                return false;
+            } else{
+                for (Task.Builder builder: this.taskBuilders){
+                    if(!builder.validate()){
+                        return false;
+                    }
+                }
+            }
+
+            return this.recurrenceBuilder != null && this.recurrenceBuilder.validate();
+        }
+
         public final Contract create() throws ContractException {
             try {
                 if(recurrenceBuilder == null){

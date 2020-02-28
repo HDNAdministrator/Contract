@@ -110,6 +110,10 @@ public final class ServiceType implements Parcelable {
             return  this;
         }
 
+        public final boolean validate(){
+            return this.name != null && this.type != null;
+        }
+
         public final ServiceType create() throws ServiceTypeException{
             if(this.type == null) {
                 throw new ServiceTypeException("The type is missing.");

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.DoubleFunction;
 
 import pt.hdn.contract.annotations.SchemaType;
@@ -147,6 +148,20 @@ public final class Task implements Parcelable {
             this.serviceTypeBuilder = builder;
 
             return this;
+        }
+
+        public final boolean validate(){
+            if(this.schemaBuilders == null){
+                return false;
+            } else {
+                for (Schema.Builder builder: this.schemaBuilders){
+                    if(!builder.validate()){
+                        return false;
+                    }
+                }
+            }
+
+            return this.serviceTypeBuilder != null && this.serviceTypeBuilder.validate();
         }
 
         public final Task create() throws TaskException {
