@@ -99,7 +99,7 @@ public final class Task implements Parcelable {
             builder.schemaBuilders.add(schema.rebuild());
         }
 
-        return null;
+        return builder;
     }
 
     public final static class Builder{

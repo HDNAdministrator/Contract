@@ -290,7 +290,6 @@ public final class Contract implements Parcelable {
 
     public final Builder rebuild(){
         Builder builder = new Builder();
-
         builder.recurrenceBuilder = recurrence.rebuild();
 
         for (Task task: tasks){
