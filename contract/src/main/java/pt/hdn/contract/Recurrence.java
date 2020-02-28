@@ -358,7 +358,7 @@ public final class Recurrence implements Parcelable {
         }
 
         public final Builder removeDay(@Day int day){
-            this.days.remove(day);
+            this.days.remove(Integer.valueOf(day));
 
             return this;
         }
