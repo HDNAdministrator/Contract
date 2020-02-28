@@ -203,6 +203,22 @@ public final class ThresholdSchema extends SchemaImp {
             return this.bonus != null && this.source != null;
         }
 
+        public final boolean hasBonus(){
+            return this.bonus != null;
+        }
+
+        public final boolean hasSourece(){
+            return this.source != null;
+        }
+
+        public final boolean hasNegativeThreshold(){
+            return this.negativeThreshold != null;
+        }
+
+        public final boolean hasPositiveThreshold(){
+            return this.positiveThreshold != null;
+        }
+
         public final Double getBonus() {
             return this.bonus;
         }

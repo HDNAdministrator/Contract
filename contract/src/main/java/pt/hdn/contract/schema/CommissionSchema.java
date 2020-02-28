@@ -187,6 +187,22 @@ public final class CommissionSchema extends SchemaImp {
             return this.cut != null && this.source != null;
         }
 
+        public final boolean hasCut(){
+            return this.cut != null;
+        }
+
+        public final boolean hasSourece(){
+            return this.source != null;
+        }
+
+        public final boolean hasLowerBound(){
+            return this.lowerBound != null;
+        }
+
+        public final boolean hasUpperBound(){
+            return this.upperBound != null;
+        }
+
         public final Double getCut() {
             return this.cut;
         }

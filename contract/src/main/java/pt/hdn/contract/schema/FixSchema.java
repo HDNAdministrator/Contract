@@ -123,6 +123,10 @@ public final class FixSchema extends SchemaImp {
             return this.value != null;
         }
 
+        public final boolean hasValue(){
+            return this.value != null;
+        }
+
         public final Double getValue() {
             return this.value;
         }

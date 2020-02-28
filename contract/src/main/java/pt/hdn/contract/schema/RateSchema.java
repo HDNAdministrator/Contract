@@ -128,6 +128,14 @@ public final class RateSchema extends SchemaImp {
             return this.rate != null;
         }
 
+        public final boolean hasRate(){
+            return this.rate != null;
+        }
+
+        public final boolean hasSourece(){
+            return this.source != null;
+        }
+
         public final @SourceType Integer getSource() {
             return this.source;
         }

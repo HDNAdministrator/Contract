@@ -187,6 +187,22 @@ public final class ObjectiveSchema extends SchemaImp {
             return this.bonus != null && this.source != null;
         }
 
+        public final boolean hasBonus(){
+            return this.bonus != null;
+        }
+
+        public final boolean hasSourece(){
+            return this.source != null;
+        }
+
+        public final boolean hasLowerBound(){
+            return this.lowerBound != null;
+        }
+
+        public final boolean hasUpperBound(){
+            return this.upperBound != null;
+        }
+
         public final Double getBonus() {
             return this.bonus;
         }
