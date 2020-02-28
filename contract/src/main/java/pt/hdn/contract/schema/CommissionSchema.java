@@ -191,7 +191,7 @@ public final class CommissionSchema extends SchemaImp {
             return this.cut != null;
         }
 
-        public final boolean hasSourece(){
+        public final boolean hasSource(){
             return this.source != null;
         }
 

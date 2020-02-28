@@ -132,7 +132,7 @@ public final class RateSchema extends SchemaImp {
             return this.rate != null;
         }
 
-        public final boolean hasSourece(){
+        public final boolean hasSource(){
             return this.source != null;
         }
 
