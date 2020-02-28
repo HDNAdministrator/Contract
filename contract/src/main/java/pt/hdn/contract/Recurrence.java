@@ -253,6 +253,14 @@ public final class Recurrence implements Parcelable {
             this.finish = null;
         }
 
+        public final boolean hasStart(){
+            return this.start != null;
+        }
+
+        public final boolean hasFinish(){
+            return this.finish != null;
+        }
+
         public final int getDefaultDayType(){
             return DaysType.DAYS;
         }
@@ -273,10 +281,67 @@ public final class Recurrence implements Parcelable {
             return MonthsPeriod.MONTHS_ALL;
         }
 
+        public int getDaysType() {
+            return daysType;
+        }
+
+        public int getMonthType() {
+            return monthType;
+        }
+
+        public final ZonedDateTime getStart() {
+            return start;
+        }
+
+        public final Builder setStart(ZonedDateTime start) {
+            this.start = start;
+
+            return this;
+        }
+
+        public final ZonedDateTime getFinish() {
+            return finish;
+        }
+
+        public final Builder setFinish(ZonedDateTime finish) {
+            this.finish = finish;
+
+            return this;
+        }
+
+        public Integer getMonthPeriod() {
+            return monthPeriod;
+        }
+
+        public final Builder setMonthPeriod(@MonthsPeriod int monthPeriod){
+            this.months.clear();
+            this.monthType = MonthType.PERIOD;
+            this.monthPeriod = monthPeriod;
+
+            return this;
+        }
+
+        public Integer getDaysPeriod() {
+            return daysPeriod;
+        }
+
+        public final Builder setDaysPeriod(@DaysPeriod Integer daysPeriod){
+            this.days.clear();
+            this.dow.clear();
+            this.daysType = DaysType.PERIOD;
+            this.daysPeriod = daysPeriod;
+
+            return this;
+        }
+
         public final Builder removeMonth(@Month Integer month){
             this.months.remove(month);
 
             return this;
+        }
+
+        public List<Integer> getMonths() {
+            return months;
         }
 
         public final Builder addMonth(@Month int month){
@@ -292,12 +357,14 @@ public final class Recurrence implements Parcelable {
             return this;
         }
 
-        public final Builder setMonthPeriod(@MonthsPeriod int monthPeriod){
-            this.months.clear();
-            this.monthType = MonthType.PERIOD;
-            this.monthPeriod = monthPeriod;
+        public final Builder removeDay(@Day int day){
+            this.days.remove(day);
 
             return this;
+        }
+
+        public List<Integer> getDays() {
+            return days;
         }
 
         public final Builder addDay(@Day int day){
@@ -314,10 +381,14 @@ public final class Recurrence implements Parcelable {
             return this;
         }
 
-        public final Builder removeDay(@Day int day){
-            this.days.remove(day);
+        public final Builder removeDow(@DayOfWeek Integer dow){
+            this.dow.remove(dow);
 
             return this;
+        }
+
+        public List<Integer> getDow() {
+            return dow;
         }
 
         public final Builder addDow(@DayOfWeek Integer dow){
@@ -330,33 +401,6 @@ public final class Recurrence implements Parcelable {
 
                 Collections.sort(this.dow);
             }
-
-            return this;
-        }
-
-        public final Builder removeDow(@DayOfWeek Integer dow){
-            this.dow.remove(dow);
-
-            return this;
-        }
-
-        public final Builder setDaysPeriod(@DaysPeriod Integer daysPeriod){
-            this.days.clear();
-            this.dow.clear();
-            this.daysType = DaysType.PERIOD;
-            this.daysPeriod = daysPeriod;
-
-            return this;
-        }
-
-        public final Builder setStart(ZonedDateTime start) {
-            this.start = start;
-
-            return this;
-        }
-
-        public final Builder setFinish(ZonedDateTime finish) {
-            this.finish = finish;
 
             return this;
         }
