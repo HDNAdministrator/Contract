@@ -3,7 +3,7 @@ package pt.hdn.contract.schema;
 import pt.hdn.contract.annotations.SchemaType;
 import pt.hdn.contract.annotations.SourceType;
 
-public interface Schema  {
+public interface Schema {
     @SchemaType int getType();
 
     @SourceType Integer getSource();

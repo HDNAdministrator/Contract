@@ -9,6 +9,11 @@ import java.util.Objects;
 import pt.hdn.contract.annotations.SchemaType;
 import pt.hdn.contract.annotations.SourceType;
 
+import static pt.hdn.contract.annotations.Parameter.BONUS;
+import static pt.hdn.contract.annotations.Parameter.LOWER_BOUND;
+import static pt.hdn.contract.annotations.Parameter.SOURCE;
+import static pt.hdn.contract.annotations.Parameter.UPPER_BOUND;
+
 public final class ObjectiveSchema extends SchemaImp {
 
     public static final Creator<ObjectiveSchema> CREATOR = new Creator<ObjectiveSchema>() {
@@ -22,10 +27,6 @@ public final class ObjectiveSchema extends SchemaImp {
             return new ObjectiveSchema[size];
         }
     };
-    private static final String BONUS = "bonus";
-    private static final String SOURCE = "source";
-    private static final String LOWER_BOUND = "lowerBound";
-    private static final String UPPER_BOUND = "upperBound";
 
     private final double bonus;
     private final Double lowerBound;

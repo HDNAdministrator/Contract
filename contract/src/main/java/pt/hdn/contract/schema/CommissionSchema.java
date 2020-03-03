@@ -9,6 +9,11 @@ import java.util.Objects;
 import pt.hdn.contract.annotations.SchemaType;
 import pt.hdn.contract.annotations.SourceType;
 
+import static pt.hdn.contract.annotations.Parameter.CUT;
+import static pt.hdn.contract.annotations.Parameter.LOWER_BOUND;
+import static pt.hdn.contract.annotations.Parameter.SOURCE;
+import static pt.hdn.contract.annotations.Parameter.UPPER_BOUND;
+
 public final class CommissionSchema extends SchemaImp {
 
     public static final Creator<CommissionSchema> CREATOR = new Creator<CommissionSchema>() {
@@ -22,10 +27,6 @@ public final class CommissionSchema extends SchemaImp {
             return new CommissionSchema[size];
         }
     };
-    private static final String RATE = "rate";
-    private static final String SOURCE = "source";
-    private static final String LOWER_BOUND = "lowerBound";
-    private static final String UPPER_BOUND = "upperBound";
 
     private final double cut;
     private final Double lowerBound;
@@ -33,7 +34,7 @@ public final class CommissionSchema extends SchemaImp {
 
     public static final CommissionSchema deserialize(JsonObject json){
         Builder builder = new Builder();
-        builder.cut = json.get(RATE).getAsDouble();
+        builder.cut = json.get(CUT).getAsDouble();
         builder.source = json.get(SOURCE).getAsInt();
         builder.lowerBound = json.has(LOWER_BOUND) ? json.get(LOWER_BOUND).getAsDouble() : null;
         builder.upperBound = json.has(UPPER_BOUND) ? json.get(UPPER_BOUND).getAsDouble() : null;

@@ -9,6 +9,9 @@ import java.util.Objects;
 import pt.hdn.contract.annotations.SchemaType;
 import pt.hdn.contract.annotations.SourceType;
 
+import static pt.hdn.contract.annotations.Parameter.RATE;
+import static pt.hdn.contract.annotations.Parameter.SOURCE;
+
 public final class RateSchema extends SchemaImp {
 
     public static final Creator<RateSchema> CREATOR = new Creator<RateSchema>() {
@@ -22,8 +25,6 @@ public final class RateSchema extends SchemaImp {
             return new RateSchema[size];
         }
     };
-    private static final String RATE = "rate";
-    private static final String SOURCE = "source";
 
     private final double rate;
 

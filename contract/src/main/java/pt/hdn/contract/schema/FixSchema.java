@@ -8,6 +8,8 @@ import java.util.Objects;
 
 import pt.hdn.contract.annotations.SchemaType;
 
+import static pt.hdn.contract.annotations.Parameter.FIX;
+
 public final class FixSchema extends SchemaImp {
 
     public static final Creator<FixSchema> CREATOR = new Creator<FixSchema>() {
@@ -21,13 +23,12 @@ public final class FixSchema extends SchemaImp {
             return new FixSchema[size];
         }
     };
-    private static final String VALUE = "value";
 
-    private final double value;
+    private final double fix;
 
     public static final FixSchema deserialize(JsonObject json){
         Builder builder = new Builder();
-        builder.value = json.get(VALUE).getAsDouble();
+        builder.fix = json.get(FIX).getAsDouble();
 
         return new FixSchema(builder);
     }
@@ -35,20 +36,20 @@ public final class FixSchema extends SchemaImp {
     private FixSchema(Builder builder) {
         super(SchemaType.FIX, null);
 
-        this.value = builder.value;
+        this.fix = builder.fix;
     }
 
     private FixSchema(Parcel in){
         super(in);
 
-        this.value = in.readDouble();
+        this.fix = in.readDouble();
     }
 
     @Override
     public final void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
 
-        dest.writeDouble(this.value);
+        dest.writeDouble(this.fix);
     }
 
     @Override
@@ -65,18 +66,18 @@ public final class FixSchema extends SchemaImp {
         } else {
             FixSchema fixSchema = (FixSchema) obj;
 
-            return Double.compare(fixSchema.value, this.value) == 0;
+            return Double.compare(fixSchema.fix, this.fix) == 0;
         }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value);
+        return Objects.hash(fix);
     }
 
     @Override
     public final double calculate() {
-        return this.value;
+        return this.fix;
     }
 
     @Override
@@ -88,30 +89,30 @@ public final class FixSchema extends SchemaImp {
     public final Builder rebuild(){
         Builder builder = new Builder();
 
-        builder.value = this.value;
+        builder.fix = this.fix;
 
         return builder;
     }
 
-    public final double getValue() {
-        return this.value;
+    public final double getFix() {
+        return this.fix;
     }
 
     public final static class Builder extends BuilderImp {
 
-        private Double value;
+        private Double fix;
 
         public Builder(){
             super(SchemaType.FIX);
 
-            this.value = null;
+            this.fix = null;
         }
 
         @Override
         public final FixSchema create() throws SchemaException{
-            if(this.value == null) {
+            if(this.fix == null) {
                 throw new SchemaException("The value is missing.");
-            } else if(this.value < 0) {
+            } else if(this.fix < 0) {
                 throw new SchemaException("Value needs to be positive.");
             } else {
                 return new FixSchema(this);
@@ -120,19 +121,19 @@ public final class FixSchema extends SchemaImp {
 
         @Override
         public final boolean validate() {
-            return this.value != null;
+            return this.fix != null;
         }
 
         public final boolean hasValue(){
-            return this.value != null;
+            return this.fix != null;
         }
 
-        public final Double getValue() {
-            return this.value;
+        public final Double getFix() {
+            return this.fix;
         }
 
-        public final Builder setValue(Double value){
-            this.value = value;
+        public final Builder setFix(Double fix){
+            this.fix = fix;
 
             return this;
         }

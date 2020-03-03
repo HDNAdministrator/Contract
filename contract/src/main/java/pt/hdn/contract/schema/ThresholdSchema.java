@@ -9,6 +9,11 @@ import java.util.Objects;
 import pt.hdn.contract.annotations.SchemaType;
 import pt.hdn.contract.annotations.SourceType;
 
+import static pt.hdn.contract.annotations.Parameter.BONUS;
+import static pt.hdn.contract.annotations.Parameter.NEGATIVE_THRESHOLD;
+import static pt.hdn.contract.annotations.Parameter.POSITIVE_THRESHOLD;
+import static pt.hdn.contract.annotations.Parameter.SOURCE;
+
 public final class ThresholdSchema extends SchemaImp {
 
     public static final Creator<ThresholdSchema> CREATOR = new Creator<ThresholdSchema>() {
@@ -22,10 +27,6 @@ public final class ThresholdSchema extends SchemaImp {
             return new ThresholdSchema[size];
         }
     };
-    private static final String BONUS = "bonus";
-    private static final String SOURCE = "accomplish";
-    private static final String POSITIVE_THRESHOLD = "positiveThreshold";
-    private static final String NEGATIVE_THRESHOLD = "negativeThreshold";
 
     private final double bonus;
     private final Double positiveThreshold;
