@@ -14,12 +14,20 @@ public class Threshold extends Shell {
         this.bonus = bonus;
     }
 
+    public boolean hasPositiveThreshold(){
+        return positiveThreshold != null;
+    }
+
     public Double getPositiveThreshold() {
         return positiveThreshold;
     }
 
     public void setPositiveThreshold(Double positiveThreshold) {
         this.positiveThreshold = positiveThreshold;
+    }
+
+    public boolean hasNegativeThreshold(){
+        return negativeThreshold != null;
     }
 
     public Double getNegativeThreshold() {

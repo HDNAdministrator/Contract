@@ -14,12 +14,20 @@ public class Objective extends Shell {
         this.bonus = bonus;
     }
 
+    public boolean hasLowerBound(){
+        return lowerBound != null;
+    }
+
     public Double getLowerBound() {
         return lowerBound;
     }
 
     public void setLowerBound(Double lowerBound) {
         this.lowerBound = lowerBound;
+    }
+
+    public boolean hasUpperBound(){
+        return upperBound != null;
     }
 
     public Double getUpperBound() {

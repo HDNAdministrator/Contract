@@ -14,12 +14,20 @@ public class Commission extends Shell {
         this.cut = cut;
     }
 
+    public boolean hasLowerBound(){
+        return lowerBound != null;
+    }
+
     public Double getLowerBound() {
         return lowerBound;
     }
 
     public void setLowerBound(Double lowerBound) {
         this.lowerBound = lowerBound;
+    }
+
+    public boolean hasUpperBound(){
+        return upperBound != null;
     }
 
     public Double getUpperBound() {

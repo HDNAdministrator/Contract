@@ -1,14 +1,16 @@
 package pt.hdn.contract.pojo;
 
+import pt.hdn.contract.annotations.SchemaType;
+
 public class Shell {
 
-    private int type;
+    private @SchemaType int type;
 
-    public int getType() {
+    public @SchemaType int getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(@SchemaType int type) {
         this.type = type;
     }
 }
