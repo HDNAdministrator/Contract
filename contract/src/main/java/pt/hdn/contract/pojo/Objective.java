@@ -39,7 +39,7 @@ public class Objective extends Shell {
     }
 
     @Override
-    boolean isValid() {
+    public boolean isValid() {
         if(bonus == null) {
             return false;
         } else if(bonus <= 0 || bonus > 0) {

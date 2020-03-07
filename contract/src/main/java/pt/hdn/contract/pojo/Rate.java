@@ -13,7 +13,7 @@ public class Rate extends Shell {
     }
 
     @Override
-    boolean isValid() {
+    public boolean isValid() {
         return rate != null && rate > 0;
     }
 }

@@ -39,7 +39,7 @@ public class Commission extends Shell {
     }
 
     @Override
-    boolean isValid() {
+    public boolean isValid() {
         if(cut == null) {
             return false;
         } else if(cut <= 0 || cut > 0) {

@@ -39,7 +39,7 @@ public class Threshold extends Shell {
     }
 
     @Override
-    boolean isValid() {
+    public boolean isValid() {
         if(bonus == null) {
             return false;
         } else if(bonus < 0) {

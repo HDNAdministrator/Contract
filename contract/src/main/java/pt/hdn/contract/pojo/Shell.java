@@ -6,7 +6,7 @@ public abstract class Shell {
 
     private @SchemaType int type;
 
-    abstract boolean isValid();
+    public abstract boolean isValid();
 
     public @SchemaType int getType() {
         return type;
