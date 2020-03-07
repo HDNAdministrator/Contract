@@ -2,9 +2,11 @@ package pt.hdn.contract.pojo;
 
 import pt.hdn.contract.annotations.SchemaType;
 
-public class Shell {
+public abstract class Shell {
 
     private @SchemaType int type;
+
+    abstract boolean isValid();
 
     public @SchemaType int getType() {
         return type;

@@ -11,4 +11,9 @@ public class Rate extends Shell {
     public void setRate(Double rate) {
         this.rate = rate;
     }
+
+    @Override
+    boolean isValid() {
+        return rate != null && rate > 0;
+    }
 }

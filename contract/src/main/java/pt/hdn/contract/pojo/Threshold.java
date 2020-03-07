@@ -37,4 +37,21 @@ public class Threshold extends Shell {
     public void setNegativeThreshold(Double negativeThreshold) {
         this.negativeThreshold = negativeThreshold;
     }
+
+    @Override
+    boolean isValid() {
+        if(bonus == null) {
+            return false;
+        } else if(bonus < 0) {
+            return false;
+        } else if((positiveThreshold == null) == (negativeThreshold == null)) {
+            return false;
+        } else if(positiveThreshold != null && positiveThreshold < 0) {
+            return false;
+        } else if(negativeThreshold != null && negativeThreshold < 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

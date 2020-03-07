@@ -186,10 +186,8 @@ public final class ThresholdSchema extends SchemaImp {
                 throw new SchemaException("The source is missing.");
             } else if(this.source < 0) {
                 throw new SchemaException("Source needs to be positive.");
-            } else if(this.positiveThreshold == null && this.negativeThreshold == null) {
+            } else if((this.positiveThreshold == null) == (this.negativeThreshold == null)) {
                 throw new SchemaException("One bound needs to be set.");
-            } else if(this.positiveThreshold != null && this.negativeThreshold != null) {
-                throw new SchemaException("Only one bound can be set.");
             } else if(this.positiveThreshold != null && this.positiveThreshold < 0) {
                 throw new SchemaException("LowerBound needs to be positive.");
             } else if(this.negativeThreshold != null && this.negativeThreshold < 0) {

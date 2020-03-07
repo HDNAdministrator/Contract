@@ -176,8 +176,8 @@ public final class CommissionSchema extends SchemaImp {
                 throw new SchemaException("LowerBound needs to be positive.");
             } else if(this.upperBound != null && this.upperBound < 0) {
                 throw new SchemaException("UpperBound needs to be positive.");
-            } else if(this.lowerBound != null && this.upperBound != null && this.upperBound < this.lowerBound) {
-                throw new SchemaException("LowerBound is greater than upperBound");
+            } else if(this.lowerBound != null && this.upperBound != null && this.upperBound <= this.lowerBound) {
+                throw new SchemaException("LowerBound is greater or equal than upperBound");
             } else {
                 return new CommissionSchema(this);
             }

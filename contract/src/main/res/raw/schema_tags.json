@@ -15,6 +15,10 @@
         {
             "type": 3,
             "name": "Objectivo"
+        },
+        {
+            "type": 4,
+            "name": "Objectivo"
         }
     ],
     "en_GB": [
@@ -33,6 +37,10 @@
         {
             "type": 3,
             "name": "Objective"
+        },
+        {
+            "type": 4,
+            "name": "Threshold"
         }
     ]
 }

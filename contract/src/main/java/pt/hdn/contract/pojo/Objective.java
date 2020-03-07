@@ -37,4 +37,21 @@ public class Objective extends Shell {
     public void setUpperBound(Double upperBound) {
         this.upperBound = upperBound;
     }
+
+    @Override
+    boolean isValid() {
+        if(bonus == null) {
+            return false;
+        } else if(bonus <= 0 || bonus > 0) {
+            return false;
+        } else if(lowerBound != null && lowerBound < 0) {
+            return false;
+        } else if(upperBound != null && upperBound < 0) {
+            return false;
+        } else if(lowerBound != null && upperBound != null && upperBound <= lowerBound) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
