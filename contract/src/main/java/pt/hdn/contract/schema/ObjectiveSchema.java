@@ -76,11 +76,6 @@ public final class ObjectiveSchema extends SchemaImp {
     }
 
     @Override
-    public final int describeContents() {
-        return 0;
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -144,6 +139,18 @@ public final class ObjectiveSchema extends SchemaImp {
 
     public final static class  Builder extends BuilderImp{
 
+        public static final Creator<Builder> CREATOR = new Creator<Builder>() {
+            @Override
+            public Builder createFromParcel(Parcel in) {
+                return new Builder(in);
+            }
+
+            @Override
+            public Builder[] newArray(int size) {
+                return new Builder[size];
+            }
+        };
+
         private Double bonus;
         private @ SourceType Integer source;
         private Double lowerBound;
@@ -165,6 +172,40 @@ public final class ObjectiveSchema extends SchemaImp {
             this.source = null;
             this.lowerBound = null;
             this.upperBound = null;
+        }
+
+        public Builder(Parcel in) {
+            super(in);
+
+            this.bonus = in.readByte() != 0 ? in.readDouble() : null;
+            this.lowerBound = in.readByte() != 0 ? in.readDouble() : null;
+            this.upperBound = in.readByte() != 0 ? in.readDouble() : null;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+
+            if(this.bonus == null) {
+                dest.writeByte((byte) 0);
+            } else {
+                dest.writeByte((byte) 1);
+                dest.writeDouble(this.bonus);
+            }
+
+            if(this.lowerBound == null) {
+                dest.writeByte((byte) 0);
+            } else {
+                dest.writeByte((byte) 1);
+                dest.writeDouble(this.lowerBound);
+            }
+
+            if(this.upperBound == null) {
+                dest.writeByte((byte) 0);
+            } else {
+                dest.writeByte((byte) 1);
+                dest.writeDouble(this.upperBound);
+            }
         }
 
         @Override

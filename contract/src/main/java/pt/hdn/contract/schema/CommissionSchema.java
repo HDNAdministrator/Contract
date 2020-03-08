@@ -10,11 +10,6 @@ import pt.hdn.contract.annotations.SchemaType;
 import pt.hdn.contract.annotations.SourceType;
 import pt.hdn.contract.annotations.Parameter;
 
-import static pt.hdn.contract.annotations.Parameter.CUT;
-import static pt.hdn.contract.annotations.Parameter.LOWER_BOUND;
-import static pt.hdn.contract.annotations.Parameter.SOURCE;
-import static pt.hdn.contract.annotations.Parameter.UPPER_BOUND;
-
 public final class CommissionSchema extends SchemaImp {
 
     public static final Creator<CommissionSchema> CREATOR = new Creator<CommissionSchema>() {
@@ -81,11 +76,6 @@ public final class CommissionSchema extends SchemaImp {
     }
 
     @Override
-    public final int describeContents() {
-        return 0;
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -149,6 +139,18 @@ public final class CommissionSchema extends SchemaImp {
 
     public final static class  Builder extends BuilderImp{
 
+        public static final Creator<Builder> CREATOR = new Creator<Builder>() {
+            @Override
+            public Builder createFromParcel(Parcel in) {
+                return new Builder(in);
+            }
+
+            @Override
+            public Builder[] newArray(int size) {
+                return new Builder[size];
+            }
+        };
+
         private Double cut;
         private @SourceType Integer source;
         private Double lowerBound;
@@ -170,6 +172,40 @@ public final class CommissionSchema extends SchemaImp {
             this.source = null;
             this.lowerBound = null;
             this.upperBound = null;
+        }
+
+        private Builder(Parcel in) {
+            super(in);
+
+            this.cut = in.readByte() != 0 ? in.readDouble() : null;
+            this.lowerBound = in.readByte() != 0 ? in.readDouble() : null;
+            this.upperBound = in.readByte() != 0 ? in.readDouble() : null;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+
+            if(this.cut == null) {
+                dest.writeByte((byte) 0);
+            } else {
+                dest.writeByte((byte) 1);
+                dest.writeDouble(this.cut);
+            }
+
+            if(this.lowerBound == null) {
+                dest.writeByte((byte) 0);
+            } else {
+                dest.writeByte((byte) 1);
+                dest.writeDouble(this.lowerBound);
+            }
+
+            if(this.upperBound == null) {
+                dest.writeByte((byte) 0);
+            } else {
+                dest.writeByte((byte) 1);
+                dest.writeDouble(this.upperBound);
+            }
         }
 
         @Override

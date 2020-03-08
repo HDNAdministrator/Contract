@@ -34,7 +34,7 @@ public abstract class SchemaImp implements Schema, Parcelable {
     }
 
     @Override
-    public int describeContents() {
+    public final int describeContents() {
         return 0;
     }
 
@@ -48,12 +48,26 @@ public abstract class SchemaImp implements Schema, Parcelable {
         return this.source;
     }
 
-    public abstract static class BuilderImp implements Schema.Builder{
+    public abstract static class BuilderImp implements Schema.Builder, Parcelable{
 
         final int type;
 
         BuilderImp(@SchemaType int type) {
             this.type = type;
+        }
+
+        BuilderImp(Parcel in){
+            this.type = in.readInt();
+        }
+
+        @Override
+        public final int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.type);
         }
 
         @Override

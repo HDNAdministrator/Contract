@@ -54,11 +54,6 @@ public final class RateSchema extends SchemaImp {
     }
 
     @Override
-    public final int describeContents() {
-        return 0;
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -102,6 +97,18 @@ public final class RateSchema extends SchemaImp {
 
     public final static class Builder extends BuilderImp{
 
+        public static final Creator<Builder> CREATOR = new Creator<Builder>() {
+            @Override
+            public Builder createFromParcel(Parcel in) {
+                return new Builder(in);
+            }
+
+            @Override
+            public Builder[] newArray(int size) {
+                return new Builder[size];
+            }
+        };
+
         private Double rate;
         private @SourceType Integer source;
 
@@ -119,6 +126,23 @@ public final class RateSchema extends SchemaImp {
             this.source = null;
         }
 
+        private Builder(Parcel in) {
+            super(in);
+
+            this.rate = in.readByte() != 0 ? in.readDouble() : null;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+
+            if(this.rate == null) {
+                dest.writeByte((byte) 0);
+            } else {
+                dest.writeByte((byte) 1);
+                dest.writeDouble(this.rate);
+            }
+        }
         @Override
         public final RateSchema create() throws SchemaException{
             if(this.rate == null) {

@@ -7,8 +7,8 @@ import com.google.gson.JsonObject;
 import java.util.Objects;
 
 import pt.hdn.contract.annotations.SchemaType;
+import pt.hdn.contract.annotations.Parameter;
 
-import static pt.hdn.contract.annotations.Parameter.FIX;
 
 public final class FixSchema extends SchemaImp {
 
@@ -28,7 +28,7 @@ public final class FixSchema extends SchemaImp {
 
     public static final FixSchema deserialize(JsonObject json){
         Builder builder = new Builder();
-        builder.fix = json.get(FIX).getAsDouble();
+        builder.fix = json.get(Parameter.FIX).getAsDouble();
 
         return new FixSchema(builder);
     }
@@ -50,11 +50,6 @@ public final class FixSchema extends SchemaImp {
         super.writeToParcel(dest, flags);
 
         dest.writeDouble(this.fix);
-    }
-
-    @Override
-    public final int describeContents() {
-        return 0;
     }
 
     @Override
@@ -100,11 +95,23 @@ public final class FixSchema extends SchemaImp {
 
     public final static class Builder extends BuilderImp {
 
+        public static final Creator<Builder> CREATOR = new Creator<Builder>() {
+            @Override
+            public Builder createFromParcel(Parcel in) {
+                return new Builder(in);
+            }
+
+            @Override
+            public Builder[] newArray(int size) {
+                return new Builder[size];
+            }
+        };
+
         private Double fix;
 
         public static final Builder deserialize(JsonObject json){
             Builder builder = new Builder();
-            builder.fix = json.get(FIX).getAsDouble();
+            builder.fix = json.get(Parameter.FIX).getAsDouble();
 
             return builder;
         }
@@ -113,6 +120,24 @@ public final class FixSchema extends SchemaImp {
             super(SchemaType.FIX);
 
             this.fix = null;
+        }
+
+        private Builder(Parcel in) {
+            super(in);
+
+            this.fix = in.readByte() != 0 ? in.readDouble() : null;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+
+            if(this.fix == null) {
+                dest.writeByte((byte) 0);
+            } else {
+                dest.writeByte((byte) 1);
+                dest.writeDouble(this.fix);
+            }
         }
 
         @Override
