@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import pt.hdn.contract.annotations.SchemaType;
 import pt.hdn.contract.annotations.SourceType;
+import pt.hdn.contract.annotations.Parameter;
 
 import static pt.hdn.contract.annotations.Parameter.CUT;
 import static pt.hdn.contract.annotations.Parameter.LOWER_BOUND;
@@ -34,10 +35,10 @@ public final class CommissionSchema extends SchemaImp {
 
     public static final CommissionSchema deserialize(JsonObject json){
         Builder builder = new Builder();
-        builder.cut = json.get(CUT).getAsDouble();
-        builder.source = json.get(SOURCE).getAsInt();
-        builder.lowerBound = json.has(LOWER_BOUND) ? json.get(LOWER_BOUND).getAsDouble() : null;
-        builder.upperBound = json.has(UPPER_BOUND) ? json.get(UPPER_BOUND).getAsDouble() : null;
+        builder.cut = json.get(Parameter.CUT).getAsDouble();
+        builder.source = json.get(Parameter.SOURCE).getAsInt();
+        builder.lowerBound = json.has(Parameter.LOWER_BOUND) ? json.get(Parameter.LOWER_BOUND).getAsDouble() : null;
+        builder.upperBound = json.has(Parameter.UPPER_BOUND) ? json.get(Parameter.UPPER_BOUND).getAsDouble() : null;
 
         return new CommissionSchema(builder);
     }
@@ -153,6 +154,15 @@ public final class CommissionSchema extends SchemaImp {
         private Double lowerBound;
         private Double upperBound;
 
+        public static final Builder deserialize(JsonObject json){
+            Builder builder = new Builder();
+            builder.cut = json.get(Parameter.CUT).getAsDouble();
+            builder.lowerBound = json.has(Parameter.LOWER_BOUND) ? json.get(Parameter.LOWER_BOUND).getAsDouble() : null;
+            builder.upperBound = json.has(Parameter.UPPER_BOUND) ? json.get(Parameter.UPPER_BOUND).getAsDouble() : null;
+
+            return builder;
+        }
+
         public Builder(){
             super(SchemaType.COMMISSION);
 
@@ -185,7 +195,19 @@ public final class CommissionSchema extends SchemaImp {
 
         @Override
         public final boolean validate() {
-            return this.cut != null && this.source != null;
+            if(this.cut == null) {
+                return false;
+            } else if(this.cut <= 0 || this.cut > 0) {
+                return false;
+            } else if(this.lowerBound != null && this.lowerBound < 0) {
+                return false;
+            } else if(this.upperBound != null && this.upperBound < 0) {
+                return false;
+            } else if(this.lowerBound != null && this.upperBound != null && this.upperBound <= this.lowerBound) {
+                return false;
+            } else {
+                return true;
+            }
         }
 
         public final boolean hasCut(){

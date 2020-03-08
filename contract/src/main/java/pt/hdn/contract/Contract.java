@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 import pt.hdn.contract.adapters.RecurrenceDateTypeAdapter;
+import pt.hdn.contract.adapters.SchemaBuilderTypeAdapter;
 import pt.hdn.contract.adapters.SchemaTypeAdapter;
 import pt.hdn.contract.adapters.SignatureTypeAdapter;
 import pt.hdn.contract.adapters.TimestampTypeAdapter;
@@ -58,11 +59,11 @@ public final class Contract implements Parcelable {
     private static GsonBuilder gsonBuilder;
     private final List<Task> tasks;
     private final Recurrence recurrence;
-    private Instant buyerDeputyTimestamp;
-    private Instant buyerTimestamp;
-    private Instant sellerDeputyTimestamp;
-    private Instant sellerTimestamp;
-    private Instant witnessTimestamp;
+    private ZonedDateTime buyerDeputyTimestamp;
+    private ZonedDateTime buyerTimestamp;
+    private ZonedDateTime sellerDeputyTimestamp;
+    private ZonedDateTime sellerTimestamp;
+    private ZonedDateTime witnessTimestamp;
     private byte[] buyerDeputySignature;
     private byte[] buyerSignature;
     private byte[] sellerDeputySignature;
@@ -78,6 +79,7 @@ public final class Contract implements Parcelable {
         if(gsonBuilder == null){
             Contract.gsonBuilder = new GsonBuilder()
                     .excludeFieldsWithModifiers(STATIC)
+                    .registerTypeHierarchyAdapter(Schema.Builder.class, new SchemaBuilderTypeAdapter())
                     .registerTypeHierarchyAdapter(Schema.class, new SchemaTypeAdapter())
                     .registerTypeHierarchyAdapter(Instant.class, new TimestampTypeAdapter())
                     .registerTypeHierarchyAdapter(byte[].class, new SignatureTypeAdapter())
@@ -95,15 +97,15 @@ public final class Contract implements Parcelable {
     private Contract(Parcel in) {
         this.tasks = in.createTypedArrayList(Task.CREATOR);
         this.recurrence = in.readParcelable(Recurrence.class.getClassLoader());
-        this.buyerTimestamp = in.readByte() != 0 ? Instant.parse(in.readString()) : null;
+        this.buyerTimestamp = in.readByte() != 0 ? ZonedDateTime.parse(in.readString()) : null;
         this.buyerSignature = in.readByte() != 0 ? in.createByteArray() : null;
-        this.buyerDeputyTimestamp = in.readByte() != 0 ? Instant.parse(in.readString()) : null;
+        this.buyerDeputyTimestamp = in.readByte() != 0 ? ZonedDateTime.parse(in.readString()) : null;
         this.buyerDeputySignature = in.readByte() != 0 ? in.createByteArray() : null;
-        this.sellerTimestamp = in.readByte() != 0 ? Instant.parse(in.readString()) : null;
+        this.sellerTimestamp = in.readByte() != 0 ? ZonedDateTime.parse(in.readString()) : null;
         this.sellerSignature = in.readByte() != 0 ? in.createByteArray() : null;
-        this.sellerDeputyTimestamp = in.readByte() != 0 ? Instant.parse(in.readString()) : null;
+        this.sellerDeputyTimestamp = in.readByte() != 0 ? ZonedDateTime.parse(in.readString()) : null;
         this.sellerDeputySignature = in.readByte() != 0 ? in.createByteArray() : null;
-        this.witnessTimestamp = in.readByte() != 0 ? Instant.parse(in.readString()) : null;
+        this.witnessTimestamp = in.readByte() != 0 ? ZonedDateTime.parse(in.readString()) : null;
         this.witnessSignature = in.readByte() != 0 ? in.createByteArray() : null;
     }
 
@@ -233,7 +235,7 @@ public final class Contract implements Parcelable {
     }
 
     public final String setBuyerDeputySignature(PrivateKey privateKey){
-        this.buyerDeputyTimestamp = Instant.now();
+        this.buyerDeputyTimestamp = ZonedDateTime.now();
         this.buyerDeputySignature = sign(privateKey, BUYER_DEPUTY_TIMESTAMP);
 
         return toJson();
@@ -244,7 +246,7 @@ public final class Contract implements Parcelable {
     }
 
     public final String setBuyerSignature(PrivateKey privateKey){
-        this.buyerTimestamp = Instant.now();
+        this.buyerTimestamp = ZonedDateTime.now();
         this.buyerSignature = sign(privateKey, BUYER_TIMESTAMP);
 
         return toJson();
@@ -255,7 +257,7 @@ public final class Contract implements Parcelable {
     }
 
     public final String setSellerDeputySignature(PrivateKey privateKey){
-        this.sellerDeputyTimestamp = Instant.now();
+        this.sellerDeputyTimestamp = ZonedDateTime.now();
         this.sellerDeputySignature = sign(privateKey, SELLER_DEPUTY_TIMESTAMP);
 
         return toJson();
@@ -266,7 +268,7 @@ public final class Contract implements Parcelable {
     }
 
     public final String setSellerSignature(PrivateKey privateKey){
-        this.sellerTimestamp = Instant.now();
+        this.sellerTimestamp = ZonedDateTime.now();
         this.sellerSignature = sign(privateKey, SELLER_TIMESTAMP);
 
         return toJson();

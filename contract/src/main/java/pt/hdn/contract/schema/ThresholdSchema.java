@@ -7,12 +7,8 @@ import com.google.gson.JsonObject;
 import java.util.Objects;
 
 import pt.hdn.contract.annotations.SchemaType;
-import pt.hdn.contract.annotations.SourceType;
-
-import static pt.hdn.contract.annotations.Parameter.BONUS;
-import static pt.hdn.contract.annotations.Parameter.NEGATIVE_THRESHOLD;
-import static pt.hdn.contract.annotations.Parameter.POSITIVE_THRESHOLD;
-import static pt.hdn.contract.annotations.Parameter.SOURCE;
+import pt.hdn.contract.annotations.SourceType;;
+import pt.hdn.contract.annotations.Parameter;
 
 public final class ThresholdSchema extends SchemaImp {
 
@@ -35,10 +31,10 @@ public final class ThresholdSchema extends SchemaImp {
 
     public static final ThresholdSchema deserialize(JsonObject json){
         Builder builder = new Builder();
-        builder.bonus = json.get(BONUS).getAsDouble();
-        builder.source = json.get(SOURCE).getAsInt();
-        builder.positiveThreshold = json.has(POSITIVE_THRESHOLD) ? json.get(POSITIVE_THRESHOLD).getAsDouble() : null;
-        builder.negativeThreshold = json.has(NEGATIVE_THRESHOLD) ? json.get(NEGATIVE_THRESHOLD).getAsDouble() : null;
+        builder.bonus = json.get(Parameter.BONUS).getAsDouble();
+        builder.source = json.get(Parameter.SOURCE).getAsInt();
+        builder.positiveThreshold = json.has(Parameter.POSITIVE_THRESHOLD) ? json.get(Parameter.POSITIVE_THRESHOLD).getAsDouble() : null;
+        builder.negativeThreshold = json.has(Parameter.NEGATIVE_THRESHOLD) ? json.get(Parameter.NEGATIVE_THRESHOLD).getAsDouble() : null;
 
         return new ThresholdSchema(builder);
     }
@@ -166,6 +162,15 @@ public final class ThresholdSchema extends SchemaImp {
         private @SourceType Integer source;
         private Double positiveThreshold;
         private Double negativeThreshold;
+
+        public static final Builder deserialize(JsonObject json){
+            Builder builder = new Builder();
+            builder.bonus = json.get(Parameter.BONUS).getAsDouble();
+            builder.positiveThreshold = json.has(Parameter.POSITIVE_THRESHOLD) ? json.get(Parameter.POSITIVE_THRESHOLD).getAsDouble() : null;
+            builder.negativeThreshold = json.has(Parameter.NEGATIVE_THRESHOLD) ? json.get(Parameter.NEGATIVE_THRESHOLD).getAsDouble() : null;
+
+            return builder;
+        }
 
         public Builder(){
             super(SchemaType.THRESHOLD);

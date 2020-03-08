@@ -8,9 +8,7 @@ import java.util.Objects;
 
 import pt.hdn.contract.annotations.SchemaType;
 import pt.hdn.contract.annotations.SourceType;
-
-import static pt.hdn.contract.annotations.Parameter.RATE;
-import static pt.hdn.contract.annotations.Parameter.SOURCE;
+import pt.hdn.contract.annotations.Parameter;
 
 public final class RateSchema extends SchemaImp {
 
@@ -30,8 +28,8 @@ public final class RateSchema extends SchemaImp {
 
     public static final RateSchema deserialize(JsonObject json){
         Builder builder = new Builder();
-        builder.rate = json.get(RATE).getAsDouble();
-        builder.source = json.get(SOURCE).getAsInt();
+        builder.rate = json.get(Parameter.RATE).getAsDouble();
+        builder.source = json.get(Parameter.SOURCE).getAsInt();
 
         return new RateSchema(builder);
     }
@@ -107,10 +105,18 @@ public final class RateSchema extends SchemaImp {
         private Double rate;
         private @SourceType Integer source;
 
+        public static final Builder deserialize(JsonObject json){
+            Builder builder = new Builder();
+            builder.rate = json.get(Parameter.RATE).getAsDouble();
+
+            return builder;
+        }
+
         public Builder(){
             super(SchemaType.RATE);
 
             this.rate = null;
+            this.source = null;
         }
 
         @Override
@@ -119,6 +125,10 @@ public final class RateSchema extends SchemaImp {
                 throw new SchemaException("The rate is missing.");
             } else if(this.rate < 0) {
                 throw new SchemaException("Value needs to be positive.");
+            } else if(this.source == null) {
+                throw new SchemaException("The source is missing.");
+            } else if(this.source < 0) {
+                throw new SchemaException("Source needs to be positive.");
             } else {
                 return new RateSchema(this);
             }
@@ -126,7 +136,7 @@ public final class RateSchema extends SchemaImp {
 
         @Override
         public final boolean validate() {
-            return this.rate != null;
+            return this.rate != null && this.rate > 0;
         }
 
         public final boolean hasRate(){

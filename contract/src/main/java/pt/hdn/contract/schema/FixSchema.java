@@ -102,6 +102,13 @@ public final class FixSchema extends SchemaImp {
 
         private Double fix;
 
+        public static final Builder deserialize(JsonObject json){
+            Builder builder = new Builder();
+            builder.fix = json.get(FIX).getAsDouble();
+
+            return builder;
+        }
+
         public Builder(){
             super(SchemaType.FIX);
 
@@ -121,7 +128,7 @@ public final class FixSchema extends SchemaImp {
 
         @Override
         public final boolean validate() {
-            return this.fix != null;
+            return this.fix != null && this.fix > 0;
         }
 
         public final boolean hasValue(){
