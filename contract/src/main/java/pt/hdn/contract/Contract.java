@@ -14,7 +14,6 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.security.SignatureException;
-import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,22 +22,13 @@ import java.util.List;
 import java.util.Objects;
 
 import pt.hdn.contract.adapters.RecurrenceDateTypeAdapter;
-import pt.hdn.contract.adapters.SchemaBuilderTypeAdapter;
 import pt.hdn.contract.adapters.SchemaTypeAdapter;
 import pt.hdn.contract.adapters.SignatureTypeAdapter;
-import pt.hdn.contract.adapters.TimestampTypeAdapter;
+import pt.hdn.contract.annotations.Status;
+import pt.hdn.contract.annotations.Field;
 import pt.hdn.contract.schema.Schema;
 
 import static java.lang.reflect.Modifier.STATIC;
-import static pt.hdn.contract.annotations.Contract.ALGORITHM;
-import static pt.hdn.contract.annotations.Contract.BUYER;
-import static pt.hdn.contract.annotations.Contract.BUYER_DEPUTY_TIMESTAMP;
-import static pt.hdn.contract.annotations.Contract.BUYER_TIMESTAMP;
-import static pt.hdn.contract.annotations.Contract.SELLER;
-import static pt.hdn.contract.annotations.Contract.SELLER_DEPUTY_TIMESTAMP;
-import static pt.hdn.contract.annotations.Contract.SELLER_TIMESTAMP;
-import static pt.hdn.contract.annotations.Contract.WITNESS;
-import static pt.hdn.contract.annotations.Contract.WITNESS_TIMESTAMP;
 
 public final class Contract implements Parcelable {
 
@@ -79,9 +69,7 @@ public final class Contract implements Parcelable {
         if(gsonBuilder == null){
             Contract.gsonBuilder = new GsonBuilder()
                     .excludeFieldsWithModifiers(STATIC)
-                    .registerTypeHierarchyAdapter(Schema.Builder.class, new SchemaBuilderTypeAdapter())
                     .registerTypeHierarchyAdapter(Schema.class, new SchemaTypeAdapter())
-                    .registerTypeHierarchyAdapter(Instant.class, new TimestampTypeAdapter())
                     .registerTypeHierarchyAdapter(byte[].class, new SignatureTypeAdapter())
                     .registerTypeHierarchyAdapter(ZonedDateTime.class, new RecurrenceDateTypeAdapter());
         }
@@ -236,50 +224,60 @@ public final class Contract implements Parcelable {
 
     public final String setBuyerDeputySignature(PrivateKey privateKey){
         this.buyerDeputyTimestamp = ZonedDateTime.now();
-        this.buyerDeputySignature = sign(privateKey, BUYER_DEPUTY_TIMESTAMP);
+        this.buyerDeputySignature = sign(privateKey, Field.BUYER_DEPUTY_TIMESTAMP);
 
         return toJson();
     }
 
     public final boolean validateBuyerDeputySignature(PublicKey publicKey){
-        return validate(publicKey, buyerDeputySignature, BUYER_DEPUTY_TIMESTAMP);
+        return validate(publicKey, buyerDeputySignature, Field.BUYER_DEPUTY_TIMESTAMP);
     }
 
     public final String setBuyerSignature(PrivateKey privateKey){
         this.buyerTimestamp = ZonedDateTime.now();
-        this.buyerSignature = sign(privateKey, BUYER_TIMESTAMP);
+        this.buyerSignature = sign(privateKey, Field.BUYER_TIMESTAMP);
 
         return toJson();
     }
 
     public final boolean validateBuyerSignature(PublicKey publicKey){
-        return validate(publicKey, buyerSignature, BUYER_TIMESTAMP);
+        return validate(publicKey, buyerSignature, Field.BUYER_TIMESTAMP);
     }
 
     public final String setSellerDeputySignature(PrivateKey privateKey){
         this.sellerDeputyTimestamp = ZonedDateTime.now();
-        this.sellerDeputySignature = sign(privateKey, SELLER_DEPUTY_TIMESTAMP);
+        this.sellerDeputySignature = sign(privateKey, Field.SELLER_DEPUTY_TIMESTAMP);
 
         return toJson();
     }
 
     public final boolean validateSellerDeputySignature(PublicKey publicKey){
-        return validate(publicKey, sellerDeputySignature, SELLER_DEPUTY_TIMESTAMP);
+        return validate(publicKey, sellerDeputySignature, Field.SELLER_DEPUTY_TIMESTAMP);
     }
 
     public final String setSellerSignature(PrivateKey privateKey){
         this.sellerTimestamp = ZonedDateTime.now();
-        this.sellerSignature = sign(privateKey, SELLER_TIMESTAMP);
+        this.sellerSignature = sign(privateKey, Field.SELLER_TIMESTAMP);
 
         return toJson();
     }
 
     public final boolean validateSellerSignature(PublicKey publicKey){
-        return validate(publicKey, sellerSignature, SELLER_TIMESTAMP);
+        return validate(publicKey, sellerSignature, Field.SELLER_TIMESTAMP);
     }
 
     public final boolean validateWitnessSignature(PublicKey publicKey){
-        return validate(publicKey, witnessSignature, WITNESS_TIMESTAMP);
+        return validate(publicKey, witnessSignature, Field.WITNESS_TIMESTAMP);
+    }
+
+    public final @Status int getStatus(){
+        if(sellerSignature == null || buyerSignature == null) {
+            return Status.PENDING;
+        } else if(recurrence.getFinish() != null && recurrence.getFinish().isBefore(ZonedDateTime.now())) {
+            return Status.EXPIRED;
+        } else {
+            return Status.INVALID;
+        }
     }
 
     public final String toJson(){
@@ -307,7 +305,7 @@ public final class Contract implements Parcelable {
             public boolean shouldSkipField(FieldAttributes f) {
                 String fieldName = f.getName();
 
-                return (fieldName.startsWith(BUYER) | fieldName.startsWith(SELLER) | fieldName.startsWith(WITNESS)) && !fieldName.equals(field);
+                return (fieldName.startsWith(Field.BUYER) | fieldName.startsWith(Field.SELLER) | fieldName.startsWith(Field.WITNESS)) && !fieldName.equals(field);
             }
 
             @Override
@@ -323,7 +321,7 @@ public final class Contract implements Parcelable {
         boolean valid = false;
 
         try {
-            Signature signature = java.security.Signature.getInstance(ALGORITHM);
+            Signature signature = java.security.Signature.getInstance("SHA512withRSA");
             signature.initVerify(publicKey);
             signature.update(thisToBytes(field));
 
@@ -339,7 +337,7 @@ public final class Contract implements Parcelable {
         byte[] bytes = new byte[0];
 
         try {
-            Signature signature = java.security.Signature.getInstance(ALGORITHM);
+            Signature signature = java.security.Signature.getInstance("SHA512withRSA");
             signature.initSign(privateKey);
             signature.update(thisToBytes(field));
 

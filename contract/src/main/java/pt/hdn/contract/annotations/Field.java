@@ -7,9 +7,8 @@ import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 @Retention(SOURCE)
-@StringDef({Contract.ALGORITHM, Contract.BUYER, Contract.SELLER, Contract.SELLER_TIMESTAMP, Contract.WITNESS, Contract.WITNESS_TIMESTAMP, Contract.BUYER_DEPUTY_TIMESTAMP, Contract.SELLER_DEPUTY_TIMESTAMP})
-public @interface Contract {
-    String ALGORITHM = "SHA512withRSA";
+@StringDef({Field.BUYER, Field.SELLER, Field.SELLER_TIMESTAMP, Field.WITNESS, Field.WITNESS_TIMESTAMP, Field.BUYER_DEPUTY_TIMESTAMP, Field.SELLER_DEPUTY_TIMESTAMP})
+public @interface Field {
     String BUYER  = "buyer";
     String SELLER  = "seller";
     String WITNESS  = "witness";
