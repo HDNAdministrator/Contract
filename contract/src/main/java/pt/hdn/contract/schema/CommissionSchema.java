@@ -233,7 +233,7 @@ public final class CommissionSchema extends SchemaImp {
         public final boolean validate() {
             if(this.cut == null) {
                 return false;
-            } else if(this.cut <= 0 || this.cut > 0) {
+            } else if(this.cut <= 0 || this.cut > 1) {
                 return false;
             } else if(this.lowerBound != null && this.lowerBound < 0) {
                 return false;

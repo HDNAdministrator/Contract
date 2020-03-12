@@ -276,7 +276,7 @@ public final class Contract implements Parcelable {
         } else if(recurrence.getFinish() != null && recurrence.getFinish().isBefore(ZonedDateTime.now())) {
             return Status.EXPIRED;
         } else {
-            return Status.INVALID;
+            return Status.VALID;
         }
     }
 
