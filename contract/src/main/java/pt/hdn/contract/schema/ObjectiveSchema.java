@@ -96,11 +96,6 @@ public final class ObjectiveSchema extends SchemaImp {
     }
 
     @Override
-    public final double calculate() {
-        throw new RuntimeException("Schema depends on external values.");
-    }
-
-    @Override
     public final double calculate(double value){
         return (this.upperBound == null || value <= this.upperBound) ? ((this.lowerBound == null || this.lowerBound <= value) ? this.bonus : 0d) : 0d;
     }

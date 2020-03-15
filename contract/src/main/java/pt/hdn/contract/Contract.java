@@ -65,7 +65,7 @@ public final class Contract implements Parcelable {
         return Contract.gsonBuilder().create().fromJson(json, Contract.class);
     }
 
-    public static GsonBuilder gsonBuilder(){
+    public static final GsonBuilder gsonBuilder(){
         if(gsonBuilder == null){
             Contract.gsonBuilder = new GsonBuilder()
                     .excludeFieldsWithModifiers(STATIC)

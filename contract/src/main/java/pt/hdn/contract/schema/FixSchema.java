@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import pt.hdn.contract.annotations.SchemaType;
 import pt.hdn.contract.annotations.Parameter;
+import pt.hdn.contract.annotations.SourceType;
 
 
 public final class FixSchema extends SchemaImp {
@@ -34,7 +35,7 @@ public final class FixSchema extends SchemaImp {
     }
 
     private FixSchema(Builder builder) {
-        super(SchemaType.FIX, null);
+        super(SchemaType.FIX, SourceType.NONE);
 
         this.fix = builder.fix;
     }
@@ -71,13 +72,8 @@ public final class FixSchema extends SchemaImp {
     }
 
     @Override
-    public final double calculate() {
+    public final double calculate(double toBeIgnored) {
         return this.fix;
-    }
-
-    @Override
-    public final double calculate(double value) {
-        throw new RuntimeException("Schema doesn't depend on any external values.");
     }
 
     @Override

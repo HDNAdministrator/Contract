@@ -102,11 +102,6 @@ public final class ThresholdSchema extends SchemaImp {
     }
 
     @Override
-    public final double calculate() {
-        throw new RuntimeException("Schema depends on external values.");
-    }
-
-    @Override
     public final double calculate(double value){
         if((this.negativeThreshold == null || value <= this.negativeThreshold) || (this.positiveThreshold == null || this.positiveThreshold <= value)){
             this.accomplish = true;

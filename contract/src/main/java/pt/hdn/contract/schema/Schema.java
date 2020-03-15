@@ -10,8 +10,6 @@ public interface Schema {
 
     double calculate(double value);
 
-    double calculate();
-
     Schema.Builder rebuild();
 
     interface Builder {

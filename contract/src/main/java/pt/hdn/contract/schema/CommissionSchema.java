@@ -96,11 +96,6 @@ public final class CommissionSchema extends SchemaImp {
     }
 
     @Override
-    public final double calculate() {
-        throw new RuntimeException("Schema depends on external value.");
-    }
-
-    @Override
     public final double calculate(double value){
         return (this.upperBound == null || value <= this.upperBound) ? ((this.lowerBound == null || this.lowerBound < value) ? value * this.cut : 0d) : 0d;
     }

@@ -72,11 +72,6 @@ public final class RateSchema extends SchemaImp {
     }
 
     @Override
-    public final double calculate() {
-        throw new RuntimeException("Schema depends on external value.");
-    }
-
-    @Override
     public final double calculate(double value) {
         return this.rate * value;
     }
