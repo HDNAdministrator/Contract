@@ -221,7 +221,7 @@ public final class ThresholdSchema extends SchemaImp {
         public final ThresholdSchema create() throws SchemaException{
             if(this.bonus == null) {
                 throw new SchemaException("The bonus is missing.");
-            } else if(this.bonus < 0) {
+            } else if(this.bonus <= 0) {
                 throw new SchemaException("Bonus needs to be positive.");
             } else if(this.source == null) {
                 throw new SchemaException("The source is missing.");
@@ -240,7 +240,17 @@ public final class ThresholdSchema extends SchemaImp {
 
         @Override
         public final boolean validate() {
-            return this.bonus != null && this.source != null;
+            if(this.bonus == null || this.bonus <= 0){
+                return false;
+            } else if((this.positiveThreshold == null) == (this.negativeThreshold == null)){
+                return false;
+            } else if(this.positiveThreshold != null && this.positiveThreshold < 0){
+                return false;
+            } else if(this.negativeThreshold != null && this.negativeThreshold < 0){
+                return false;
+            } else {
+                return true;
+            }
         }
 
         public final boolean hasBonus(){

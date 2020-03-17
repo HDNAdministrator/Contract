@@ -207,7 +207,7 @@ public final class CommissionSchema extends SchemaImp {
         public final CommissionSchema create() throws SchemaException{
             if(this.cut == null) {
                 throw new SchemaException("The cut is missing.");
-            } else if(this.cut < 0 || this.cut > 1) {
+            } else if(this.cut <= 0 || this.cut > 1) {
                 throw new SchemaException("Cut can only be between 0 and 1.");
             } else if(this.source == null) {
                 throw new SchemaException("The source is missing.");
@@ -226,9 +226,7 @@ public final class CommissionSchema extends SchemaImp {
 
         @Override
         public final boolean validate() {
-            if(this.cut == null) {
-                return false;
-            } else if(this.cut <= 0 || this.cut > 1) {
+            if(this.cut == null || this.cut <= 0 || this.cut > 1) {
                 return false;
             } else if(this.lowerBound != null && this.lowerBound < 0) {
                 return false;

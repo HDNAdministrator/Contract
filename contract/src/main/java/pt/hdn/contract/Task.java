@@ -137,11 +137,11 @@ public final class Task implements Parcelable {
             return this;
         }
 
-        public final Builder addSchemaBuilder(Schema.Builder... builders){
-            return addSchemaBuilder(Arrays.asList(builders));
+        public final Builder addSchemaBuilders(Schema.Builder... builders){
+            return addSchemaBuilders(Arrays.asList(builders));
         }
 
-        public final Builder addSchemaBuilder(List<Schema.Builder> builders){
+        public final Builder addSchemaBuilders(List<Schema.Builder> builders){
             this.schemaBuilders.addAll(builders);
 
             return this;

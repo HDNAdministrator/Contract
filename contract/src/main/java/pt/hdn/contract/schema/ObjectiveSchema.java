@@ -207,7 +207,7 @@ public final class ObjectiveSchema extends SchemaImp {
         public final ObjectiveSchema create() throws SchemaException{
             if(this.bonus == null) {
                 throw new SchemaException("The bonus is missing.");
-            } else if(this.bonus < 0) {
+            } else if(this.bonus <= 0) {
                 throw new SchemaException("Bonus needs to be positive.");
             } else if(this.source == null) {
                 throw new SchemaException("The source is missing.");
@@ -226,9 +226,7 @@ public final class ObjectiveSchema extends SchemaImp {
 
         @Override
         public final boolean validate() {
-            if(this.bonus == null) {
-                return false;
-            } else if(this.bonus <= 0 || this.bonus > 0) {
+            if(this.bonus == null || this.bonus <= 0) {
                 return false;
             } else if(this.lowerBound != null && this.lowerBound < 0) {
                 return false;

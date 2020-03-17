@@ -372,7 +372,7 @@ public final class Contract implements Parcelable {
             return this;
         }
 
-        public final Builder addTaskBuilder(Task.Builder... builders){
+        public final Builder addTaskBuilders(Task.Builder... builders){
             return addTaskBuilders(Arrays.asList(builders));
         }
 

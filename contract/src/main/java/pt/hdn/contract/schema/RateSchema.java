@@ -142,7 +142,7 @@ public final class RateSchema extends SchemaImp {
         public final RateSchema create() throws SchemaException{
             if(this.rate == null) {
                 throw new SchemaException("The rate is missing.");
-            } else if(this.rate < 0) {
+            } else if(this.rate <= 0) {
                 throw new SchemaException("Value needs to be positive.");
             } else if(this.source == null) {
                 throw new SchemaException("The source is missing.");
