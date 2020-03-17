@@ -21,9 +21,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import pt.hdn.contract.adapters.RecurrenceDateTypeAdapter;
+import pt.hdn.contract.adapters.ZonedDateTimeTypeAdapter;
 import pt.hdn.contract.adapters.SchemaTypeAdapter;
-import pt.hdn.contract.adapters.SignatureTypeAdapter;
+import pt.hdn.contract.adapters.ByteArrayTypeAdapter;
 import pt.hdn.contract.annotations.Status;
 import pt.hdn.contract.annotations.Field;
 import pt.hdn.contract.schema.Schema;
@@ -70,8 +70,8 @@ public final class Contract implements Parcelable {
             Contract.gsonBuilder = new GsonBuilder()
                     .excludeFieldsWithModifiers(STATIC)
                     .registerTypeHierarchyAdapter(Schema.class, new SchemaTypeAdapter())
-                    .registerTypeHierarchyAdapter(byte[].class, new SignatureTypeAdapter())
-                    .registerTypeHierarchyAdapter(ZonedDateTime.class, new RecurrenceDateTypeAdapter());
+                    .registerTypeHierarchyAdapter(byte[].class, new ByteArrayTypeAdapter())
+                    .registerTypeHierarchyAdapter(ZonedDateTime.class, new ZonedDateTimeTypeAdapter());
         }
 
         return gsonBuilder;

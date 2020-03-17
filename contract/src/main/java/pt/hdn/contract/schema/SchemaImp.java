@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import pt.hdn.contract.annotations.SchemaType;
 import pt.hdn.contract.annotations.SourceType;
 
-public abstract class SchemaImp implements Schema, Parcelable {
+public abstract class SchemaImp implements Schema {
 
     private final @SchemaType int type;
     final @SourceType Integer source;
@@ -48,7 +48,7 @@ public abstract class SchemaImp implements Schema, Parcelable {
         return this.source;
     }
 
-    public abstract static class BuilderImp implements Schema.Builder, Parcelable{
+    public abstract static class BuilderImp implements Schema.Builder{
 
         final int type;
 

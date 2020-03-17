@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 
 import static android.util.Base64.DEFAULT;
 
-public final class SignatureTypeAdapter implements JsonSerializer<byte[]>, JsonDeserializer<byte[]> {
+public final class ByteArrayTypeAdapter implements JsonSerializer<byte[]>, JsonDeserializer<byte[]> {
     @Override
     public final byte[] deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         return Base64.decode(json.getAsString(), DEFAULT);
