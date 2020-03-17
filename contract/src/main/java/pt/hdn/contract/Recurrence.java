@@ -447,7 +447,7 @@ public final class Recurrence implements Parcelable {
                 }
             }
 
-            return this.start != null && (this.finish == null || this.start.isAfter(this.finish));
+            return this.start != null && (this.finish == null || this.finish.isAfter(this.start) || this.finish.equals(this.start));
         }
 
         public final Recurrence create() throws RecurrenceException{
