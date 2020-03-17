@@ -9,6 +9,7 @@ import androidx.arch.core.util.Function;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -132,6 +133,16 @@ public final class Task implements Parcelable {
 
         public final Builder addSchemaBuilder(Schema.Builder builder){
             this.schemaBuilders.add(builder);
+
+            return this;
+        }
+
+        public final Builder addSchemaBuilder(Schema.Builder... builders){
+            return addSchemaBuilder(Arrays.asList(builders));
+        }
+
+        public final Builder addSchemaBuilder(List<Schema.Builder> builders){
+            this.schemaBuilders.addAll(builders);
 
             return this;
         }

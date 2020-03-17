@@ -372,6 +372,16 @@ public final class Contract implements Parcelable {
             return this;
         }
 
+        public final Builder addTaskBuilder(Task.Builder... builders){
+            return addTaskBuilders(Arrays.asList(builders));
+        }
+
+        public final Builder addTaskBuilders(List<Task.Builder> builders){
+            this.taskBuilders.addAll(builders);
+
+            return this;
+        }
+
         public final Recurrence.Builder getRecurrenceBuilder() {
             return recurrenceBuilder;
         }
