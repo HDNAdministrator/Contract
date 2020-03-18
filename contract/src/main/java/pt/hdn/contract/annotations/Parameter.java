@@ -13,7 +13,7 @@ public @interface Parameter {
     String RATE = "rate";
     String CUT = "cut";
     String BONUS = "bonus";
-    String SOURCE = "Source";
+    String SOURCE = "source";
     String LOWER_BOUND = "lowerBound";
     String UPPER_BOUND = "upperBound";
     String POSITIVE_THRESHOLD = "positiveThreshold";
