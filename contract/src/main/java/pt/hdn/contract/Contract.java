@@ -24,6 +24,7 @@ import java.util.Objects;
 import pt.hdn.contract.adapters.ZonedDateTimeTypeAdapter;
 import pt.hdn.contract.adapters.SchemaTypeAdapter;
 import pt.hdn.contract.adapters.ByteArrayTypeAdapter;
+import pt.hdn.contract.annotations.Algorithm;
 import pt.hdn.contract.annotations.Status;
 import pt.hdn.contract.annotations.Field;
 import pt.hdn.contract.schema.Schema;
@@ -33,6 +34,7 @@ import static java.lang.reflect.Modifier.STATIC;
 public final class Contract implements Parcelable {
 
     //region vars
+    private static final String TAG = "Contract";
     public static final Creator<Contract> CREATOR = new Creator<Contract>() {
         @Override
         public Contract createFromParcel(Parcel in) {
@@ -45,7 +47,6 @@ public final class Contract implements Parcelable {
         }
     };
 
-    private static final String TAG = "Contract";
     private static GsonBuilder gsonBuilder;
     private final List<Task> tasks;
     private final Recurrence recurrence;
@@ -61,13 +62,13 @@ public final class Contract implements Parcelable {
     private byte[] witnessSignature;
     //endregion vars
 
-    public static Contract from(String json){
+    public static Contract from(String json) {
         return Contract.gsonBuilder().create().fromJson(json, Contract.class);
     }
 
-    public static final GsonBuilder gsonBuilder(){
-        if(gsonBuilder == null){
-            Contract.gsonBuilder = new GsonBuilder()
+    public static final GsonBuilder gsonBuilder() {
+        if (gsonBuilder == null) {
+            gsonBuilder = new GsonBuilder()
                     .excludeFieldsWithModifiers(STATIC)
                     .registerTypeHierarchyAdapter(Schema.class, new SchemaTypeAdapter())
                     .registerTypeHierarchyAdapter(byte[].class, new ByteArrayTypeAdapter())
@@ -102,70 +103,70 @@ public final class Contract implements Parcelable {
         dest.writeTypedList(tasks);
         dest.writeParcelable(recurrence, flags);
 
-        if(buyerTimestamp == null){
+        if (buyerTimestamp == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeString(buyerTimestamp.toString());
         }
 
-        if(buyerSignature == null){
+        if (buyerSignature == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeByteArray(buyerSignature);
         }
 
-        if(buyerDeputyTimestamp == null){
+        if (buyerDeputyTimestamp == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeString(buyerDeputyTimestamp.toString());
         }
 
-        if(buyerDeputySignature == null){
+        if (buyerDeputySignature == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeByteArray(buyerDeputySignature);
         }
 
-        if(sellerTimestamp == null){
+        if (sellerTimestamp == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeString(sellerTimestamp.toString());
         }
 
-        if(sellerSignature == null){
+        if (sellerSignature == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeByteArray(sellerSignature);
         }
 
-        if(sellerDeputyTimestamp == null){
+        if (sellerDeputyTimestamp == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeString(sellerDeputyTimestamp.toString());
         }
 
-        if(sellerDeputySignature == null){
+        if (sellerDeputySignature == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeByteArray(sellerDeputySignature);
         }
 
-        if(witnessTimestamp == null){
+        if (witnessTimestamp == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeString(witnessTimestamp.toString());
         }
 
-        if(witnessSignature == null){
+        if (witnessSignature == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
@@ -214,92 +215,93 @@ public final class Contract implements Parcelable {
         return result;
     }
 
-    public final List<Task> getTasks(){
+    public final List<Task> getTasks() {
         return tasks;
     }
 
-    public final Recurrence getRecurrence(){
+    public final Recurrence getRecurrence() {
         return recurrence;
     }
 
-    public final String setBuyerDeputySignature(PrivateKey privateKey){
+    public final String setBuyerDeputySignature(PrivateKey privateKey) {
         this.buyerDeputyTimestamp = ZonedDateTime.now();
         this.buyerDeputySignature = sign(privateKey, Field.BUYER_DEPUTY_TIMESTAMP);
 
         return toJson();
     }
 
-    public final boolean validateBuyerDeputySignature(PublicKey publicKey){
+    public final boolean validateBuyerDeputySignature(PublicKey publicKey) {
         return validate(publicKey, buyerDeputySignature, Field.BUYER_DEPUTY_TIMESTAMP);
     }
 
-    public final String setBuyerSignature(PrivateKey privateKey){
+    public final String setBuyerSignature(PrivateKey privateKey) {
         this.buyerTimestamp = ZonedDateTime.now();
         this.buyerSignature = sign(privateKey, Field.BUYER_TIMESTAMP);
 
         return toJson();
     }
 
-    public final boolean validateBuyerSignature(PublicKey publicKey){
+    public final boolean validateBuyerSignature(PublicKey publicKey) {
         return validate(publicKey, buyerSignature, Field.BUYER_TIMESTAMP);
     }
 
-    public final String setSellerDeputySignature(PrivateKey privateKey){
+    public final String setSellerDeputySignature(PrivateKey privateKey) {
         this.sellerDeputyTimestamp = ZonedDateTime.now();
         this.sellerDeputySignature = sign(privateKey, Field.SELLER_DEPUTY_TIMESTAMP);
 
         return toJson();
     }
 
-    public final boolean validateSellerDeputySignature(PublicKey publicKey){
+    public final boolean validateSellerDeputySignature(PublicKey publicKey) {
         return validate(publicKey, sellerDeputySignature, Field.SELLER_DEPUTY_TIMESTAMP);
     }
 
-    public final String setSellerSignature(PrivateKey privateKey){
+    public final String setSellerSignature(PrivateKey privateKey) {
         this.sellerTimestamp = ZonedDateTime.now();
         this.sellerSignature = sign(privateKey, Field.SELLER_TIMESTAMP);
 
         return toJson();
     }
 
-    public final boolean validateSellerSignature(PublicKey publicKey){
+    public final boolean validateSellerSignature(PublicKey publicKey) {
         return validate(publicKey, sellerSignature, Field.SELLER_TIMESTAMP);
     }
 
-    public final boolean validateWitnessSignature(PublicKey publicKey){
+    public final boolean validateWitnessSignature(PublicKey publicKey) {
         return validate(publicKey, witnessSignature, Field.WITNESS_TIMESTAMP);
     }
 
-    public final @Status int getStatus(){
-        if(sellerSignature == null || buyerSignature == null) {
+    public final @Status
+    int getStatus() {
+        if (sellerSignature == null || buyerSignature == null) {
             return Status.PENDING;
-        } else if(recurrence.getFinish() != null && recurrence.getFinish().isBefore(ZonedDateTime.now())) {
+        } else if (recurrence.getFinish() != null && recurrence.getFinish().isBefore(ZonedDateTime.now())) {
             return Status.EXPIRED;
         } else {
             return Status.VALID;
         }
     }
 
-    public final String toJson(){
+    public final String toJson() {
         return gsonBuilder().create().toJson(this);
     }
 
-    public final JsonElement toJsonTree(){
+    public final JsonElement toJsonTree() {
         return gsonBuilder().create().toJsonTree(this);
     }
 
-    public final Builder rebuild(){
+    public final Builder rebuild() {
         Builder builder = new Builder();
         builder.recurrenceBuilder = recurrence.rebuild();
 
-        for (Task task: tasks){
+        for (Task task : tasks) {
             builder.taskBuilders.add(task.rebuild());
         }
 
         return builder;
     }
 
-    private byte[] thisToBytes(final String field){
+    private byte[] thisToBytes(final String field) {
         ExclusionStrategy exclusionStrategy = new ExclusionStrategy() {
             @Override
             public boolean shouldSkipField(FieldAttributes f) {
@@ -317,11 +319,11 @@ public final class Contract implements Parcelable {
         return gsonBuilder().setExclusionStrategies(exclusionStrategy).create().toJson(this).getBytes();
     }
 
-    private boolean validate(PublicKey publicKey, byte[] bytes, String field){
+    private boolean validate(PublicKey publicKey, byte[] bytes, String field) {
         boolean valid = false;
 
         try {
-            Signature signature = java.security.Signature.getInstance("SHA512withRSA");
+            Signature signature = java.security.Signature.getInstance(Algorithm.SHA512withRSA);
             signature.initVerify(publicKey);
             signature.update(thisToBytes(field));
 
@@ -333,11 +335,11 @@ public final class Contract implements Parcelable {
         return valid;
     }
 
-    private byte[] sign(PrivateKey privateKey, String field){
+    private byte[] sign(PrivateKey privateKey, String field) {
         byte[] bytes = new byte[0];
 
         try {
-            Signature signature = java.security.Signature.getInstance("SHA512withRSA");
+            Signature signature = java.security.Signature.getInstance(Algorithm.SHA512withRSA);
             signature.initSign(privateKey);
             signature.update(thisToBytes(field));
 
@@ -349,12 +351,14 @@ public final class Contract implements Parcelable {
         return bytes;
     }
 
-    public final static class Builder{
+    public final static class Builder {
 
+        //region vars
         private List<Task.Builder> taskBuilders;
         private List<Task> tasks;
         private Recurrence.Builder recurrenceBuilder;
         private Recurrence recurrence;
+        //endregion vars
 
         public Builder() {
             this.tasks = new ArrayList<>();
@@ -366,17 +370,17 @@ public final class Contract implements Parcelable {
             return taskBuilders;
         }
 
-        public final Builder addTaskBuilder(Task.Builder builder){
+        public final Builder addTaskBuilder(Task.Builder builder) {
             this.taskBuilders.add(builder);
 
             return this;
         }
 
-        public final Builder addTaskBuilders(Task.Builder... builders){
+        public final Builder addTaskBuilders(Task.Builder... builders) {
             return addTaskBuilders(Arrays.asList(builders));
         }
 
-        public final Builder addTaskBuilders(List<Task.Builder> builders){
+        public final Builder addTaskBuilders(List<Task.Builder> builders) {
             this.taskBuilders.addAll(builders);
 
             return this;
@@ -386,18 +390,18 @@ public final class Contract implements Parcelable {
             return recurrenceBuilder;
         }
 
-        public final Builder setRecurrenceBuilder(Recurrence.Builder builder){
+        public final Builder setRecurrenceBuilder(Recurrence.Builder builder) {
             this.recurrenceBuilder = builder;
 
             return this;
         }
 
-        public final boolean validate(){
-            if(this.taskBuilders == null){
+        public final boolean validate() {
+            if (this.taskBuilders == null) {
                 return false;
-            } else{
-                for (Task.Builder builder: this.taskBuilders){
-                    if(!builder.validate()){
+            } else {
+                for (Task.Builder builder : this.taskBuilders) {
+                    if (!builder.validate()) {
                         return false;
                     }
                 }
@@ -408,16 +412,16 @@ public final class Contract implements Parcelable {
 
         public final Contract create() throws ContractException {
             try {
-                if(recurrenceBuilder == null){
+                if (recurrenceBuilder == null) {
                     throw new ContractException("The Recurrence.Builder is missing.");
                 } else {
                     this.recurrence = recurrenceBuilder.create();
                 }
 
-                if(taskBuilders.isEmpty()){
+                if (taskBuilders.isEmpty()) {
                     throw new ContractException("There are no Task.Builder added.");
                 } else {
-                    for (Task.Builder builder: taskBuilders) {
+                    for (Task.Builder builder : taskBuilders) {
                         tasks.add(builder.create());
                     }
                 }

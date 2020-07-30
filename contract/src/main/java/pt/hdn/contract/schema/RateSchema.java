@@ -12,6 +12,7 @@ import pt.hdn.contract.annotations.Parameter;
 
 public final class RateSchema extends SchemaImp {
 
+    //region vars
     public static final Creator<RateSchema> CREATOR = new Creator<RateSchema>() {
         @Override
         public RateSchema createFromParcel(Parcel in) {
@@ -25,6 +26,7 @@ public final class RateSchema extends SchemaImp {
     };
 
     private final double rate;
+    //endregion vars
 
     public static final RateSchema deserialize(JsonObject json){
         Builder builder = new Builder();
@@ -92,6 +94,7 @@ public final class RateSchema extends SchemaImp {
 
     public final static class Builder extends BuilderImp{
 
+        //region vars
         public static final Creator<Builder> CREATOR = new Creator<Builder>() {
             @Override
             public Builder createFromParcel(Parcel in) {
@@ -106,6 +109,7 @@ public final class RateSchema extends SchemaImp {
 
         private Double rate;
         private @SourceType Integer source;
+        //endregion vars
 
         public static final Builder deserialize(JsonObject json){
             Builder builder = new Builder();

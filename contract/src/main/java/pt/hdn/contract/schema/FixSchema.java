@@ -13,6 +13,7 @@ import pt.hdn.contract.annotations.SourceType;
 
 public final class FixSchema extends SchemaImp {
 
+    //region vars
     public static final Creator<FixSchema> CREATOR = new Creator<FixSchema>() {
         @Override
         public FixSchema createFromParcel(Parcel in) {
@@ -26,6 +27,7 @@ public final class FixSchema extends SchemaImp {
     };
 
     private final double fix;
+    //endregion vars
 
     public static final FixSchema deserialize(JsonObject json){
         Builder builder = new Builder();
@@ -91,6 +93,7 @@ public final class FixSchema extends SchemaImp {
 
     public final static class Builder extends BuilderImp {
 
+        //region vars
         public static final Creator<Builder> CREATOR = new Creator<Builder>() {
             @Override
             public Builder createFromParcel(Parcel in) {
@@ -104,6 +107,7 @@ public final class FixSchema extends SchemaImp {
         };
 
         private Double fix;
+        //endregion vars
 
         public static final Builder deserialize(JsonObject json){
             Builder builder = new Builder();

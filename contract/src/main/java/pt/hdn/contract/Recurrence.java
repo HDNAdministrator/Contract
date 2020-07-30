@@ -21,6 +21,7 @@ import static java.time.format.DateTimeFormatter.ISO_ZONED_DATE_TIME;
 
 public final class Recurrence implements Parcelable {
 
+    //region vars
     public static final Creator<Recurrence> CREATOR = new Creator<Recurrence>() {
         @Override
         public Recurrence createFromParcel(Parcel in) {
@@ -42,6 +43,7 @@ public final class Recurrence implements Parcelable {
     private final @DaysPeriod Integer daysPeriod;
     private final @DaysType int daysType;
     private final @MonthType int monthType;
+    //endregion vars
 
     private Recurrence(Builder builder){
         this.months = Collections.unmodifiableList(builder.months);
@@ -79,7 +81,6 @@ public final class Recurrence implements Parcelable {
         }
 
         dest.writeList(months);
-
         dest.writeInt(daysType);
 
         if (this.daysPeriod == null) {
@@ -90,7 +91,6 @@ public final class Recurrence implements Parcelable {
         }
 
         dest.writeList(days);
-
         dest.writeList(dow);
 
         if(this.start == null){
@@ -198,6 +198,7 @@ public final class Recurrence implements Parcelable {
 
     public final static class Builder{
 
+        //region vars
         private List<Integer> months;
         private List<Integer> days;
         private List<Integer> dow;
@@ -207,6 +208,7 @@ public final class Recurrence implements Parcelable {
         private @DaysPeriod Integer daysPeriod;
         private @DaysType int daysType;
         private @MonthType int monthType;
+        //endregion vars
 
         public Builder(){
             this.monthType = getDefaultMonthType();
@@ -453,10 +455,10 @@ public final class Recurrence implements Parcelable {
         public final Recurrence create() throws RecurrenceException{
             if(this.start == null){
                 throw new RecurrenceException("The start date is missing.");
-            } else if(this.finish != null && this.start.isAfter(this.finish)) {
+            } else if(this.finish != null && this.finish.isBefore(this.start)) {
                 throw new RecurrenceException("The finish date is before the starting date.");
             } else {
-                return  new Recurrence(this);
+                return new Recurrence(this);
             }
         }
     }

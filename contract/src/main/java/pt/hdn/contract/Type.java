@@ -3,33 +3,33 @@ package pt.hdn.contract;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.Nullable;
-
 import java.util.Objects;
 
-public final class ServiceType implements Parcelable {
+public final class Type implements Parcelable {
 
-    public static final Creator<ServiceType> CREATOR = new Creator<ServiceType>() {
+    //region vars
+    public static final Creator<Type> CREATOR = new Creator<Type>() {
         @Override
-        public ServiceType createFromParcel(Parcel in) {
-            return new ServiceType(in);
+        public Type createFromParcel(Parcel in) {
+            return new Type(in);
         }
 
         @Override
-        public ServiceType[] newArray(int size) {
-            return new ServiceType[size];
+        public Type[] newArray(int size) {
+            return new Type[size];
         }
     };
 
     private int type;
     private String name;
+    //endregion vars
 
-    private ServiceType(Builder builder){
+    private Type(Builder builder){
         this.type = builder.type;
         this.name = builder.name;
     }
 
-    private ServiceType(Parcel in) {
+    private Type(Parcel in) {
         this.type = in.readInt();
         this.name = in.readString();
     }
@@ -52,9 +52,9 @@ public final class ServiceType implements Parcelable {
         } else if (object == null || getClass() != object.getClass()) {
             return false;
         } else {
-            ServiceType serviceType = (ServiceType) object;
+            Type type = (Type) object;
 
-            return this.type == serviceType.type && name.equals(serviceType.name);
+            return this.type == type.type && name.equals(type.name);
         }
     }
 
@@ -82,8 +82,10 @@ public final class ServiceType implements Parcelable {
 
     public final static class Builder{
 
+        //region vars
         private Integer type;
         private String name;
+        //endregion vars
 
         public Builder(){
             this.type = null;
@@ -114,7 +116,7 @@ public final class ServiceType implements Parcelable {
             return this.name != null && this.type != null;
         }
 
-        public final ServiceType create() throws ServiceTypeException{
+        public final Type create() throws ServiceTypeException{
             if(this.type == null) {
                 throw new ServiceTypeException("The type is missing.");
             } else if(this.type < 0) {
@@ -124,7 +126,7 @@ public final class ServiceType implements Parcelable {
             } else if(this.name.isEmpty()) {
                 throw new ServiceTypeException("Name can not be empty.");
             } else {
-                return new ServiceType(this);
+                return new Type(this);
             }
         }
     }

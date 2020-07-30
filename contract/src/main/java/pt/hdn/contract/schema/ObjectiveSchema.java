@@ -12,6 +12,7 @@ import pt.hdn.contract.annotations.Parameter;
 
 public final class ObjectiveSchema extends SchemaImp {
 
+    //region vars
     public static final Creator<ObjectiveSchema> CREATOR = new Creator<ObjectiveSchema>() {
         @Override
         public ObjectiveSchema createFromParcel(Parcel in) {
@@ -27,6 +28,7 @@ public final class ObjectiveSchema extends SchemaImp {
     private final double bonus;
     private final Double lowerBound;
     private final Double upperBound;
+    //endregion vars
 
     public static final ObjectiveSchema deserialize(JsonObject json){
         Builder builder = new Builder();
@@ -134,6 +136,7 @@ public final class ObjectiveSchema extends SchemaImp {
 
     public final static class  Builder extends BuilderImp{
 
+        //region vars
         public static final Creator<Builder> CREATOR = new Creator<Builder>() {
             @Override
             public Builder createFromParcel(Parcel in) {
@@ -150,6 +153,7 @@ public final class ObjectiveSchema extends SchemaImp {
         private @ SourceType Integer source;
         private Double lowerBound;
         private Double upperBound;
+        //endregion vars
 
         public static final Builder deserialize(JsonObject json){
             Builder builder = new Builder();

@@ -12,6 +12,7 @@ import pt.hdn.contract.annotations.Parameter;
 
 public final class ThresholdSchema extends SchemaImp {
 
+    //region vars
     public static final Creator<ThresholdSchema> CREATOR = new Creator<ThresholdSchema>() {
         @Override
         public ThresholdSchema createFromParcel(Parcel in) {
@@ -28,6 +29,7 @@ public final class ThresholdSchema extends SchemaImp {
     private final Double positiveThreshold;
     private final Double negativeThreshold;
     private transient boolean accomplish;
+    //endregion vars
 
     public static final ThresholdSchema deserialize(JsonObject json){
         Builder builder = new Builder();
@@ -148,6 +150,7 @@ public final class ThresholdSchema extends SchemaImp {
 
     public final static class  Builder extends BuilderImp{
 
+        //region vars
         public static final Creator<Builder> CREATOR = new Creator<Builder>() {
             @Override
             public Builder createFromParcel(Parcel in) {
@@ -164,6 +167,7 @@ public final class ThresholdSchema extends SchemaImp {
         private @SourceType Integer source;
         private Double positiveThreshold;
         private Double negativeThreshold;
+        //endregion vars
 
         public static final Builder deserialize(JsonObject json){
             Builder builder = new Builder();

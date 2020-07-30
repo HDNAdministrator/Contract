@@ -11,7 +11,6 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.JsonDeserializer;
 
 import java.lang.reflect.Type;
-import java.time.LocalDateTime;
 
 import static android.util.Base64.DEFAULT;
 

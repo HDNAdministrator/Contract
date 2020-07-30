@@ -12,6 +12,8 @@ import pt.hdn.contract.annotations.Parameter;
 
 public final class CommissionSchema extends SchemaImp {
 
+    //region vars
+    private static final String TAG = "CommissionSchema";
     public static final Creator<CommissionSchema> CREATOR = new Creator<CommissionSchema>() {
         @Override
         public CommissionSchema createFromParcel(Parcel in) {
@@ -27,8 +29,9 @@ public final class CommissionSchema extends SchemaImp {
     private final double cut;
     private final Double lowerBound;
     private final Double upperBound;
+    //endregion vars
 
-    public static final CommissionSchema deserialize(JsonObject json){
+    public static final CommissionSchema deserialize(JsonObject json) {
         Builder builder = new Builder();
         builder.cut = json.get(Parameter.CUT).getAsDouble();
         builder.source = json.get(Parameter.SOURCE).getAsInt();
@@ -38,7 +41,7 @@ public final class CommissionSchema extends SchemaImp {
         return new CommissionSchema(builder);
     }
 
-    private CommissionSchema(Builder builder){
+    private CommissionSchema(Builder builder) {
         super(SchemaType.COMMISSION, builder.source);
 
         this.cut = builder.cut;
@@ -46,7 +49,7 @@ public final class CommissionSchema extends SchemaImp {
         this.upperBound = builder.upperBound;
     }
 
-    private CommissionSchema(Parcel in){
+    private CommissionSchema(Parcel in) {
         super(in);
 
         this.cut = in.readDouble();
@@ -60,14 +63,14 @@ public final class CommissionSchema extends SchemaImp {
 
         dest.writeDouble(this.cut);
 
-        if(this.upperBound == null){
+        if (this.upperBound == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeDouble(this.upperBound);
         }
 
-        if(this.lowerBound == null){
+        if (this.lowerBound == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
@@ -96,7 +99,7 @@ public final class CommissionSchema extends SchemaImp {
     }
 
     @Override
-    public final double calculate(double value){
+    public final double calculate(double value) {
         return (this.upperBound == null || value <= this.upperBound) ? ((this.lowerBound == null || this.lowerBound < value) ? value * this.cut : 0d) : 0d;
     }
 
@@ -116,7 +119,7 @@ public final class CommissionSchema extends SchemaImp {
         return this.cut;
     }
 
-    public final boolean hasLowerBound(){
+    public final boolean hasLowerBound() {
         return this.lowerBound != null;
     }
 
@@ -124,7 +127,7 @@ public final class CommissionSchema extends SchemaImp {
         return this.lowerBound;
     }
 
-    public final boolean hasUpperBound(){
+    public final boolean hasUpperBound() {
         return this.upperBound != null;
     }
 
@@ -132,8 +135,9 @@ public final class CommissionSchema extends SchemaImp {
         return this.upperBound;
     }
 
-    public final static class  Builder extends BuilderImp{
+    public final static class Builder extends BuilderImp {
 
+        //region vars
         public static final Creator<Builder> CREATOR = new Creator<Builder>() {
             @Override
             public Builder createFromParcel(Parcel in) {
@@ -150,8 +154,9 @@ public final class CommissionSchema extends SchemaImp {
         private @SourceType Integer source;
         private Double lowerBound;
         private Double upperBound;
+        //endregion vars
 
-        public static final Builder deserialize(JsonObject json){
+        public static final Builder deserialize(JsonObject json) {
             Builder builder = new Builder();
             builder.cut = json.get(Parameter.CUT).getAsDouble();
             builder.lowerBound = json.has(Parameter.LOWER_BOUND) ? json.get(Parameter.LOWER_BOUND).getAsDouble() : null;
@@ -160,7 +165,7 @@ public final class CommissionSchema extends SchemaImp {
             return builder;
         }
 
-        public Builder(){
+        public Builder() {
             super(SchemaType.COMMISSION);
 
             this.cut = null;
@@ -181,21 +186,21 @@ public final class CommissionSchema extends SchemaImp {
         public void writeToParcel(Parcel dest, int flags) {
             super.writeToParcel(dest, flags);
 
-            if(this.cut == null) {
+            if (this.cut == null) {
                 dest.writeByte((byte) 0);
             } else {
                 dest.writeByte((byte) 1);
                 dest.writeDouble(this.cut);
             }
 
-            if(this.lowerBound == null) {
+            if (this.lowerBound == null) {
                 dest.writeByte((byte) 0);
             } else {
                 dest.writeByte((byte) 1);
                 dest.writeDouble(this.lowerBound);
             }
 
-            if(this.upperBound == null) {
+            if (this.upperBound == null) {
                 dest.writeByte((byte) 0);
             } else {
                 dest.writeByte((byte) 1);
@@ -204,20 +209,20 @@ public final class CommissionSchema extends SchemaImp {
         }
 
         @Override
-        public final CommissionSchema create() throws SchemaException{
-            if(this.cut == null) {
+        public final CommissionSchema create() throws SchemaException {
+            if (this.cut == null) {
                 throw new SchemaException("The cut is missing.");
-            } else if(this.cut <= 0 || this.cut > 1) {
+            } else if (this.cut <= 0 || this.cut > 1) {
                 throw new SchemaException("Cut can only be between 0 and 1.");
-            } else if(this.source == null) {
+            } else if (this.source == null) {
                 throw new SchemaException("The source is missing.");
-            } else if(this.source < 0) {
+            } else if (this.source < 0) {
                 throw new SchemaException("Source needs to be positive.");
-            } else if(this.lowerBound != null && this.lowerBound < 0) {
+            } else if (this.lowerBound != null && this.lowerBound < 0) {
                 throw new SchemaException("LowerBound needs to be positive.");
-            } else if(this.upperBound != null && this.upperBound < 0) {
+            } else if (this.upperBound != null && this.upperBound < 0) {
                 throw new SchemaException("UpperBound needs to be positive.");
-            } else if(this.lowerBound != null && this.upperBound != null && this.upperBound <= this.lowerBound) {
+            } else if (this.lowerBound != null && this.upperBound != null && this.upperBound <= this.lowerBound) {
                 throw new SchemaException("LowerBound is greater or equal than upperBound");
             } else {
                 return new CommissionSchema(this);
@@ -226,32 +231,32 @@ public final class CommissionSchema extends SchemaImp {
 
         @Override
         public final boolean validate() {
-            if(this.cut == null || this.cut <= 0 || this.cut > 1) {
+            if (this.cut == null || this.cut <= 0 || this.cut > 1) {
                 return false;
-            } else if(this.lowerBound != null && this.lowerBound < 0) {
+            } else if (this.lowerBound != null && this.lowerBound < 0) {
                 return false;
-            } else if(this.upperBound != null && this.upperBound < 0) {
+            } else if (this.upperBound != null && this.upperBound < 0) {
                 return false;
-            } else if(this.lowerBound != null && this.upperBound != null && this.upperBound <= this.lowerBound) {
+            } else if (this.lowerBound != null && this.upperBound != null && this.upperBound <= this.lowerBound) {
                 return false;
             } else {
                 return true;
             }
         }
 
-        public final boolean hasCut(){
+        public final boolean hasCut() {
             return this.cut != null;
         }
 
-        public final boolean hasSource(){
+        public final boolean hasSource() {
             return this.source != null;
         }
 
-        public final boolean hasLowerBound(){
+        public final boolean hasLowerBound() {
             return this.lowerBound != null;
         }
 
-        public final boolean hasUpperBound(){
+        public final boolean hasUpperBound() {
             return this.upperBound != null;
         }
 
@@ -259,7 +264,7 @@ public final class CommissionSchema extends SchemaImp {
             return this.cut;
         }
 
-        public final Builder setCut(Double cut){
+        public final Builder setCut(Double cut) {
             this.cut = cut;
 
             return this;
@@ -269,7 +274,7 @@ public final class CommissionSchema extends SchemaImp {
             return this.source;
         }
 
-        public final Builder setSource(@SourceType Integer source){
+        public final Builder setSource(@SourceType Integer source) {
             this.source = source;
 
             return this;
@@ -279,7 +284,7 @@ public final class CommissionSchema extends SchemaImp {
             return this.lowerBound;
         }
 
-        public final Builder setLowerBound(Double lowerBound){
+        public final Builder setLowerBound(Double lowerBound) {
             this.lowerBound = lowerBound;
 
             return this;
@@ -289,7 +294,7 @@ public final class CommissionSchema extends SchemaImp {
             return this.upperBound;
         }
 
-        public final Builder setUpperBound(Double upperBound){
+        public final Builder setUpperBound(Double upperBound) {
             this.upperBound = upperBound;
 
             return this;
