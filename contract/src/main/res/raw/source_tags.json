@@ -2,38 +2,38 @@
     "pt_PT": [
         {
             "type": 0,
-            "name": "Lucro Nível Individual"
+            "name": "Receita Nível Individual"
         },
         {
             "type": 1,
-            "name": "Lucro Nível de Equipa"
+            "name": "Receita Nível de Equipa"
         },
         {
             "type": 2,
-            "name": "Lucro Nível de Departamento"
+            "name": "Receita Nível de Departamento"
         },
         {
             "type": 3,
-            "name": "Lucro Nível da Empresa"
+            "name": "Receita Nível da Empresa"
         }
     ],
     
     "en_GB": [
         {
             "type": 0,
-            "name": "Individual Profit"
+            "name": "Individual Revenue"
         },
         {
             "type": 1,
-            "name": "Team Profit"
+            "name": "Team Revenue"
         },
         {
             "type": 2,
-            "name": "Department Profit"
+            "name": "Department Revenue"
         },
         {
             "type": 3,
-            "name": "Company Profit"
+            "name": "Company Revenue"
         }
     ]
 }

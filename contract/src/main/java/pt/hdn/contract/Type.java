@@ -3,6 +3,8 @@ package pt.hdn.contract;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import java.util.Objects;
 
 public final class Type implements Parcelable {
@@ -24,7 +26,7 @@ public final class Type implements Parcelable {
     private String name;
     //endregion vars
 
-    private Type(Builder builder){
+    private Type(Builder builder) {
         this.type = builder.type;
         this.name = builder.name;
     }
@@ -63,6 +65,12 @@ public final class Type implements Parcelable {
         return Objects.hash(type, name);
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
     public final int getType() {
         return this.type;
     }
@@ -80,51 +88,51 @@ public final class Type implements Parcelable {
         return builder;
     }
 
-    public final static class Builder{
+    public final static class Builder {
 
         //region vars
         private Integer type;
         private String name;
         //endregion vars
 
-        public Builder(){
+        public Builder() {
             this.type = null;
             this.name = null;
         }
 
-        public final int getType(){
+        public final int getType() {
             return this.type;
         }
 
-        public final Builder setType(Integer type){
+        public final Builder setType(Integer type) {
             this.type = type;
 
-            return  this;
+            return this;
         }
 
-        public final String getName(){
+        public final String getName() {
             return this.name;
         }
 
-        public final Builder setName(String name){
+        public final Builder setName(String name) {
             this.name = name;
 
-            return  this;
+            return this;
         }
 
-        public final boolean validate(){
+        public final boolean validate() {
             return this.name != null && this.type != null;
         }
 
-        public final Type create() throws ServiceTypeException{
-            if(this.type == null) {
-                throw new ServiceTypeException("The type is missing.");
-            } else if(this.type < 0) {
-                throw new ServiceTypeException("Type needs to be positive.");
-            } else if(this.name == null) {
-                throw new ServiceTypeException("The name is missing.");
-            } else if(this.name.isEmpty()) {
-                throw new ServiceTypeException("Name can not be empty.");
+        public final Type create() throws SpecialityTypeException {
+            if (this.type == null) {
+                throw new SpecialityTypeException("The type is missing.");
+            } else if (this.type < 0) {
+                throw new SpecialityTypeException("Type needs to be positive.");
+            } else if (this.name == null) {
+                throw new SpecialityTypeException("The name is missing.");
+            } else if (this.name.isEmpty()) {
+                throw new SpecialityTypeException("Name can not be empty.");
             } else {
                 return new Type(this);
             }

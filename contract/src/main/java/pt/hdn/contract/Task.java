@@ -35,7 +35,7 @@ public final class Task implements Parcelable {
     //endregion vars
 
     private Task(Task.Builder builder) {
-        this.specialityType = builder.type;
+        this.specialityType = builder.specialityType;
         this.schemas = Collections.unmodifiableList(builder.schemas);
         this.responsibilities = Collections.unmodifiableList(builder.responsibilities);
         this.exclusivity = builder.exclusivity;
@@ -94,15 +94,13 @@ public final class Task implements Parcelable {
     public final Builder rebuild() {
         Builder builder = new Builder();
 
-        builder.specialityTypeBuilder = this.specialityType.rebuild();
+        builder.specialityType = this.specialityType;
 
         for (Schema schema : this.schemas) {
             builder.schemaBuilders.add(schema.rebuild());
         }
 
-        for (Type responsibility : this.responsibilities) {
-            builder.responsibilityBuilders.add(responsibility.rebuild());
-        }
+        builder.responsibilities.addAll(responsibilities);
 
         return builder;
     }
@@ -113,17 +111,17 @@ public final class Task implements Parcelable {
         private List<Schema> schemas;
         private List<Schema.Builder> schemaBuilders;
         private List<Type> responsibilities;
-        private List<Type.Builder> responsibilityBuilders;
-        private Type type;
-        private Type.Builder specialityTypeBuilder;
+//        private List<Type.Builder> responsibilityBuilders;
+//        private Type type;
+        private Type specialityType;
         private Boolean exclusivity;
         //endregion vars
 
         public Builder() {
-            this.specialityTypeBuilder = null;
+            this.specialityType = null;
             this.schemaBuilders = new ArrayList<>();
             this.schemas = new ArrayList<>();
-            this.responsibilityBuilders = new ArrayList<>();
+//            this.responsibilityBuilders = new ArrayList<>();
             this.responsibilities = new ArrayList<>();
             this.exclusivity = null;
         }
@@ -162,46 +160,46 @@ public final class Task implements Parcelable {
             return schemaBuilders.set(index, builder);
         }
 
-        public final Builder clearResponsibilityBuilders() {
-            this.responsibilityBuilders.clear();
+        public final Builder clearResponsibility() {
+            this.responsibilities.clear();
 
             return this;
         }
 
-        public final Type.Builder removeResponsibilityBuilder(int index) {
-            return this.responsibilityBuilders.remove(index);
+        public final Type removeResponsibility(int index) {
+            return this.responsibilities.remove(index);
         }
 
-        public final List<Type.Builder> getResponsibilityBuilders() {
-            return this.responsibilityBuilders;
+        public final List<Type> getResponsibilities() {
+            return this.responsibilities;
         }
 
-        public final Builder addResponsibilityBuilder(Type.Builder builder) {
-            this.responsibilityBuilders.add(builder);
+        public final Builder addResponsibility(Type responsibility) {
+            this.responsibilities.add(responsibility);
 
             return this;
         }
 
-        public final Builder addResponsibilityBuilders(Type.Builder... builders) {
-            return addResponsibilityBuilders(Arrays.asList(builders));
+        public final Builder addResponsibilities(Type... responsibilities) {
+            return addResponsibilities(Arrays.asList(responsibilities));
         }
 
-        public final Builder addResponsibilityBuilders(List<Type.Builder> builders) {
-            this.responsibilityBuilders.addAll(builders);
+        public final Builder addResponsibilities(List<Type> responsibilities) {
+            this.responsibilities.addAll(responsibilities);
 
             return this;
         }
 
-        public final Type.Builder setResponsibilityBuilder(int index, Type.Builder builder) {
-            return this.responsibilityBuilders.set(index, builder);
+        public final Type setResponsibilities(int index, Type responsibility) {
+            return this.responsibilities.set(index, responsibility);
         }
 
-        public final Type.Builder getSpecialityTypeBuilder() {
-            return this.specialityTypeBuilder;
+        public final Type getSpecialityType() {
+            return this.specialityType;
         }
 
-        public final Builder setSpecialityTypeBuilder(Type.Builder builder) {
-            this.specialityTypeBuilder = builder;
+        public final Builder setSpecialityType(Type specialityType) {
+            this.specialityType = specialityType;
 
             return this;
         }
@@ -227,21 +225,13 @@ public final class Task implements Parcelable {
                 }
             }
 
-            for (Type.Builder builder : this.responsibilityBuilders) {
-                if (!builder.validate()) {
-                    return false;
-                }
-            }
-
-            return this.specialityTypeBuilder != null && this.specialityTypeBuilder.validate() && this.exclusivity != null;
+            return this.specialityType != null && this.exclusivity != null;
         }
 
         public final Task create() throws TaskException {
             try {
-                if (this.specialityTypeBuilder == null) {
+                if (this.specialityType == null) {
                     throw new TaskException("The ServiceType.Builder is missing.");
-                } else {
-                    this.type = this.specialityTypeBuilder.create();
                 }
 
                 if (this.schemaBuilders.isEmpty()) {
@@ -251,11 +241,7 @@ public final class Task implements Parcelable {
                         this.schemas.add(builder.create());
                     }
                 }
-
-                for (Type.Builder builder : this.responsibilityBuilders) {
-                    this.responsibilities.add(builder.create());
-                }
-            } catch (ServiceTypeException | SchemaException e) {
+            } catch (SchemaException e) {
                 throw new TaskException(e.getMessage());
             }
 
