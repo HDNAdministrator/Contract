@@ -2,6 +2,7 @@ package pt.hdn.contract;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -60,6 +61,11 @@ public final class Contract implements Parcelable {
     private byte[] sellerDeputySignature;
     private byte[] sellerSignature;
     private byte[] witnessSignature;
+    private String buyerID;
+    private String buyerDeputyID;
+    private String sellerID;
+    private String sellerDeputyID;
+    private String witnessID;
     //endregion vars
 
     public static Contract from(String json) {
@@ -67,33 +73,38 @@ public final class Contract implements Parcelable {
     }
 
     public static final GsonBuilder gsonBuilder() {
-        if (gsonBuilder == null) {
-            gsonBuilder = new GsonBuilder()
-                    .excludeFieldsWithModifiers(STATIC)
-                    .registerTypeHierarchyAdapter(Schema.class, new SchemaTypeAdapter())
-                    .registerTypeHierarchyAdapter(byte[].class, new ByteArrayTypeAdapter())
-                    .registerTypeHierarchyAdapter(ZonedDateTime.class, new ZonedDateTimeTypeAdapter());
-        }
-
-        return gsonBuilder;
+        return Contract.gsonBuilder == null ? Contract.gsonBuilder = new GsonBuilder()
+                .excludeFieldsWithModifiers(STATIC)
+                .registerTypeHierarchyAdapter(Schema.class, new SchemaTypeAdapter())
+                .registerTypeHierarchyAdapter(byte[].class, new ByteArrayTypeAdapter())
+                .registerTypeHierarchyAdapter(ZonedDateTime.class, new ZonedDateTimeTypeAdapter()) : Contract.gsonBuilder;
     }
 
     private Contract(Builder builder) {
         this.tasks = Collections.unmodifiableList(builder.tasks);
         this.recurrence = builder.recurrence;
+        this.buyerID = builder.buyerID;
+        this.buyerDeputyID = builder.buyerDeputyID;
+        this.sellerID = builder.sellerID;
+        this.sellerDeputyID = builder.sellerDeputyID;
     }
 
     private Contract(Parcel in) {
         this.tasks = in.createTypedArrayList(Task.CREATOR);
         this.recurrence = in.readParcelable(Recurrence.class.getClassLoader());
+        this.buyerID = in.readByte() != 0 ? in.readString() : null;
         this.buyerTimestamp = in.readByte() != 0 ? ZonedDateTime.parse(in.readString()) : null;
         this.buyerSignature = in.readByte() != 0 ? in.createByteArray() : null;
+        this.buyerDeputyID = in.readByte() != 0 ? in.readString() : null;
         this.buyerDeputyTimestamp = in.readByte() != 0 ? ZonedDateTime.parse(in.readString()) : null;
         this.buyerDeputySignature = in.readByte() != 0 ? in.createByteArray() : null;
+        this.sellerID = in.readByte() != 0 ? in.readString() : null;
         this.sellerTimestamp = in.readByte() != 0 ? ZonedDateTime.parse(in.readString()) : null;
         this.sellerSignature = in.readByte() != 0 ? in.createByteArray() : null;
+        this.sellerDeputyID = in.readByte() != 0 ? in.readString() : null;
         this.sellerDeputyTimestamp = in.readByte() != 0 ? ZonedDateTime.parse(in.readString()) : null;
         this.sellerDeputySignature = in.readByte() != 0 ? in.createByteArray() : null;
+        this.witnessID = in.readByte() != 0 ? in.readString() : null;
         this.witnessTimestamp = in.readByte() != 0 ? ZonedDateTime.parse(in.readString()) : null;
         this.witnessSignature = in.readByte() != 0 ? in.createByteArray() : null;
     }
@@ -102,6 +113,13 @@ public final class Contract implements Parcelable {
     public final void writeToParcel(Parcel dest, int flags) {
         dest.writeTypedList(tasks);
         dest.writeParcelable(recurrence, flags);
+
+        if (buyerID == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeString(buyerID);
+        }
 
         if (buyerTimestamp == null) {
             dest.writeByte((byte) 0);
@@ -115,6 +133,13 @@ public final class Contract implements Parcelable {
         } else {
             dest.writeByte((byte) 1);
             dest.writeByteArray(buyerSignature);
+        }
+
+        if (buyerDeputyID == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeString(buyerDeputyID);
         }
 
         if (buyerDeputyTimestamp == null) {
@@ -131,6 +156,13 @@ public final class Contract implements Parcelable {
             dest.writeByteArray(buyerDeputySignature);
         }
 
+        if (sellerID == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeString(sellerID);
+        }
+
         if (sellerTimestamp == null) {
             dest.writeByte((byte) 0);
         } else {
@@ -145,6 +177,13 @@ public final class Contract implements Parcelable {
             dest.writeByteArray(sellerSignature);
         }
 
+        if (sellerDeputyID == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeString(sellerDeputyID);
+        }
+
         if (sellerDeputyTimestamp == null) {
             dest.writeByte((byte) 0);
         } else {
@@ -157,6 +196,13 @@ public final class Contract implements Parcelable {
         } else {
             dest.writeByte((byte) 1);
             dest.writeByteArray(sellerDeputySignature);
+        }
+
+        if (witnessID == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeString(witnessID);
         }
 
         if (witnessTimestamp == null) {
@@ -190,6 +236,11 @@ public final class Contract implements Parcelable {
 
             return this.tasks.equals(contract.tasks) &&
                     this.recurrence.equals(contract.recurrence) &&
+                    Objects.equals(this.witnessID, contract.witnessID) &&
+                    Objects.equals(this.buyerID, contract.buyerID) &&
+                    Objects.equals(this.buyerDeputyID, contract.buyerDeputyID) &&
+                    Objects.equals(this.sellerID, contract.sellerID) &&
+                    Objects.equals(this.sellerDeputyID, contract.sellerDeputyID) &&
                     Objects.equals(this.buyerDeputyTimestamp, contract.buyerDeputyTimestamp) &&
                     Objects.equals(this.buyerTimestamp, contract.buyerTimestamp) &&
                     Objects.equals(this.sellerDeputyTimestamp, contract.sellerDeputyTimestamp) &&
@@ -205,7 +256,7 @@ public final class Contract implements Parcelable {
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(tasks, recurrence, buyerDeputyTimestamp, buyerTimestamp, sellerDeputyTimestamp, sellerTimestamp, witnessTimestamp);
+        int result = Objects.hash(tasks, recurrence, buyerID, buyerDeputyID, sellerID, sellerDeputyID, witnessID, buyerDeputyTimestamp, buyerTimestamp, sellerDeputyTimestamp, sellerTimestamp, witnessTimestamp);
         result = 31 * result + Arrays.hashCode(buyerDeputySignature);
         result = 31 * result + Arrays.hashCode(buyerSignature);
         result = 31 * result + Arrays.hashCode(sellerDeputySignature);
@@ -215,12 +266,32 @@ public final class Contract implements Parcelable {
         return result;
     }
 
+    public final String getBuyerID() {
+        return this.buyerID;
+    }
+
+    public final String getBuyerDeputyID() {
+        return this.buyerDeputyID;
+    }
+
+    public final String getSellerID() {
+        return this.sellerID;
+    }
+
+    public final String getSellerDeputyID() {
+        return this.sellerDeputyID;
+    }
+
+    public final String getWitnessID() {
+        return this.witnessID;
+    }
+
     public final List<Task> getTasks() {
-        return tasks;
+        return this.tasks;
     }
 
     public final Recurrence getRecurrence() {
-        return recurrence;
+        return this.recurrence;
     }
 
     public final String setBuyerDeputySignature(PrivateKey privateKey) {
@@ -271,8 +342,7 @@ public final class Contract implements Parcelable {
         return validate(publicKey, witnessSignature, Field.WITNESS_TIMESTAMP);
     }
 
-    public final @Status
-    int getStatus() {
+    public final @Status int getStatus() {
         if (sellerSignature == null || buyerSignature == null) {
             return Status.PENDING;
         } else if (recurrence.getFinish() != null && recurrence.getFinish().isBefore(ZonedDateTime.now())) {
@@ -358,6 +428,10 @@ public final class Contract implements Parcelable {
         private List<Task> tasks;
         private Recurrence.Builder recurrenceBuilder;
         private Recurrence recurrence;
+        private String buyerID;
+        private String buyerDeputyID;
+        private String sellerID;
+        private String sellerDeputyID;
         //endregion vars
 
         public Builder() {
@@ -396,6 +470,30 @@ public final class Contract implements Parcelable {
             return this;
         }
 
+        public final Builder setBuyerID(String buyerID) {
+            this.buyerID = buyerID;
+
+            return this;
+        }
+
+        public final Builder setBuyerDeputyID(String buyerDeputyID) {
+            this.buyerDeputyID = buyerDeputyID;
+
+            return this;
+        }
+
+        public final Builder setSellerID(String sellerID) {
+            this.sellerID = sellerID;
+
+            return this;
+        }
+
+        public final Builder setSellerDeputyID(String sellerDeputyID) {
+            this.sellerDeputyID = sellerDeputyID;
+
+            return this;
+        }
+
         public final boolean validate() {
             if (this.taskBuilders == null) {
                 return false;
@@ -407,7 +505,11 @@ public final class Contract implements Parcelable {
                 }
             }
 
-            return this.recurrenceBuilder != null && this.recurrenceBuilder.validate();
+            return isSet(this.buyerID) && isSet(this.buyerDeputyID) && isSet(this.sellerID) && isSet(this.sellerDeputyID) && this.recurrenceBuilder != null && this.recurrenceBuilder.validate();
+        }
+
+        private boolean isSet(String value) {
+            return !TextUtils.isEmpty(value);
         }
 
         public final Contract create() throws ContractException {
@@ -424,6 +526,22 @@ public final class Contract implements Parcelable {
                     for (Task.Builder builder : taskBuilders) {
                         tasks.add(builder.create());
                     }
+                }
+
+                if (!isSet(buyerID)) {
+                    throw new ContractException("Buyer ID is not set.");
+                }
+
+                if (!isSet(buyerDeputyID)) {
+                    throw new ContractException("Buyer Deputy ID is not set.");
+                }
+
+                if (!isSet(sellerID)) {
+                    throw new ContractException("Seller ID is not set.");
+                }
+
+                if (!isSet(sellerDeputyID)) {
+                    throw new ContractException("Seller Deputy ID is not set.");
                 }
             } catch (RecurrenceException | TaskException e) {
                 throw new ContractException(e.getMessage());
