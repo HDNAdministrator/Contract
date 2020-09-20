@@ -1,2 +1,2 @@
-include ':app', ':contract'
-rootProject.name='Libs'
+include ':contract'
+rootProject.name='Contract'

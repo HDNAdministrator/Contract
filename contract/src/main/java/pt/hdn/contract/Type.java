@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 
 import java.util.Objects;
 
-public final class Type implements Parcelable {
+public class Type implements Parcelable {
 
     //region vars
     public static final Creator<Type> CREATOR = new Creator<Type>() {
