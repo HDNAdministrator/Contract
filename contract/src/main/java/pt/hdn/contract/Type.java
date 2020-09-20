@@ -26,6 +26,10 @@ public class Type implements Parcelable {
     private String name;
     //endregion vars
 
+    public Type() {
+
+    }
+
     private Type(Builder builder) {
         this.type = builder.type;
         this.name = builder.name;
