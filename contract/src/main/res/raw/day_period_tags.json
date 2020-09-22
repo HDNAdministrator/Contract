@@ -10,7 +10,7 @@
         },
         {
             "type": 2,
-            "name": "os Dias"
+            "name": "Todos os Dias"
         }
     ],
     "en_GB": [
@@ -24,7 +24,7 @@
         },
         {
             "type": 2,
-            "name": "Day"
+            "name": "Every Day"
         }
     ]
 }

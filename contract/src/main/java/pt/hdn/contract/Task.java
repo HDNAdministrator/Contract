@@ -111,8 +111,6 @@ public final class Task implements Parcelable {
         private List<Schema> schemas;
         private List<Schema.Builder> schemaBuilders;
         private List<Type> responsibilities;
-//        private List<Type.Builder> responsibilityBuilders;
-//        private Type type;
         private Type specialityType;
         private Boolean exclusivity;
         //endregion vars
@@ -121,7 +119,6 @@ public final class Task implements Parcelable {
             this.specialityType = null;
             this.schemaBuilders = new ArrayList<>();
             this.schemas = new ArrayList<>();
-//            this.responsibilityBuilders = new ArrayList<>();
             this.responsibilities = new ArrayList<>();
             this.exclusivity = null;
         }
@@ -215,13 +212,9 @@ public final class Task implements Parcelable {
         }
 
         public final boolean validate() {
-            if (this.schemaBuilders == null) {
-                return false;
-            } else {
-                for (Schema.Builder builder : this.schemaBuilders) {
-                    if (!builder.validate()) {
-                        return false;
-                    }
+            for (Schema.Builder builder : this.schemaBuilders) {
+                if (!builder.validate()) {
+                    return false;
                 }
             }
 

@@ -244,6 +244,7 @@ public final class Recurrence implements Parcelable {
                 case DaysType.DAYS: {
                     this.daysPeriod = null;
                     this.days = new ArrayList<>(getDefaultDay());
+                    this.days.add(getDefaultDay());
                     this.dow = null;
 
                     break;
@@ -252,6 +253,7 @@ public final class Recurrence implements Parcelable {
                     this.daysPeriod = null;
                     this.days = null;
                     this.dow = new ArrayList<>(getDefaultDow());
+                    this.dow.add(getDefaultDay());
 
                     break;
                 }

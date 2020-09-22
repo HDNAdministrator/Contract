@@ -495,13 +495,9 @@ public final class Contract implements Parcelable {
         }
 
         public final boolean validate() {
-            if (this.taskBuilders == null) {
-                return false;
-            } else {
-                for (Task.Builder builder : this.taskBuilders) {
-                    if (!builder.validate()) {
-                        return false;
-                    }
+            for (Task.Builder builder : this.taskBuilders) {
+                if (!builder.validate()) {
+                    return false;
                 }
             }
 
