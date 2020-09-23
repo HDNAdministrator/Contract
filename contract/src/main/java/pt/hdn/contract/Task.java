@@ -96,6 +96,8 @@ public final class Task implements Parcelable {
 
         builder.specialityType = this.specialityType;
 
+        builder.exclusivity = this.exclusivity;
+
         for (Schema schema : this.schemas) {
             builder.schemaBuilders.add(schema.rebuild());
         }
@@ -112,7 +114,7 @@ public final class Task implements Parcelable {
         private List<Schema.Builder> schemaBuilders;
         private List<Type> responsibilities;
         private Type specialityType;
-        private Boolean exclusivity;
+        private boolean exclusivity;
         //endregion vars
 
         public Builder() {
@@ -120,7 +122,7 @@ public final class Task implements Parcelable {
             this.schemaBuilders = new ArrayList<>();
             this.schemas = new ArrayList<>();
             this.responsibilities = new ArrayList<>();
-            this.exclusivity = null;
+            this.exclusivity = false;
         }
 
         public final Builder clearSchemaBuilders() {
@@ -201,7 +203,7 @@ public final class Task implements Parcelable {
             return this;
         }
 
-        public final Boolean getExclusivity() {
+        public final boolean getExclusivity() {
             return this.exclusivity;
         }
 
@@ -218,7 +220,7 @@ public final class Task implements Parcelable {
                 }
             }
 
-            return this.specialityType != null && this.exclusivity != null;
+            return this.specialityType != null;
         }
 
         public final Task create() throws TaskException {
