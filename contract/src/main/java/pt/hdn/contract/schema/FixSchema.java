@@ -37,7 +37,7 @@ public final class FixSchema extends SchemaImp {
     }
 
     private FixSchema(Builder builder) {
-        super(SchemaType.FIX, null);
+        super(SchemaType.FIX, SourceType.NONE);
 
         this.fix = builder.fix;
     }
