@@ -243,7 +243,7 @@ public final class Recurrence implements Parcelable {
             switch (this.daysType) {
                 case DaysType.DAYS: {
                     this.daysPeriod = null;
-                    this.days = new ArrayList<>(getDefaultDay());
+                    this.days = new ArrayList<>();
                     this.days.add(getDefaultDay());
                     this.dow = null;
 
@@ -252,7 +252,7 @@ public final class Recurrence implements Parcelable {
                 case DaysType.DOW: {
                     this.daysPeriod = null;
                     this.days = null;
-                    this.dow = new ArrayList<>(getDefaultDow());
+                    this.dow = new ArrayList<>();
                     this.dow.add(getDefaultDay());
 
                     break;
@@ -356,7 +356,9 @@ public final class Recurrence implements Parcelable {
             this.monthType = MonthType.MONTHS;
 
             if (this.months == null) {
-                this.months = new ArrayList<>(month);
+                this.months =new ArrayList<>();
+
+                this.months.add(month);
             } else if (!this.months.contains(month)) {
                 this.months.add(month);
 
@@ -403,7 +405,9 @@ public final class Recurrence implements Parcelable {
             this.daysType = DaysType.DAYS;
 
             if (this.days == null) {
-                this.days = new ArrayList<>(day);
+                this.days = new ArrayList<>();
+
+                this.days.add(day);
             } else if (!this.days.contains(day)) {
                 this.days.add(day);
 
@@ -435,6 +439,8 @@ public final class Recurrence implements Parcelable {
 
             if (this.dow == null) {
                 this.dow = new ArrayList<>(dow);
+
+                this.dow.add(dow);
             } else if (!this.dow.contains(dow)) {
                 this.dow.add(dow);
 
