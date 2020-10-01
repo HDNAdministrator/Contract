@@ -1,4 +1,4 @@
-package pt.hdn.contract;
+package pt.hdn.contract.exceptions;
 
 public final class RecurrenceException extends Exception {
 

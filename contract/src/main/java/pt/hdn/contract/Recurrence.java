@@ -16,6 +16,7 @@ import pt.hdn.contract.annotations.DaysType;
 import pt.hdn.contract.annotations.Month;
 import pt.hdn.contract.annotations.MonthType;
 import pt.hdn.contract.annotations.MonthsPeriod;
+import pt.hdn.contract.exceptions.RecurrenceException;
 
 import static java.time.format.DateTimeFormatter.ISO_ZONED_DATE_TIME;
 

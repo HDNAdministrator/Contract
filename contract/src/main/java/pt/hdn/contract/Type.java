@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 
 import java.util.Objects;
 
+import pt.hdn.contract.exceptions.SpecialityTypeException;
+
 public class Type implements Parcelable {
 
     //region vars

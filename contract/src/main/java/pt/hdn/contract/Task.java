@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import pt.hdn.contract.exceptions.TaskException;
 import pt.hdn.contract.schema.Schema;
 import pt.hdn.contract.schema.SchemaException;
 
@@ -236,11 +237,15 @@ public final class Task implements Parcelable {
                         this.schemas.add(builder.create());
                     }
                 }
+
+                return new Task(this);
             } catch (SchemaException e) {
                 throw new TaskException(e.getMessage());
-            }
+            } finally {
+                this.responsibilities.clear();
 
-            return new Task(this);
+                this.schemas.clear();
+            }
         }
     }
 }

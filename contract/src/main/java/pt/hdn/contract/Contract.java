@@ -28,6 +28,9 @@ import pt.hdn.contract.adapters.ByteArrayTypeAdapter;
 import pt.hdn.contract.annotations.Algorithm;
 import pt.hdn.contract.annotations.Status;
 import pt.hdn.contract.annotations.Field;
+import pt.hdn.contract.exceptions.ContractException;
+import pt.hdn.contract.exceptions.RecurrenceException;
+import pt.hdn.contract.exceptions.TaskException;
 import pt.hdn.contract.schema.Schema;
 
 import static java.lang.reflect.Modifier.STATIC;
@@ -520,7 +523,7 @@ public final class Contract implements Parcelable {
                     throw new ContractException("There are no Task.Builder added.");
                 } else {
                     for (Task.Builder builder : taskBuilders) {
-                        tasks.add(builder.create());
+                        this.tasks.add(builder.create());
                     }
                 }
 
@@ -539,11 +542,13 @@ public final class Contract implements Parcelable {
                 if (!isSet(sellerDeputyID)) {
                     throw new ContractException("Seller Deputy ID is not set.");
                 }
+
+                return new Contract(this);
             } catch (RecurrenceException | TaskException e) {
                 throw new ContractException(e.getMessage());
+            } finally {
+                this.tasks.clear();
             }
-
-            return new Contract(this);
         }
     }
 }
