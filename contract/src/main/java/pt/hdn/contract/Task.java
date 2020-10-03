@@ -37,8 +37,8 @@ public final class Task implements Parcelable {
 
     private Task(Task.Builder builder) {
         this.specialityType = builder.specialityType;
-        this.schemas = Collections.unmodifiableList(builder.schemas);
-        this.responsibilities = Collections.unmodifiableList(builder.responsibilities);
+        this.schemas = Collections.unmodifiableList(new ArrayList<>(builder.schemas));
+        this.responsibilities = Collections.unmodifiableList(new ArrayList<>(builder.responsibilities));
         this.exclusivity = builder.exclusivity;
     }
 
@@ -242,9 +242,8 @@ public final class Task implements Parcelable {
             } catch (SchemaException e) {
                 throw new TaskException(e.getMessage());
             } finally {
-                this.responsibilities.clear();
-
-                this.schemas.clear();
+                this.responsibilities = new ArrayList<>();
+                this.schemas = new ArrayList<>();
             }
         }
     }

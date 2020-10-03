@@ -547,7 +547,7 @@ public final class Contract implements Parcelable {
             } catch (RecurrenceException | TaskException e) {
                 throw new ContractException(e.getMessage());
             } finally {
-                this.tasks.clear();
+                this.tasks = new ArrayList<>();
             }
         }
     }
